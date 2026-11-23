@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T10:53:03.262Z",
+  "generadoEn": "2026-11-23T10:54:37.817Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -23,38 +23,7 @@
       "infoAdicional": ""
     }
   ],
-  "horarios": [
-    {
-      "id": "HOR-226D74CE",
-      "semana": "2026-W48",
-      "sede": "Yaguaral",
-      "piso": "Piso 3",
-      "salon": "Salón de Sistemas",
-      "dia": "Lunes",
-      "horaInicio": "09:30",
-      "horaFin": "12:00",
-      "materia": "Electrónica I",
-      "asesorId": "ASE-C17C8F6A330D",
-      "nombreAsesor": "Carlos Mendoza",
-      "estadoChoque": "OK",
-      "timestamp": "2026-11-23T08:22:03.128Z"
-    },
-    {
-      "id": "HOR-184E025E",
-      "semana": "2026-W48",
-      "sede": "Yaguaral",
-      "piso": "Piso 4",
-      "salon": "Aula 2411",
-      "dia": "Lunes",
-      "horaInicio": "09:30",
-      "horaFin": "12:00",
-      "materia": "Calculo I",
-      "asesorId": "ASE-C17C8F6A330D",
-      "nombreAsesor": "Carlos Mendoza",
-      "estadoChoque": "OK",
-      "timestamp": "2026-11-23T08:30:15.092Z"
-    }
-  ],
+  "horarios": [],
   "bovedas": [
     {
       "bovedaId": "BOV-5F37E46E",
