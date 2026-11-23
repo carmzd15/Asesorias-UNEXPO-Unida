@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:35:01.963Z",
+  "generadoEn": "2026-11-23T12:36:04.376Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -55,6 +55,16 @@
     {
       "asesorId": "ASE-1DB4D4F311FA",
       "nombre": "Jhaxel Hernandes",
+      "rol": "ASESOR",
+      "esAdmin": false,
+      "fotoUrl": "",
+      "descripcion": "",
+      "contacto": "",
+      "infoAdicional": ""
+    },
+    {
+      "asesorId": "ASE-F7B7467B80BC",
+      "nombre": "Adrián Vieira",
       "rol": "ASESOR",
       "esAdmin": false,
       "fotoUrl": "",
