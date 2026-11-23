@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T22:47:01.373Z",
+  "generadoEn": "2026-11-23T22:54:18.059Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -28,9 +28,9 @@
       "rol": "ASESOR",
       "esAdmin": false,
       "fotoUrl": "",
-      "descripcion": "",
+      "descripcion": "Estudiante de Ing de Sistemas del 8vo semestre. Asesorias en Sistemas Electricos I",
       "contacto": "",
-      "infoAdicional": ""
+      "infoAdicional": "Traer las dudas a las asesorias, calculadora, ejercicios propuestos (mejor si es de sus profesores)."
     },
     {
       "asesorId": "ASE-F1986B8772B9",
