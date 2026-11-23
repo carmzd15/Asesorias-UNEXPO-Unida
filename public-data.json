@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T23:00:00.296Z",
+  "generadoEn": "2026-11-23T23:00:35.445Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -255,7 +255,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-23T22:58:32.086Z",
+      "actualizadoEn": "2026-11-23T23:00:19.452Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -287,6 +287,22 @@
           "unidadId": "",
           "temaId": "",
           "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "UNI-E8B516CF",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Unidad III - Transformada de Fourier en Tiempo Continuo/Discreto y Respuesta en Frecuencia",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T23:00:19.452Z",
+          "unidadId": "",
+          "temaId": "",
+          "orden": 3,
           "contenidoTexto": ""
         }
       ]
