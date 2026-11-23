@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T23:15:58.365Z",
+  "generadoEn": "2026-11-23T23:17:09.135Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -228,8 +228,8 @@
       "tieneClave": false,
       "limiteBytes": 524288000,
       "bytesUsados": 9370524,
-      "totalRecursos": 1,
-      "actualizadoEn": "2026-11-23T23:15:46.406Z",
+      "totalRecursos": 2,
+      "actualizadoEn": "2026-11-23T23:16:55.847Z",
       "recursos": [
         {
           "recursoId": "UNI-0A74B5E5",
@@ -276,6 +276,22 @@
           "subidoEn": "2026-11-23T23:09:42.852Z",
           "unidadId": "UNI-0A74B5E5",
           "temaId": "TEM-06579166",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-97F563C7",
+          "bovedaId": "BOV-BA0D9CF7",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Youtube",
+          "titulo": "CIRCUITOS ELÉCTRICOS 1 ➤ CURSO COMPLETO DESDE CERO",
+          "descripcion": "",
+          "urlAcceso": "https://youtube.com/playlist?list=PLSIGCMsuLvBdfSG9wD8pZiXFoMJuBs1Ng&si=gf5oqsA_hyaFreZ6",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T23:16:55.847Z",
+          "unidadId": "UNI-0A74B5E5",
+          "temaId": "TEM-298B3C8C",
           "orden": 1,
           "contenidoTexto": ""
         },
