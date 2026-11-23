@@ -150,11 +150,6 @@
               Siguiente &rarr;
             </button>
 
-            <button onclick="recargarDatos()" title="Actualizar horarios desde Google" class="p-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-600 transition">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-              </svg>
-            </button>
           </div>
         </div>
 
@@ -1156,6 +1151,25 @@
 
     async function cargarSnapshotEstaticoGitHub() {
       const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 2500);
+      try {
+        const resp = await fetch(PUBLIC_DATA_URL + '?v=' + Date.now(), {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+        if (!resp.ok) return null;
+        const json = await resp.json();
+        if (!json || typeof json !== 'object') return null;
+        return json;
+      } catch (e) {
+        return null;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+      const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 1800);
       try {
         const resp = await fetch(PUBLIC_DATA_URL, {
@@ -1946,6 +1960,35 @@
     }
 
     async function abrirBovedaPublica(bovedaId, clave = '') {
+      const b = STATE.bovedas.find((x) => x.bovedaId === bovedaId);
+      if (!b) return;
+
+      if (!b.accesoPublico && !clave) {
+        document.getElementById('mcb-boveda-id').value = bovedaId;
+        document.getElementById('mcb-clave').value = '';
+        document.getElementById('mcb-subtitulo').textContent = 'Materia: ' + b.materia + ' (' + b.nombreAsesor + ')';
+        abrirModal('modal-clave-boveda');
+        return;
+      }
+
+      if (b.accesoPublico && Array.isArray(b.recursos)) {
+        mostrarDetalleBovedaPublica(b, b.recursos);
+        return;
+      }
+
+      try {
+        const res = await gasCall('obtenerRecursosBovedaPublica', bovedaId, clave);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        cerrarModal('modal-clave-boveda');
+        mostrarDetalleBovedaPublica(res.boveda, res.recursos);
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
       const b = STATE.bovedas.find((x) => x.bovedaId === bovedaId);
       if (!b) return;
 
