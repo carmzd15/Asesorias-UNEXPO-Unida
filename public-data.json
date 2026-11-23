@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:32:51.693Z",
+  "generadoEn": "2026-11-23T12:33:57.289Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -35,6 +35,16 @@
     {
       "asesorId": "ASE-F1986B8772B9",
       "nombre": "Keybert Santander",
+      "rol": "ASESOR",
+      "esAdmin": false,
+      "fotoUrl": "",
+      "descripcion": "",
+      "contacto": "",
+      "infoAdicional": ""
+    },
+    {
+      "asesorId": "ASE-A7D43651CD6A",
+      "nombre": "Mikhael Goitia",
       "rol": "ASESOR",
       "esAdmin": false,
       "fotoUrl": "",
