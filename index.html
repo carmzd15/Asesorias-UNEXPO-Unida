@@ -709,6 +709,38 @@
           <button type="button" onclick="cerrarModal('modal-admin-boveda')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700">Cancelar</button>
           <button id="btn-mab-guardar" type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-unexpo-900 text-sm font-bold">Guardar Bóveda</button>
         </div>
+
+  <!-- MODAL ASESOR: REEMPLAZAR ARCHIVO DE BÓVEDA -->
+  <div id="modal-reemplazar-recurso" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-lg font-bold text-slate-900">Reemplazar Archivo de Bóveda</h3>
+        <button onclick="cerrarModal('modal-reemplazar-recurso')" class="text-slate-400 hover:text-slate-700 text-xl leading-none">&times;</button>
+      </div>
+      <p id="mrr-subtitulo" class="text-xs text-slate-500"></p>
+      <form onsubmit="enviarReemplazoArchivoBoveda(event)" class="space-y-3">
+        <input id="mrr-boveda-id" type="hidden" />
+        <input id="mrr-recurso-id" type="hidden" />
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Título del recurso</label>
+          <input id="mrr-titulo" type="text" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción (opcional)</label>
+          <input id="mrr-descripcion" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nuevo archivo (reemplazará al anterior en Drive)</label>
+          <input id="mrr-file" type="file" required class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-unexpo-900" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="cerrarModal('modal-reemplazar-recurso')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700">Cancelar</button>
+          <button id="btn-mrr-guardar" type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-unexpo-900 text-sm font-bold">Reemplazar Archivo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
       </form>
     </div>
   </div>
@@ -749,9 +781,9 @@
       cargarDatosIniciales();
     });
 
-    async function gasCall(fnName, ...args) {
+      async function gasCall(fnName, ...args) {
       const apiUrl = String(APPS_SCRIPT_API_URL || '').trim();
-      if (!apiUrl || apiUrl === 'https://script.google.com/macros/s/AKfycby3DrX4MdKLNpkTlwaDkEaOv4yEwJBcegDZJcWOa9HMQeE95NXoj-QmIcnIN7_hONB7Vg/exec') {
+      if (!apiUrl || !/^https?:\/\//i.test(apiUrl)) {
         throw new Error('Configura APPS_SCRIPT_API_URL en index.html con la URL /exec de tu Web App en Apps Script.');
       }
 
@@ -1755,10 +1787,12 @@
           ? '<p class="text-xs text-slate-400 py-4 text-center">No hay recursos subidos en esta bóveda.</p>'
           : b.recursos.map((r) => {
               const esArch = r.tipoRecurso === 'ARCHIVO';
-              return (
-                '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50/70">' +
-                  '<div class="min-w-0">' +
-                    '<div class="flex items-center gap-2 flex-wrap">' +
+                  '<div class="flex items-center gap-2 shrink-0">' +
+                    '<a href="' + escapeHtml(r.urlAcceso) + '" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100">Abrir</a>' +
+                    '<button onclick="abrirModalReemplazarRecurso(\'' + bId + '\', \'' + escapeHtml(r.recursoId) + '\')" class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-800 hover:bg-amber-100">Reemplazar</button>' +
+                    '<button onclick="eliminarRecurso(\'' + escapeHtml(r.recursoId) + '\')" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
+                  '</div>' +
+
                       '<span class="text-[10px] font-bold px-2 py-0.5 rounded ' + (esArch ? 'bg-blue-100 text-unexpo-900' : 'bg-purple-100 text-purple-800') + '">' +
                         escapeHtml(r.tipoRecurso) + (esArch ? ' · ' + formatearTamano(r.tamanoBytes) : ' · ' + escapeHtml(r.tipoArchivoOEnlace)) +
                       '</span>' +
@@ -1941,22 +1975,87 @@
         if (!res.ok) {
           mostrarToast(res.mensaje, 'error');
           return;
+    async function eliminarRecurso(recursoId) {
+      const ok = await confirmarAccion('Eliminar Recurso', '¿Seguro deseas eliminar este recurso? Si es un archivo en Drive se moverá a la papelera y liberará su espacio en la bóveda.');
+      if (!ok) return;
+      try {
+        const res = await gasCall('eliminarRecursoBoveda', STATE.token, recursoId);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
         }
+        cerrarDetalleBovedaPublica();
+        mostrarToast(res.mensaje, 'success');
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
+    function abrirModalReemplazarRecurso(bovedaId, recursoId) {
+      const bov = STATE.misBovedas.find((b) => b.bovedaId === bovedaId);
+      const rec = bov && bov.recursos ? bov.recursos.find((r) => r.recursoId === recursoId) : null;
+      if (!bov || !rec) {
+        mostrarToast('No se encontró el recurso seleccionado.', 'error');
+        return;
+      }
+      document.getElementById('mrr-boveda-id').value = bovedaId;
+      document.getElementById('mrr-recurso-id').value = recursoId;
+      document.getElementById('mrr-subtitulo').textContent = 'Bóveda: ' + bov.materia + ' · Actual: ' + rec.titulo;
+      document.getElementById('mrr-titulo').value = rec.titulo || '';
+      document.getElementById('mrr-descripcion').value = rec.descripcion || '';
+      document.getElementById('mrr-file').value = '';
+      abrirModal('modal-reemplazar-recurso');
+    }
+
+    async function enviarReemplazoArchivoBoveda(e) {
+      e.preventDefault();
+      const bId = document.getElementById('mrr-boveda-id').value;
+      const rId = document.getElementById('mrr-recurso-id').value;
+      const fileInput = document.getElementById('mrr-file');
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        mostrarToast('Selecciona el nuevo archivo.', 'warning');
+        return;
+      }
+      if (file.size > MAX_GAS_UPLOAD_BYTES) {
+        mostrarToast(
+          'El archivo (' + formatearTamano(file.size) + ') supera el límite de transferencia web de Apps Script (~25 MB).',
+          'warning'
+        );
+        return;
+      }
+
+      setBtnLoading('btn-mrr-guardar', true);
+      try {
+        const base64Data = await leerArchivoComoBase64(file);
+        const payload = {
+          bovedaId: bId,
+          recursoId: rId,
+          titulo: document.getElementById('mrr-titulo').value.trim(),
+          descripcion: document.getElementById('mrr-descripcion').value.trim(),
+          fileName: file.name,
+          mimeType: file.type || 'application/octet-stream',
+          base64Data: base64Data
+        };
+        const res = await gasCall('reemplazarArchivoBoveda', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, res.cuotaExcedida ? 'warning' : 'error');
+          return;
+        }
+        cerrarModal('modal-reemplazar-recurso');
+        cerrarDetalleBovedaPublica();
         mostrarToast(res.mensaje, 'success');
         await cargarMisBovedas();
         await cargarDatosIniciales();
       } catch (err) {
         mostrarToast(err.message, 'error');
       } finally {
-        setBtnLoading(btnId, false, 'Agregar Enlace Externo');
+        setBtnLoading('btn-mrr-guardar', false, 'Reemplazar Archivo');
       }
     }
 
-    async function eliminarRecurso(recursoId) {
-      const ok = await confirmarAccion('Eliminar Recurso', '¿Seguro deseas eliminar este recurso? Si es un archivo en Drive también se moverá a la papelera.');
-      if (!ok) return;
-      try {
-        const res = await gasCall('eliminarRecursoBoveda', STATE.token, recursoId);
         if (!res.ok) {
           mostrarToast(res.mensaje, 'error');
           return;
