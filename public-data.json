@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:38:45.058Z",
+  "generadoEn": "2026-11-23T12:40:18.844Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -146,6 +146,19 @@
           "contenidoTexto": ""
         }
       ]
+    },
+    {
+      "bovedaId": "BOV-93C688E7",
+      "materia": "Convertidores Eléctricos",
+      "asesorId": "ASE-F1986B8772B9",
+      "nombreAsesor": "Keybert Santander",
+      "accesoPublico": true,
+      "tieneClave": false,
+      "limiteBytes": 524288000,
+      "bytesUsados": 0,
+      "totalRecursos": 0,
+      "actualizadoEn": "2026-11-23T12:40:05.746Z",
+      "recursos": []
     }
   ]
 }
