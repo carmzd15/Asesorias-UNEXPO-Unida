@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T22:57:34.712Z",
+  "generadoEn": "2026-11-23T22:58:44.654Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -240,7 +240,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-23T22:57:29.050Z",
+      "actualizadoEn": "2026-11-23T22:58:32.086Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -256,6 +256,22 @@
           "unidadId": "",
           "temaId": "",
           "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "UNI-C0C2E6D8",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Unidad II - Series de Fourier en Tiempo Continuo/Discreto",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T22:58:32.086Z",
+          "unidadId": "",
+          "temaId": "",
+          "orden": 2,
           "contenidoTexto": ""
         }
       ]
