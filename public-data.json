@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T22:54:47.665Z",
+  "generadoEn": "2026-11-23T22:57:34.712Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -28,7 +28,7 @@
       "rol": "ASESOR",
       "esAdmin": false,
       "fotoUrl": "https://drive.google.com/thumbnail?id=1GQW3XrsbtHnx2ZpjGjdmgs9uyLKzHRSK&sz=w600",
-      "descripcion": "Estudiante de Ing de Sistemas del 8vo semestre. Asesorias en Sistemas Electricos I",
+      "descripcion": "Estudiante de Ing de Sistemas del 8vo semestre. Coordinara General del movimiento y asesora de Sistemas Electricos I",
       "contacto": "",
       "infoAdicional": "Traer las dudas a las asesorias, calculadora, ejercicios propuestos (mejor si es de sus profesores)."
     },
@@ -240,8 +240,25 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-23T12:45:44.172Z",
-      "recursos": []
+      "actualizadoEn": "2026-11-23T22:57:29.050Z",
+      "recursos": [
+        {
+          "recursoId": "UNI-6D21CD10",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Unidad I - Señales, Sistemas y Convolución Continua/Discreta",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T22:57:29.050Z",
+          "unidadId": "",
+          "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        }
+      ]
     },
     {
       "bovedaId": "BOV-F97F745D",
