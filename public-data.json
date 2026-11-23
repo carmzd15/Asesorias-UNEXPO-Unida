@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:42:04.618Z",
+  "generadoEn": "2026-11-23T12:44:59.384Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -171,6 +171,19 @@
       "bytesUsados": 0,
       "totalRecursos": 0,
       "actualizadoEn": "2026-11-23T12:41:47.997Z",
+      "recursos": []
+    },
+    {
+      "bovedaId": "BOV-BA0D9CF7",
+      "materia": "Sistemas Eléctricos I",
+      "asesorId": "ASE-3C0D71A17962",
+      "nombreAsesor": "Andreina Marquez",
+      "accesoPublico": true,
+      "tieneClave": false,
+      "limiteBytes": 524288000,
+      "bytesUsados": 0,
+      "totalRecursos": 0,
+      "actualizadoEn": "2026-11-23T12:44:45.108Z",
       "recursos": []
     }
   ]
