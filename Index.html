@@ -749,7 +749,7 @@
 
     async function gasCall(fnName, ...args) {
       const apiUrl = String(APPS_SCRIPT_API_URL || '').trim();
-      if (!apiUrl || apiUrl === 'PEGA_AQUI_TU_URL_EXEC_DE_APPS_SCRIPT') {
+      if (!apiUrl || apiUrl === 'https://script.google.com/macros/s/AKfycby3DrX4MdKLNpkTlwaDkEaOv4yEwJBcegDZJcWOa9HMQeE95NXoj-QmIcnIN7_hONB7Vg/exec') {
         throw new Error('Configura APPS_SCRIPT_API_URL en index.html con la URL /exec de tu Web App en Apps Script.');
       }
 
