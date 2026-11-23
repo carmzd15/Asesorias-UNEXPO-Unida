@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T23:02:27.382Z",
+  "generadoEn": "2026-11-23T23:06:40.306Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -272,7 +272,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-23T23:01:27.260Z",
+      "actualizadoEn": "2026-11-23T23:06:27.508Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -336,6 +336,22 @@
           "unidadId": "",
           "temaId": "",
           "orden": 4,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "UNI-5A819CD0",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Bibliografía General",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T23:06:27.508Z",
+          "unidadId": "",
+          "temaId": "",
+          "orden": 5,
           "contenidoTexto": ""
         }
       ]
