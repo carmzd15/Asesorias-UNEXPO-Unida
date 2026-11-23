@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T22:54:18.059Z",
+  "generadoEn": "2026-11-23T22:54:47.665Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -27,7 +27,7 @@
       "nombre": "Andreina Marquez",
       "rol": "ASESOR",
       "esAdmin": false,
-      "fotoUrl": "",
+      "fotoUrl": "https://drive.google.com/thumbnail?id=1GQW3XrsbtHnx2ZpjGjdmgs9uyLKzHRSK&sz=w600",
       "descripcion": "Estudiante de Ing de Sistemas del 8vo semestre. Asesorias en Sistemas Electricos I",
       "contacto": "",
       "infoAdicional": "Traer las dudas a las asesorias, calculadora, ejercicios propuestos (mejor si es de sus profesores)."
