@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:44:59.384Z",
+  "generadoEn": "2026-11-23T12:45:23.648Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -184,6 +184,19 @@
       "bytesUsados": 0,
       "totalRecursos": 0,
       "actualizadoEn": "2026-11-23T12:44:45.108Z",
+      "recursos": []
+    },
+    {
+      "bovedaId": "BOV-53F7B368",
+      "materia": "Sistemas de Control I",
+      "asesorId": "ASE-C4C2D22C3750",
+      "nombreAsesor": "Luis Guerra",
+      "accesoPublico": true,
+      "tieneClave": false,
+      "limiteBytes": 524288000,
+      "bytesUsados": 0,
+      "totalRecursos": 0,
+      "actualizadoEn": "2026-11-23T12:45:08.823Z",
       "recursos": []
     }
   ]
