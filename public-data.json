@@ -1,8 +1,122 @@
 {
-  "generadoEn": "2026-11-23T00:00:00.000Z",
-  "semanaActual": "",
-  "asesores": [],
-  "horarios": [],
-  "bovedas": []
+  "generadoEn": "2026-11-23T10:16:47.483Z",
+  "semanaActual": "2026-W48",
+  "asesores": [
+    {
+      "asesorId": "ASE-A796C0521F84",
+      "nombre": "Administrador",
+      "rol": "ADMIN",
+      "esAdmin": true,
+      "fotoUrl": "https://drive.google.com/thumbnail?id=1LcwIgYfQyy70ejq3LC-3tmfYQnuRONGl&sz=w600",
+      "descripcion": "Administrador principal del sistema de asesorías académicas UNEXPO.",
+      "contacto": "",
+      "infoAdicional": "Cuenta administrativa"
+    },
+    {
+      "asesorId": "ASE-C17C8F6A330D",
+      "nombre": "Carlos Mendoza",
+      "rol": "ASESOR",
+      "esAdmin": false,
+      "fotoUrl": "https://drive.google.com/thumbnail?id=1jJKPjRDGV_CTPCRTOOHqlxGobVBWn4Qx&sz=w600",
+      "descripcion": "Estudiante de Ingeniería de Sistemas, 7mo Semestre, Coordinador de Asesorías y Asesor de Electrónica I",
+      "contacto": "0412-6136462",
+      "infoAdicional": ""
+    }
+  ],
+  "horarios": [
+    {
+      "id": "HOR-226D74CE",
+      "semana": "2026-W48",
+      "sede": "Yaguaral",
+      "piso": "Piso 3",
+      "salon": "Salón de Sistemas",
+      "dia": "Lunes",
+      "horaInicio": "09:30",
+      "horaFin": "12:00",
+      "materia": "Electrónica I",
+      "asesorId": "ASE-C17C8F6A330D",
+      "nombreAsesor": "Carlos Mendoza",
+      "estadoChoque": "OK",
+      "timestamp": "2026-11-23T08:22:03.128Z"
+    },
+    {
+      "id": "HOR-184E025E",
+      "semana": "2026-W48",
+      "sede": "Yaguaral",
+      "piso": "Piso 4",
+      "salon": "Aula 2411",
+      "dia": "Lunes",
+      "horaInicio": "09:30",
+      "horaFin": "12:00",
+      "materia": "Calculo I",
+      "asesorId": "ASE-C17C8F6A330D",
+      "nombreAsesor": "Carlos Mendoza",
+      "estadoChoque": "OK",
+      "timestamp": "2026-11-23T08:30:15.092Z"
+    }
+  ],
+  "bovedas": [
+    {
+      "bovedaId": "BOV-5F37E46E",
+      "materia": "Electrónica I",
+      "asesorId": "ASE-C17C8F6A330D",
+      "nombreAsesor": "Carlos Mendoza",
+      "accesoPublico": true,
+      "tieneClave": true,
+      "limiteBytes": 524288000,
+      "bytesUsados": 0,
+      "totalRecursos": 0,
+      "actualizadoEn": "2026-11-23T09:50:01.796Z",
+      "recursos": [
+        {
+          "recursoId": "UNI-B6B7EB80",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Unidad I - Diodos",
+          "descripcion": "Material referente a la Primera Unidad - Semiconductores\nDiodos Rectificadores y Diodo Zener",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T09:20:35.928Z",
+          "unidadId": "",
+          "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-B282931A",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Diodos Rectificadores",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T09:22:44.071Z",
+          "unidadId": "UNI-B6B7EB80",
+          "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "UNI-8B36B864",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Unidad II",
+          "descripcion": "Transistores",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T09:49:43.846Z",
+          "unidadId": "",
+          "temaId": "",
+          "orden": 2,
+          "contenidoTexto": ""
+        }
+      ]
+    }
+  ]
 }
-
