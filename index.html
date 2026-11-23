@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNEXPO | Asesorías Académicas y Bóveda Virtual</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f2a57'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='34' fill='%23fbbf24'%3EU%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            unexpo: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              600: '#1d4ed8',
+              800: '#1e3a8a',
+              900: '#0f2a57'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+    }
+    .modal-backdrop {
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(3px);
+    }
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #ffffff;
+      width: 18px;
+      height: 18px;
+      animation: spin 0.7s linear infinite;
+    }
+    .spinner-dark {
+      border: 3px solid rgba(15, 42, 87, 0.15);
+      border-radius: 50%;
+      border-top-color: #0f2a57;
+      width: 28px;
+      height: 28px;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+  <!-- NAVBAR PRINCIPAL -->
+  <header class="bg-unexpo-900 text-white shadow-lg sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-center justify-between py-3 gap-3">
+        <!-- Logo y Título (sin peticiones rotas) -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="cambiarVista('horarios')">
+          <div class="w-10 h-10 rounded-xl bg-amber-400 text-unexpo-900 font-extrabold text-lg flex items-center justify-center shadow select-none">
+            U
+          </div>
+          <div>
+            <h1 class="font-bold text-base sm:text-lg leading-tight">UNEXPO Asesorías</h1>
+            <p class="text-xs text-blue-200 hidden sm:block">Horarios Estudiantiles y Bóveda Virtual</p>
+          </div>
+        </div>
+
+        <!-- Navegación -->
+        <nav class="flex flex-wrap items-center gap-1 sm:gap-2 order-3 lg:order-2 w-full lg:w-auto justify-center border-t border-blue-800/60 pt-2 lg:border-t-0 lg:pt-0">
+          <button id="nav-horarios" onclick="cambiarVista('horarios')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium transition">
+            Horarios
+          </button>
+          <button id="nav-asesores" onclick="cambiarVista('asesores')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium transition">
+            Asesores
+          </button>
+          <button id="nav-bovedas" onclick="cambiarVista('bovedas')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium transition">
+            Bóveda Virtual
+          </button>
+          <button id="nav-panel" onclick="irAPanelAsesor()" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium transition hidden">
+            Panel Asesor
+          </button>
+          <button id="nav-admin" onclick="cambiarVista('admin')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium transition hidden bg-amber-500/20 text-amber-200">
+            Administración
+          </button>
+        </nav>
+
+        <!-- Área de Sesión -->
+        <div class="flex items-center gap-2 order-2 lg:order-3">
+          <div id="user-badge" class="hidden items-center gap-2 bg-blue-800/70 px-3 py-1.5 rounded-full text-xs">
+            <span id="user-badge-name" class="font-semibold max-w-[130px] truncate"></span>
+            <span id="user-badge-role" class="px-1.5 py-0.5 rounded bg-amber-400 text-unexpo-900 font-bold text-[10px]"></span>
+          </div>
+          <button id="btn-login-open" onclick="abrirModalLogin()" class="bg-amber-500 hover:bg-amber-400 text-unexpo-900 font-semibold text-xs sm:text-sm px-3.5 py-1.5 rounded-lg shadow transition">
+            Acceso Asesores
+          </button>
+          <button id="btn-logout" onclick="cerrarSesion()" class="hidden bg-red-500/90 hover:bg-red-600 text-white font-medium text-xs sm:text-sm px-3 py-1.5 rounded-lg transition">
+            Salir
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- LOADER BREVE SOLO SI NO HAY CACHÉ LOCAL -->
+    <div id="global-loader" class="flex flex-col items-center justify-center py-12 gap-3">
+      <div class="spinner-dark"></div>
+      <p class="text-sm text-slate-500 font-medium">Cargando horarios públicos...</p>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- VISTA 1: HORARIOS PÚBLICOS                                          -->
+    <!-- =================================================================== -->
+    <section id="vista-horarios" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-unexpo-900">
+                Consulta Pública · Lunes a Viernes
+              </span>
+              <span id="sync-status-badge" class="hidden"></span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Horarios Semanales de Asesorías</h2>
+            <p id="lbl-rango-semana" class="text-sm text-slate-500 mt-0.5"></p>
+          </div>
+
+          <!-- Navegación de Semanas -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="moverSemana(-1)" class="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-medium text-slate-700 transition">
+              &larr; Anterior
+            </button>
+            <button onclick="irSemanaActual()" class="px-3 py-2 rounded-lg bg-unexpo-50 hover:bg-blue-100 text-unexpo-900 text-sm font-semibold border border-blue-200 transition">
+              Semana Actual
+            </button>
+            <button onclick="moverSemana(1)" class="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-medium text-slate-700 transition">
+              Siguiente &rarr;
+            </button>
+            <button onclick="recargarDatos()" title="Actualizar horarios desde Google" class="p-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-600 transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 pt-4 border-t border-slate-100">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Sede</label>
+            <select id="filtro-sede" onchange="renderHorariosPublicos()" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+              <option value="Todas">Todas las sedes</option>
+              <option value="Km 0">Km 0</option>
+              <option value="Yaguaral">Yaguaral</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Día de la semana</label>
+            <select id="filtro-dia" onchange="renderHorariosPublicos()" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+              <option value="Todos">Todos (Lunes a Viernes)</option>
+              <option value="Lunes">Lunes</option>
+              <option value="Martes">Martes</option>
+              <option value="Miércoles">Miércoles</option>
+              <option value="Jueves">Jueves</option>
+              <option value="Viernes">Viernes</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Buscar materia o asesor</label>
+            <input id="filtro-texto-horario" type="text" oninput="renderHorariosPublicos()" placeholder="Ej: Cálculo, Física, Juan..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Grilla de Lunes a Viernes -->
+      <div id="contenedor-grilla-horarios" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VISTA 2: DIRECTORIO DE ASESORES                                     -->
+    <!-- =================================================================== -->
+    <section id="vista-asesores" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Equipo de Asesores Académicos</h2>
+          <p class="text-sm text-slate-500">Haz clic en cualquier asesor para consultar su perfil técnico, contacto y materias.</p>
+        </div>
+        <input id="filtro-asesores" type="text" oninput="renderDirectorioAsesores()" placeholder="Buscar asesor..." class="sm:w-72 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+      </div>
+      <div id="grid-asesores" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VISTA 3: EXPLORADOR PÚBLICO DE BÓVEDA VIRTUAL                      -->
+    <!-- =================================================================== -->
+    <section id="vista-bovedas" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 mb-1">
+            Material de Apoyo por Materia · Google Drive
+          </span>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Explorador de Bóveda Virtual</h2>
+          <p class="text-sm text-slate-500">Guías, presentaciones, libros digitales y enlaces recomendados por los asesores.</p>
+        </div>
+        <input id="filtro-bovedas-publicas" type="text" oninput="renderExploradorBovedas()" placeholder="Buscar por materia o asesor..." class="sm:w-72 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+      </div>
+
+      <div id="grid-bovedas-publicas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+      <!-- Detalle de Bóveda Abierta -->
+      <div id="detalle-boveda-publica" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+          <div>
+            <h3 id="pub-bov-titulo" class="text-xl font-bold text-unexpo-900"></h3>
+            <p id="pub-bov-asesor" class="text-sm text-slate-500"></p>
+          </div>
+          <button onclick="cerrarDetalleBovedaPublica()" class="px-3 py-1.5 rounded-lg border border-slate-300 text-sm font-medium text-slate-600 hover:bg-slate-50">
+            Cerrar vista
+          </button>
+        </div>
+        <div id="pub-bov-recursos" class="space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VISTA 4: PANEL DE ASESOR (AUTENTICADO)                              -->
+    <!-- =================================================================== -->
+    <section id="vista-panel" class="hidden space-y-6">
+      <!-- Sub-tabs del Panel de Asesor -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900">Panel del Asesor</h2>
+          <p class="text-xs text-slate-500">Gestiona tus horarios semanales, perfil técnico y bóvedas asignadas en Drive.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button id="tab-asesor-horarios" onclick="cambiarTabAsesor('horarios')" class="tab-asesor-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+            Mis Horarios
+          </button>
+          <button id="tab-asesor-perfil" onclick="cambiarTabAsesor('perfil')" class="tab-asesor-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+            Mi Perfil Técnico
+          </button>
+          <button id="tab-asesor-bovedas" onclick="cambiarTabAsesor('bovedas')" class="tab-asesor-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+            Mis Bóvedas Virtuales
+          </button>
+        </div>
+      </div>
+
+      <!-- SUBTAB A: MIS HORARIOS -->
+      <div id="subvista-asesor-horarios" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Formulario Crear Horario -->
+        <div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4 h-fit">
+          <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">Publicar Nuevo Bloque de Asesoría</h3>
+          <form id="form-nuevo-horario" onsubmit="enviarFormularioHorario(event)" class="space-y-3.5">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Semana</label>
+              <input id="hor-semana" type="week" onchange="actualizarEtiquetaSemanaForm()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+              <p id="hor-semana-legible" class="text-[11px] text-slate-400 mt-1"></p>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Sede</label>
+                <select id="hor-sede" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+                  <option value="Km 0">Km 0</option>
+                  <option value="Yaguaral">Yaguaral</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Piso</label>
+                <select id="hor-piso" onchange="aplicarReglaPiso3()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+                  <option value="Planta Baja">Planta Baja</option>
+                  <option value="Piso 1">Piso 1</option>
+                  <option value="Piso 2">Piso 2</option>
+                  <option value="Piso 3">Piso 3</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">
+                Salón / Espacio
+                <span id="badge-piso3" class="hidden ml-1 px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 rounded font-bold">Bloqueado por Piso 3</span>
+              </label>
+              <input id="hor-salon" type="text" required placeholder="Ej: Aula 12, Cubículo B, Biblioteca..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Día</label>
+                <select id="hor-dia" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+                  <option value="Lunes">Lunes</option>
+                  <option value="Martes">Martes</option>
+                  <option value="Miércoles">Miércoles</option>
+                  <option value="Jueves">Jueves</option>
+                  <option value="Viernes">Viernes</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Hora Inicio</label>
+                <input id="hor-inicio" type="time" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Hora Fin</label>
+                <input id="hor-fin" type="time" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Materia / Asignatura</label>
+              <input id="hor-materia" type="text" required placeholder="Ej: Cálculo II, Física I, Programación..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+            </div>
+            <button id="btn-guardar-horario" type="submit" class="w-full bg-unexpo-900 hover:bg-unexpo-800 text-white font-semibold py-2.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
+              Guardar Horario
+            </button>
+          </form>
+        </div>
+
+        <!-- Listado de Mis Horarios -->
+        <div class="lg:col-span-7 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <h3 class="text-base font-bold text-slate-900">Mis Horarios Registrados</h3>
+            <span id="contador-mis-horarios" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">0 registros</span>
+          </div>
+          <div id="lista-mis-horarios" class="space-y-3 max-h-[560px] overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+
+      <!-- SUBTAB B: MI PERFIL TÉCNICO -->
+      <div id="subvista-asesor-perfil" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-6 max-w-3xl mx-auto">
+        <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 mb-5">Editar Mi Perfil Técnico</h3>
+        <form onsubmit="guardarMiPerfil(event)" class="space-y-4">
+          <div class="flex flex-col sm:flex-row items-center gap-5 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <img id="perf-preview-img" src="" alt="Foto" class="w-20 h-20 rounded-full object-cover border-2 border-unexpo-900 bg-white hidden" />
+            <div id="perf-preview-initials" class="w-20 h-20 rounded-full bg-unexpo-900 text-white flex items-center justify-center font-bold text-2xl">
+              A
+            </div>
+            <div class="flex-1 w-full space-y-2">
+              <label class="block text-xs font-semibold text-slate-600">Subir foto a Drive o pegar URL de imagen</label>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input id="perf-foto-file" type="file" accept="image/*" onchange="previsualizarFotoPerfil(this)" class="text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-unexpo-900 hover:file:bg-blue-200" />
+              </div>
+              <input id="perf-foto-url" type="url" placeholder="https://... (opcional si subes archivo)" class="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-xs focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre completo</label>
+              <input id="perf-nombre" type="text" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Contacto opcional (WhatsApp, Telegram, Correo)</label>
+              <input id="perf-contacto" type="text" placeholder="Ej: +58 412-0000000 / @usuario" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción técnica / Especialidad</label>
+            <textarea id="perf-descripcion" rows="3" placeholder="Ej: Estudiante de Ingeniería Mecánica, 8vo semestre. Asesoría en Termodinámica, Estática y Cálculo..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Información adicional (metodología, recomendaciones, enlaces)</label>
+            <textarea id="perf-info" rows="3" placeholder="Ej: Traer calculadora científica y guía de ejercicios resueltos..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none"></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button id="btn-guardar-perfil" type="submit" class="bg-unexpo-900 hover:bg-unexpo-800 text-white font-semibold px-6 py-2.5 rounded-xl shadow transition text-sm">
+              Guardar Perfil Técnico
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- SUBTAB C: MIS BÓVEDAS VIRTUALES -->
+      <div id="subvista-asesor-bovedas" class="hidden space-y-6">
+        <div id="contenedor-mis-bovedas" class="space-y-6"></div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VISTA 5: PANEL DE ADMINISTRACIÓN (SOLO ADMIN)                       -->
+    <!-- =================================================================== -->
+    <section id="vista-admin" class="hidden space-y-6">
+      <div class="bg-gradient-to-r from-unexpo-900 to-blue-800 text-white rounded-2xl p-5 shadow flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-300">Panel Exclusivo de Coordinación</span>
+            <span id="admin-mail-quota" class="hidden text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/15 text-blue-100"></span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold">Administración de Asesores y Bóvedas</h2>
+          <p class="text-xs sm:text-sm text-blue-100">Registra asesores y asigna manualmente las bóvedas/materias (500 MB cada una en Drive).</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="btn-export-snapshot" onclick="descargarSnapshotPublico()" class="bg-amber-400 hover:bg-amber-300 text-unexpo-900 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
+            Exportar public-data.json
+          </button>
+          <button onclick="cargarDatosAdmin()" class="bg-white/15 hover:bg-white/25 text-white px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
+            Recargar Panel
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- GESTIÓN DE ASESORES -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <h3 class="text-base font-bold text-slate-900">Asesores Registrados</h3>
+            <button onclick="abrirModalAdminAsesor()" class="bg-unexpo-900 hover:bg-unexpo-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
+              + Nuevo Asesor
+            </button>
+          </div>
+          <div id="admin-lista-asesores" class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- GESTIÓN DE BÓVEDAS / MATERIAS -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <h3 class="text-base font-bold text-slate-900">Bóvedas Virtuales por Materia</h3>
+            <button onclick="abrirModalAdminBoveda()" class="bg-amber-500 hover:bg-amber-400 text-unexpo-900 text-xs font-bold px-3 py-1.5 rounded-lg transition">
+              + Asignar Bóveda/Materia
+            </button>
+          </div>
+          <div id="admin-lista-bovedas" class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-4 mt-10">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+      UNEXPO · Sistema de Gestión de Asesorías Académicas Estudiantiles y Bóveda Virtual
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- MODALES Y TOASTS (CERO alert/confirm NATIVOS)                         -->
+  <!-- ===================================================================== -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- MODAL: LOGIN Y RECUPERACIÓN DE CONTRASEÑA -->
+  <div id="modal-login" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative">
+      <button onclick="cerrarModal('modal-login')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Vista Login -->
+      <div id="login-step-signin" class="space-y-4">
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-xl bg-unexpo-900 text-amber-400 font-extrabold text-xl flex items-center justify-center mx-auto mb-2">U</div>
+          <h3 class="text-xl font-bold text-slate-900">Acceso de Asesores</h3>
+          <p class="text-xs text-slate-500">Ingresa con tu correo registrado y contraseña</p>
+        </div>
+        <form onsubmit="procesarLogin(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Correo electrónico</label>
+            <input id="login-correo" type="email" required placeholder="asesor@unexpo.edu.ve" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Contraseña</label>
+            <input id="login-password" type="password" required placeholder="••••••••" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+          </div>
+          <button id="btn-submit-login" type="submit" class="w-full bg-unexpo-900 hover:bg-unexpo-800 text-white font-semibold py-2.5 rounded-xl shadow transition text-sm">
+            Iniciar Sesión
+          </button>
+        </form>
+        <div class="text-center pt-1">
+          <button type="button" onclick="mostrarPasoRecuperacion(1)" class="text-xs font-semibold text-unexpo-600 hover:underline">
+            ¿Olvidaste tu contraseña?
+          </button>
+        </div>
+      </div>
+
+      <!-- Vista Recuperación Paso 1 -->
+      <div id="login-step-forgot-1" class="hidden space-y-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Recuperar Contraseña</h3>
+          <p class="text-xs text-slate-500 mt-1">Te enviaremos un código de 6 dígitos (vigente 15 minutos) a tu correo registrado.</p>
+        </div>
+        <form onsubmit="enviarCodigoRecuperacion(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Correo registrado</label>
+            <input id="rec-correo" type="email" required placeholder="tu.correo@unexpo.edu.ve" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+          </div>
+          <button id="btn-enviar-codigo" type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-unexpo-900 font-bold py-2.5 rounded-xl transition text-sm">
+            Enviar Código de 6 Dígitos
+          </button>
+        </form>
+        <div class="flex justify-between text-xs pt-1">
+          <button type="button" onclick="mostrarPasoRecuperacion(0)" class="text-slate-500 hover:underline">&larr; Volver al login</button>
+          <button type="button" onclick="mostrarPasoRecuperacion(2)" class="text-unexpo-600 font-semibold hover:underline">Ya tengo un código</button>
+        </div>
+      </div>
+
+      <!-- Vista Recuperación Paso 2 -->
+      <div id="login-step-forgot-2" class="hidden space-y-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Restablecer Contraseña</h3>
+          <p class="text-xs text-slate-500 mt-1">Ingresa el código de 6 dígitos recibido en tu correo y define tu nueva clave.</p>
+        </div>
+        <form onsubmit="confirmarNuevaPassword(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Correo electrónico</label>
+            <input id="rec2-correo" type="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Código de 6 dígitos</label>
+            <input id="rec2-codigo" type="text" maxlength="6" pattern="[0-9]{6}" required placeholder="123456" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm tracking-widest font-mono focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Nueva contraseña (mín. 6 caracteres)</label>
+            <input id="rec2-password" type="password" minlength="6" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+          </div>
+          <button id="btn-restablecer-pass" type="submit" class="w-full bg-unexpo-900 hover:bg-unexpo-800 text-white font-semibold py-2.5 rounded-xl transition text-sm">
+            Actualizar Contraseña
+          </button>
+        </form>
+        <div class="text-center pt-1">
+          <button type="button" onclick="mostrarPasoRecuperacion(0)" class="text-xs text-slate-500 hover:underline">&larr; Volver al login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PERFIL TÉCNICO DEL ASESOR -->
+  <div id="modal-perfil-asesor" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden relative">
+      <div class="bg-unexpo-900 h-20 relative">
+        <button onclick="cerrarModal('modal-perfil-asesor')" class="absolute top-3 right-3 bg-white/20 hover:bg-white/30 text-white rounded-full p-1.5 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="px-6 pb-6 -mt-10 relative space-y-4">
+        <div class="flex items-end gap-4">
+          <div id="mp-avatar-wrap" class="w-20 h-20 rounded-2xl border-4 border-white shadow-md bg-amber-500 text-unexpo-900 flex items-center justify-center font-bold text-2xl overflow-hidden shrink-0"></div>
+          <div class="pb-1">
+            <h3 id="mp-nombre" class="text-xl font-bold text-slate-900 leading-tight"></h3>
+            <p id="mp-correo" class="text-xs text-slate-500"></p>
+          </div>
+        </div>
+        <div class="space-y-3 text-sm">
+          <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+            <span class="block text-[11px] font-bold uppercase text-slate-400 mb-1">Descripción Técnica</span>
+            <p id="mp-descripcion" class="text-slate-700 whitespace-pre-line"></p>
+          </div>
+          <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+            <span class="block text-[11px] font-bold uppercase text-slate-400 mb-1">Contacto</span>
+            <p id="mp-contacto" class="text-slate-700 font-medium"></p>
+          </div>
+          <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+            <span class="block text-[11px] font-bold uppercase text-slate-400 mb-1">Información Adicional</span>
+            <p id="mp-info" class="text-slate-700 whitespace-pre-line"></p>
+          </div>
+          <div id="mp-bovedas-wrap" class="hidden">
+            <span class="block text-[11px] font-bold uppercase text-slate-400 mb-1.5">Bóvedas Virtuales Asignadas</span>
+            <div id="mp-bovedas-list" class="flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETECCIÓN DE CHOQUE DE HORARIOS -->
+  <div id="modal-choque" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 space-y-4 border-t-4 border-amber-500">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Choque de Horario Detectado</h3>
+          <p class="text-xs text-slate-600 mt-1">
+            Ya existe(n) asesoría(s) registrada(s) con prioridad en la misma ubicación y rango horario:
+          </p>
+        </div>
+      </div>
+
+      <div id="lista-conflictos-modal" class="space-y-2 max-h-48 overflow-y-auto"></div>
+
+      <p class="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-200">
+        Si envías el horario de todas formas, quedará marcado visualmente como <strong>CONFLICTO</strong> y se enviará una alerta automática por correo al Administrador para coordinar en el grupo.
+      </p>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="cerrarModal('modal-choque')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50">
+          Cancelar y cambiar hora
+        </button>
+        <button id="btn-forzar-choque" onclick="confirmarEnvioConChoque()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-unexpo-900 text-sm font-bold shadow">
+          Enviar de todas formas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONTRASEÑA DE BÓVEDA PROTEGIDA -->
+  <div id="modal-clave-boveda" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-slate-900">Bóveda Protegida</h3>
+        <button onclick="cerrarModal('modal-clave-boveda')" class="text-slate-400 hover:text-slate-700">&times;</button>
+      </div>
+      <p id="mcb-subtitulo" class="text-xs text-slate-500"></p>
+      <form onsubmit="desbloquearBovedaPublica(event)" class="space-y-3">
+        <input id="mcb-boveda-id" type="hidden" />
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Contraseña de acceso</label>
+          <input id="mcb-clave" type="password" required placeholder="Ingresa la clave de la bóveda" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <button id="btn-desbloquear-boveda" type="submit" class="w-full bg-unexpo-900 hover:bg-unexpo-800 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+          Desbloquear Bóveda
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRMACIÓN PERSONALIZADA -->
+  <div id="modal-confirm" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+      <h3 id="mc-titulo" class="text-lg font-bold text-slate-900">Confirmar acción</h3>
+      <p id="mc-mensaje" class="text-sm text-slate-600"></p>
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="mc-cancelar" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50">
+          Cancelar
+        </button>
+        <button id="mc-aceptar" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold shadow">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ADMIN: CREAR/EDITAR ASESOR -->
+  <div id="modal-admin-asesor" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 space-y-4 my-8">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 id="maa-titulo" class="text-lg font-bold text-slate-900">Registrar Asesor</h3>
+        <button onclick="cerrarModal('modal-admin-asesor')" class="text-slate-400 hover:text-slate-700 text-xl leading-none">&times;</button>
+      </div>
+      <form onsubmit="guardarAdminAsesor(event)" class="space-y-3">
+        <input id="maa-modo" type="hidden" value="CREAR" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Correo</label>
+            <input id="maa-correo" type="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Rol</label>
+            <select id="maa-rol" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+              <option value="ASESOR">ASESOR</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre completo</label>
+          <input id="maa-nombre" type="text" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label id="maa-pass-label" class="block text-xs font-semibold text-slate-600 mb-1">Contraseña inicial (mín. 6 caracteres)</label>
+          <input id="maa-password" type="password" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Contacto (opcional)</label>
+          <input id="maa-contacto" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción (opcional)</label>
+          <textarea id="maa-descripcion" rows="2" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="cerrarModal('modal-admin-asesor')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700">Cancelar</button>
+          <button id="btn-maa-guardar" type="submit" class="px-5 py-2 rounded-xl bg-unexpo-900 hover:bg-unexpo-800 text-white text-sm font-semibold">Guardar Asesor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL ADMIN: CREAR/ASIGNAR BÓVEDA -->
+  <div id="modal-admin-boveda" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 id="mab-titulo" class="text-lg font-bold text-slate-900">Asignar Bóveda / Materia</h3>
+        <button onclick="cerrarModal('modal-admin-boveda')" class="text-slate-400 hover:text-slate-700 text-xl leading-none">&times;</button>
+      </div>
+      <form onsubmit="guardarAdminBoveda(event)" class="space-y-3">
+        <input id="mab-id" type="hidden" />
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre de la Materia</label>
+          <input id="mab-materia" type="text" required placeholder="Ej: Álgebra Lineal" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Asesor Responsable</label>
+          <select id="mab-asesor" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Acceso Inicial</label>
+            <select id="mab-publico" onchange="toggleCampoClaveAdminBoveda()" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white">
+              <option value="true">Pública</option>
+              <option value="false">Protegida</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Límite (Bytes)</label>
+            <input id="mab-limite" type="number" value="524288000" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-slate-50" />
+          </div>
+        </div>
+        <div id="mab-clave-wrap" class="hidden">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Contraseña de Bóveda</label>
+          <input id="mab-clave" type="text" placeholder="Define clave (o deja vacío al editar si no cambia)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="cerrarModal('modal-admin-boveda')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700">Cancelar</button>
+          <button id="btn-mab-guardar" type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-unexpo-900 text-sm font-bold">Guardar Bóveda</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL ASESOR: REEMPLAZAR ARCHIVO DE BÓVEDA -->
+  <div id="modal-reemplazar-recurso" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-lg font-bold text-slate-900">Reemplazar Archivo de Bóveda</h3>
+        <button onclick="cerrarModal('modal-reemplazar-recurso')" class="text-slate-400 hover:text-slate-700 text-xl leading-none">&times;</button>
+      </div>
+      <p id="mrr-subtitulo" class="text-xs text-slate-500"></p>
+      <form onsubmit="enviarReemplazoArchivoBoveda(event)" class="space-y-3">
+        <input id="mrr-boveda-id" type="hidden" />
+        <input id="mrr-recurso-id" type="hidden" />
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Título del recurso</label>
+          <input id="mrr-titulo" type="text" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción (opcional)</label>
+          <input id="mrr-descripcion" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nuevo archivo (reemplazará al anterior en Drive)</label>
+          <input id="mrr-file" type="file" required class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-unexpo-900" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="cerrarModal('modal-reemplazar-recurso')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700">Cancelar</button>
+          <button id="btn-mrr-guardar" type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-unexpo-900 text-sm font-bold">Reemplazar Archivo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- LÓGICA DE CLIENTE (ARQUITECTURA HÍBRIDA: GITHUB + GOOGLE APPS SCRIPT) -->
+  <!-- ===================================================================== -->
+  <script>
+    // URL /exec de la Web App pública en Google Apps Script (sin secretos ni credenciales)
+    const APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycby3DrX4MdKLNpkTlwaDkEaOv4yEwJBcegDZJcWOa9HMQeE95NXoj-QmIcnIN7_hONB7Vg/exec';
+    const PUBLIC_DATA_URL = './public-data.json';
+
+    const STORAGE_TOKEN_KEY = 'unexpo_asesorias_token';
+    const STORAGE_PUBLIC_CACHE_KEY = 'unexpo_public_snapshot_v1';
+    const PUBLIC_SYNC_INTERVAL_MS = 5 * 60 * 1000;
+    const DIAS_SEMANA = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+    const MAX_GAS_UPLOAD_BYTES = 25 * 1024 * 1024; // ~25 MB límite práctico por transferencia web GAS
+
+    const STATE = {
+      vistaActual: 'horarios',
+      tabAsesor: 'horarios',
+      token: localStorage.getItem(STORAGE_TOKEN_KEY) || '',
+      usuario: null,
+      semanaActual: '',
+      semanaVista: '',
+      asesores: [],
+      horarios: [],
+      bovedas: [],
+      misBovedas: [],
+      adminAsesores: [],
+      adminBovedas: [],
+      horarioPendienteChoque: null,
+      fotoPerfilBase64: null,
+      ultimoSnapshotGenerado: '',
+      sincronizando: false
+    };
+
+    // -----------------------------------------------------------------------
+    // INICIALIZACIÓN HÍBRIDA NO BLOQUEANTE
+    // -----------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      inicializarEventosGlobales();
+      inicializarAplicacion();
+    });
+
+    function inicializarEventosGlobales() {
+      // Cerrar modales con Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const cancelConfirm = document.getElementById('mc-cancelar');
+        const modalConfirm = document.getElementById('modal-confirm');
+        if (modalConfirm && !modalConfirm.classList.contains('hidden') && cancelConfirm) {
+          cancelConfirm.click();
+          return;
+        }
+        ['modal-login', 'modal-perfil-asesor', 'modal-choque', 'modal-clave-boveda', 'modal-admin-asesor', 'modal-admin-boveda', 'modal-reemplazar-recurso'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el && !el.classList.contains('hidden')) cerrarModal(id);
+        });
+      });
+
+      // Delegación segura de eventos para elementos generados dinámicamente
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-action]');
+        if (!trigger) return;
+        const act = trigger.dataset.action;
+        const id = trigger.dataset.id || '';
+        const extra = trigger.dataset.extra || '';
+
+        if (act === 'ver-perfil') {
+          abrirPerfilAsesor(id);
+        } else if (act === 'ir-boveda') {
+          cerrarModal('modal-perfil-asesor');
+          irABovedaEspecifica(id);
+        } else if (act === 'abrir-boveda') {
+          abrirBovedaPublica(id);
+        } else if (act === 'eliminar-horario') {
+          eliminarMiHorario(id);
+        } else if (act === 'guardar-privacidad') {
+          guardarPrivacidadBoveda(id);
+        } else if (act === 'reemplazar-recurso') {
+          abrirModalReemplazarRecurso(extra, id);
+        } else if (act === 'eliminar-recurso') {
+          eliminarRecurso(id);
+        } else if (act === 'admin-editar-asesor') {
+          abrirModalAdminAsesor(id);
+        } else if (act === 'admin-eliminar-asesor') {
+          eliminarAsesorAdmin(id);
+        } else if (act === 'admin-editar-boveda') {
+          abrirModalAdminBoveda(id);
+        } else if (act === 'admin-eliminar-boveda') {
+          eliminarBovedaAdmin(id);
+        }
+      });
+    }
+
+    function actualizarEstadoSyncBadge(texto, estilo = 'neutral') {
+      const el = document.getElementById('sync-status-badge');
+      if (!el) return;
+      const estilos = {
+        ok: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        sync: 'bg-blue-50 text-unexpo-900 border-blue-200',
+        warn: 'bg-amber-50 text-amber-800 border-amber-200',
+        neutral: 'bg-slate-100 text-slate-600 border-slate-200'
+      };
+      el.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ' + (estilos[estilo] || estilos.neutral);
+      el.textContent = texto;
+      el.classList.remove('hidden');
+    }
+
+    function leerCachePublicoLocal() {
+      try {
+        const raw = localStorage.getItem(STORAGE_PUBLIC_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.horarios)) return null;
+        return parsed;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function guardarCachePublicoLocal(data, syncedAtMs) {
+      try {
+        const payload = {
+          generadoEn: data.generadoEn || new Date().toISOString(),
+          semanaActual: data.semanaActual || '',
+          syncedAt: syncedAtMs || Date.now(),
+          asesores: data.asesores || [],
+          horarios: data.horarios || [],
+          bovedas: data.bovedas || []
+        };
+        localStorage.setItem(STORAGE_PUBLIC_CACHE_KEY, JSON.stringify(payload));
+      } catch (e) {
+        // Ignorar si almacenamiento local está lleno o restringido
+      }
+    }
+
+    function aplicarDatosPublicosAlEstado(data) {
+      if (!data) return;
+      STATE.asesores = Array.isArray(data.asesores) ? data.asesores : [];
+      STATE.horarios = Array.isArray(data.horarios) ? data.horarios : [];
+      STATE.bovedas = Array.isArray(data.bovedas) ? data.bovedas : [];
+      if (data.generadoEn) {
+        STATE.ultimoSnapshotGenerado = data.generadoEn;
+      }
+      if (data.semanaActual) {
+        STATE.semanaActual = data.semanaActual;
+        if (!STATE.semanaVista) {
+          STATE.semanaVista = data.semanaActual;
+        }
+      }
+    }
+
+    async function cargarSnapshotEstaticoGitHub() {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 1800);
+      try {
+        const resp = await fetch(PUBLIC_DATA_URL, {
+          method: 'GET',
+          cache: 'no-cache',
+          signal: controller.signal
+        });
+        if (!resp.ok) return null;
+        const json = await resp.json();
+        if (!json || typeof json !== 'object') return null;
+        return json;
+      } catch (e) {
+        return null;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    function renderVistaPublicaActual() {
+      if (STATE.vistaActual === 'horarios') renderHorariosPublicos();
+      if (STATE.vistaActual === 'asesores') renderDirectorioAsesores();
+      if (STATE.vistaActual === 'bovedas') renderExploradorBovedas();
+      if (STATE.vistaActual === 'panel' && STATE.tabAsesor === 'horarios') renderMisHorarios();
+    }
+
+    async function inicializarAplicacion() {
+      const semanaLocal = dateASemanaISO(new Date());
+      STATE.semanaActual = semanaLocal;
+      if (!STATE.semanaVista) {
+        STATE.semanaVista = semanaLocal;
+      }
+
+      const loader = document.getElementById('global-loader');
+      const cacheLocal = leerCachePublicoLocal();
+      let uiMostrada = false;
+
+      // 1. Si existe caché local, pintar inmediatamente (0 ms de bloqueo)
+      if (cacheLocal) {
+        aplicarDatosPublicosAlEstado(cacheLocal);
+        if (loader) loader.classList.add('hidden');
+        actualizarBarraSesion();
+        inicializarFormularioHorario();
+        cambiarVista(STATE.vistaActual);
+        actualizarEstadoSyncBadge('Lectura rápida · Caché local', 'neutral');
+        uiMostrada = true;
+      }
+
+      // 2. Descargar snapshot estático de GitHub Pages (no bloquea si ya había caché)
+      const snapshotEstatico = await cargarSnapshotEstaticoGitHub();
+      let tieneFuentePublica = Boolean(cacheLocal);
+
+      if (snapshotEstatico) {
+        const tsStatic = Date.parse(snapshotEstatico.generadoEn || '') || 0;
+        const tsCache = cacheLocal ? (Date.parse(cacheLocal.generadoEn || '') || cacheLocal.syncedAt || 0) : 0;
+        if (!cacheLocal || tsStatic >= tsCache) {
+          aplicarDatosPublicosAlEstado(snapshotEstatico);
+          guardarCachePublicoLocal(snapshotEstatico, cacheLocal ? (cacheLocal.syncedAt || 0) : 0);
+          if (uiMostrada) renderVistaPublicaActual();
+        }
+        tieneFuentePublica = true;
+      }
+
+      if (!uiMostrada) {
+        if (loader) loader.classList.add('hidden');
+        actualizarBarraSesion();
+        inicializarFormularioHorario();
+        cambiarVista(STATE.vistaActual);
+      }
+
+      if (tieneFuentePublica) {
+        actualizarEstadoSyncBadge('Lectura rápida · Snapshot GitHub', 'neutral');
+      }
+
+      // 3. Sincronización silenciosa en segundo plano con Google Apps Script cuando corresponde
+      const cacheExpirada = !cacheLocal || !cacheLocal.syncedAt || (Date.now() - cacheLocal.syncedAt > PUBLIC_SYNC_INTERVAL_MS);
+      const snapshotVacio = STATE.asesores.length === 0 && STATE.horarios.length === 0 && STATE.bovedas.length === 0;
+
+      if (STATE.token || cacheExpirada || snapshotVacio) {
+        sincronizarDesdeBackend({ silencioso: true });
+      }
+    }
+
+    async function sincronizarDesdeBackend(opciones = {}) {
+      if (STATE.sincronizando && !opciones.forzar) return false;
+      STATE.sincronizando = true;
+      if (!opciones.silencioso) {
+        actualizarEstadoSyncBadge('Sincronizando con Google...', 'sync');
+      } else if (STATE.asesores.length === 0 && STATE.horarios.length === 0) {
+        actualizarEstadoSyncBadge('Actualizando datos en segundo plano...', 'sync');
+      }
+
+      try {
+        // Si hay token activo, enviamos por POST para no exponer el token en query params
+        const res = STATE.token
+          ? await gasCall('getDatosPublicos', STATE.token)
+          : await gasCall('getPublicSnapshot');
+
+        if (!res || !res.ok) {
+          throw new Error((res && res.mensaje) || 'Error al cargar datos del servidor.');
+        }
+
+        aplicarDatosPublicosAlEstado(res);
+        guardarCachePublicoLocal(res, Date.now());
+
+        if (STATE.token) {
+          if (res.usuarioActual) {
+            STATE.usuario = res.usuarioActual;
+          } else {
+            STATE.usuario = null;
+            STATE.token = '';
+            localStorage.removeItem(STORAGE_TOKEN_KEY);
+          }
+        } else {
+          STATE.usuario = null;
+        }
+
+        actualizarBarraSesion();
+        inicializarFormularioHorario();
+        renderVistaPublicaActual();
+
+        actualizarEstadoSyncBadge('Sincronizado en vivo · Google Sheets', 'ok');
+        return true;
+      } catch (err) {
+        if (!opciones.silencioso) {
+          mostrarToast('No se pudo sincronizar en vivo: ' + err.message, 'warning');
+        }
+        actualizarEstadoSyncBadge('Modo offline / Snapshot estático', 'warn');
+        return false;
+      } finally {
+        STATE.sincronizando = false;
+      }
+    }
+
+    async function cargarDatosIniciales() {
+      await sincronizarDesdeBackend({ silencioso: true, forzar: true });
+    }
+
+    async function recargarDatos() {
+      mostrarToast('Sincronizando con Google Sheets...', 'info');
+      const ok = await sincronizarDesdeBackend({ silencioso: false, forzar: true });
+      if (ok) {
+        if (STATE.usuario && STATE.vistaActual === 'panel' && STATE.tabAsesor === 'bovedas') {
+          await cargarMisBovedas();
+        }
+        if (STATE.usuario && STATE.usuario.esAdmin && STATE.vistaActual === 'admin') {
+          await cargarDatosAdmin();
+        }
+      }
+    }
+
+    async function gasCall(fnName, ...args) {
+      const apiUrl = String(APPS_SCRIPT_API_URL || '').trim();
+      if (!apiUrl || !/^https?:\/\//i.test(apiUrl)) {
+        throw new Error('Configura APPS_SCRIPT_API_URL en index.html con la URL /exec de tu Web App en Apps Script.');
+      }
+
+      // Solo lecturas puramente públicas sin credenciales usan GET; tokens y claves van siempre por POST
+      const esLecturaPublicaGet =
+        fnName === 'getPublicSnapshot' ||
+        (fnName === 'getDatosPublicos' && !args[0]) ||
+        (fnName === 'obtenerRecursosBovedaPublica' && !args[1]);
+
+      const esSubidaArchivo =
+        fnName === 'subirArchivoBoveda' ||
+        fnName === 'reemplazarArchivoBoveda' ||
+        fnName === 'actualizarMiPerfil';
+
+      const timeoutMs = esSubidaArchivo ? 65000 : 22000;
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+      let response;
+      try {
+        if (esLecturaPublicaGet) {
+          const params = new URLSearchParams({
+            action: fnName,
+            args: JSON.stringify(args)
+          });
+          const separador = apiUrl.indexOf('?') !== -1 ? '&' : '?';
+          response = await fetch(apiUrl + separador + params.toString(), {
+            method: 'GET',
+            redirect: 'follow',
+            signal: controller.signal
+          });
+        } else {
+          response = await fetch(apiUrl, {
+            method: 'POST',
+            redirect: 'follow',
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
+            body: JSON.stringify({
+              action: fnName,
+              args: args
+            }),
+            signal: controller.signal
+          });
+        }
+      } catch (err) {
+        if (err && err.name === 'AbortError') {
+          throw new Error('Tiempo de espera agotado al conectar con Google Apps Script. Intenta de nuevo.');
+        }
+        throw err;
+      } finally {
+        clearTimeout(timer);
+      }
+
+      if (!response.ok) {
+        throw new Error('Error HTTP ' + response.status + ' al comunicar con el backend de Apps Script.');
+      }
+
+      const rawText = await response.text();
+      try {
+        return JSON.parse(rawText);
+      } catch (err) {
+        throw new Error('La respuesta del servidor no es JSON válido. Verifica que la Web App esté desplegada como "Cualquier usuario".');
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // UTILIDADES UI: TOASTS, MODALES Y SEGURIDAD
+    // -----------------------------------------------------------------------
+    function mostrarToast(mensaje, tipo = 'info') {
+      const cont = document.getElementById('toast-container');
+      const colores = {
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-red-600 text-white',
+        warning: 'bg-amber-500 text-slate-900',
+        info: 'bg-slate-800 text-white'
+      };
+      const div = document.createElement('div');
+      div.className = 'pointer-events-auto rounded-xl shadow-lg px-4 py-3 text-xs sm:text-sm font-medium flex items-center justify-between gap-3 transition-all ' + (colores[tipo] || colores.info);
+      div.innerHTML = '<span>' + escapeHtml(mensaje) + '</span><button type="button" class="opacity-75 hover:opacity-100 font-bold" onclick="this.parentElement.remove()">&times;</button>';
+      cont.appendChild(div);
+      setTimeout(() => {
+        if (div.parentElement) div.remove();
+      }, 5000);
+    }
+
+    function confirmarAccion(titulo, mensaje) {
+      return new Promise((resolve) => {
+        const modal = document.getElementById('modal-confirm');
+        document.getElementById('mc-titulo').textContent = titulo;
+        document.getElementById('mc-mensaje').textContent = mensaje;
+        modal.classList.remove('hidden');
+
+        const btnOk = document.getElementById('mc-aceptar');
+        const btnCancel = document.getElementById('mc-cancelar');
+
+        const limpiar = (resultado) => {
+          modal.classList.add('hidden');
+          btnOk.onclick = null;
+          btnCancel.onclick = null;
+          modal.onclick = null;
+          resolve(resultado);
+        };
+
+        btnOk.onclick = () => limpiar(true);
+        btnCancel.onclick = () => limpiar(false);
+        modal.onclick = (ev) => {
+          if (ev.target === modal) limpiar(false);
+        };
+      });
+    }
+
+    function abrirModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function cerrarModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function sanitizeUrl(url) {
+      const str = String(url || '').trim();
+      if (!str) return '';
+      if (/^https?:\/\//i.test(str) || str.startsWith('./') || str.startsWith('/')) {
+        return str;
+      }
+      return '';
+    }
+
+    function formatearTamano(bytes) {
+      const b = Number(bytes || 0);
+      if (b < 1024) return b + ' B';
+      if (b < 1048576) return (b / 1024).toFixed(2) + ' KB';
+      return (b / 1048576).toFixed(2) + ' MB';
+    }
+
+    function setBtnLoading(btnId, loading, textoNormal) {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      btn.disabled = loading;
+      if (loading) {
+        btn.dataset.original = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner"></span><span>Procesando...</span>';
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+      } else {
+        btn.innerHTML = textoNormal || btn.dataset.original || 'Guardar';
+        btn.classList.remove('opacity-80', 'cursor-not-allowed');
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // UTILIDADES DE SEMANA ISO (LUNES A VIERNES)
+    // -----------------------------------------------------------------------
+    function parseSemanaISO(semanaStr) {
+      const m = String(semanaStr || '').match(/^(\d{4})-W(\d{2})$/);
+      if (!m) return null;
+      const year = parseInt(m[1], 10);
+      const week = parseInt(m[2], 10);
+      const simple = new Date(Date.UTC(year, 0, 1 + (week - 1) * 7));
+      const dow = simple.getUTCDay();
+      const isoMonday = new Date(simple);
+      if (dow <= 4) {
+        isoMonday.setUTCDate(simple.getUTCDate() - (dow === 0 ? 7 : dow) + 1);
+      } else {
+        isoMonday.setUTCDate(simple.getUTCDate() + 8 - dow);
+      }
+      return isoMonday;
+    }
+
+    function dateASemanaISO(dateUTC) {
+      const d = new Date(Date.UTC(dateUTC.getUTCFullYear(), dateUTC.getUTCMonth(), dateUTC.getUTCDate()));
+      const dayNum = d.getUTCDay() || 7;
+      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+      return d.getUTCFullYear() + '-W' + ('0' + weekNo).slice(-2);
+    }
+
+    function describirSemana(semanaStr) {
+      const lunes = parseSemanaISO(semanaStr);
+      if (!lunes) return semanaStr;
+      const viernes = new Date(lunes);
+      viernes.setUTCDate(lunes.getUTCDate() + 4);
+      const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+      const f1 = lunes.getUTCDate() + ' ' + meses[lunes.getUTCMonth()];
+      const f2 = viernes.getUTCDate() + ' ' + meses[viernes.getUTCMonth()] + ' ' + viernes.getUTCFullYear();
+      const numSemana = semanaStr.split('-W')[1];
+      const etiquetaActual = semanaStr === STATE.semanaActual ? ' (Semana Actual)' : '';
+      return 'Semana ' + numSemana + etiquetaActual + ' · Lun ' + f1 + ' al Vie ' + f2;
+    }
+
+    function moverSemana(deltaSemanas) {
+      const lunes = parseSemanaISO(STATE.semanaVista);
+      if (!lunes) return;
+      lunes.setUTCDate(lunes.getUTCDate() + deltaSemanas * 7);
+      STATE.semanaVista = dateASemanaISO(lunes);
+      renderHorariosPublicos();
+    }
+
+    function irSemanaActual() {
+      STATE.semanaVista = STATE.semanaActual;
+      renderHorariosPublicos();
+    }
+
+    // -----------------------------------------------------------------------
+    // NAVEGACIÓN DE VISTAS Y SESIÓN
+    // -----------------------------------------------------------------------
+    function cambiarVista(vista) {
+      if ((vista === 'panel' || vista === 'admin') && !STATE.usuario) {
+        abrirModalLogin();
+        return;
+      }
+      if (vista === 'admin' && !STATE.usuario.esAdmin) {
+        mostrarToast('Acceso exclusivo para administradores.', 'error');
+        return;
+      }
+
+      STATE.vistaActual = vista;
+      ['horarios', 'asesores', 'bovedas', 'panel', 'admin'].forEach((v) => {
+        const sec = document.getElementById('vista-' + v);
+        const nav = document.getElementById('nav-' + v);
+        if (sec) sec.classList.toggle('hidden', v !== vista);
+        if (nav) {
+          if (v === vista) {
+            nav.classList.add('bg-white', 'text-unexpo-900', 'font-bold');
+            nav.classList.remove('text-blue-100', 'hover:bg-blue-800');
+          } else {
+            nav.classList.remove('bg-white', 'text-unexpo-900', 'font-bold');
+            nav.classList.add('text-blue-100', 'hover:bg-blue-800');
+          }
+        }
+      });
+
+      if (vista === 'horarios') renderHorariosPublicos();
+      if (vista === 'asesores') renderDirectorioAsesores();
+      if (vista === 'bovedas') renderExploradorBovedas();
+      if (vista === 'panel') cambiarTabAsesor(STATE.tabAsesor);
+      if (vista === 'admin') cargarDatosAdmin();
+    }
+
+    function irAPanelAsesor() {
+      if (!STATE.usuario) {
+        abrirModalLogin();
+      } else {
+        cambiarVista('panel');
+      }
+    }
+
+    function actualizarBarraSesion() {
+      const btnLogin = document.getElementById('btn-login-open');
+      const btnLogout = document.getElementById('btn-logout');
+      const badge = document.getElementById('user-badge');
+      const navPanel = document.getElementById('nav-panel');
+      const navAdmin = document.getElementById('nav-admin');
+
+      if (STATE.usuario) {
+        btnLogin.classList.add('hidden');
+        btnLogout.classList.remove('hidden');
+        badge.classList.remove('hidden');
+        badge.classList.add('flex');
+        document.getElementById('user-badge-name').textContent = STATE.usuario.nombre;
+        document.getElementById('user-badge-role').textContent = STATE.usuario.rol;
+        navPanel.classList.remove('hidden');
+        navAdmin.classList.toggle('hidden', !STATE.usuario.esAdmin);
+      } else {
+        btnLogin.classList.remove('hidden');
+        btnLogout.classList.add('hidden');
+        badge.classList.add('hidden');
+        badge.classList.remove('flex');
+        navPanel.classList.add('hidden');
+        navAdmin.classList.add('hidden');
+      }
+    }
+
+    function abrirModalLogin() {
+      mostrarPasoRecuperacion(0);
+      abrirModal('modal-login');
+    }
+
+    function mostrarPasoRecuperacion(paso) {
+      document.getElementById('login-step-signin').classList.toggle('hidden', paso !== 0);
+      document.getElementById('login-step-forgot-1').classList.toggle('hidden', paso !== 1);
+      document.getElementById('login-step-forgot-2').classList.toggle('hidden', paso !== 2);
+    }
+
+    async function procesarLogin(e) {
+      e.preventDefault();
+      const correo = document.getElementById('login-correo').value.trim();
+      const password = document.getElementById('login-password').value;
+      setBtnLoading('btn-submit-login', true);
+      try {
+        const res = await gasCall('loginUsuario', correo, password);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        STATE.token = res.token;
+        STATE.usuario = res.usuario;
+        localStorage.setItem(STORAGE_TOKEN_KEY, res.token);
+        cerrarModal('modal-login');
+        document.getElementById('login-password').value = '';
+        actualizarBarraSesion();
+        mostrarToast(res.mensaje, 'success');
+        cambiarVista('panel');
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-submit-login', false, 'Iniciar Sesión');
+      }
+    }
+
+    async function enviarCodigoRecuperacion(e) {
+      e.preventDefault();
+      const correo = document.getElementById('rec-correo').value.trim();
+      setBtnLoading('btn-enviar-codigo', true);
+      try {
+        const res = await gasCall('solicitarRecuperacionPassword', correo);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        document.getElementById('rec2-correo').value = correo;
+        mostrarPasoRecuperacion(2);
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-enviar-codigo', false, 'Enviar Código de 6 Dígitos');
+      }
+    }
+
+    async function confirmarNuevaPassword(e) {
+      e.preventDefault();
+      const correo = document.getElementById('rec2-correo').value.trim();
+      const codigo = document.getElementById('rec2-codigo').value.trim();
+      const pass = document.getElementById('rec2-password').value;
+      setBtnLoading('btn-restablecer-pass', true);
+      try {
+        const res = await gasCall('restablecerPassword', correo, codigo, pass);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        document.getElementById('login-correo').value = correo;
+        mostrarPasoRecuperacion(0);
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-restablecer-pass', false, 'Actualizar Contraseña');
+      }
+    }
+
+    async function cerrarSesion() {
+      const ok = await confirmarAccion('Cerrar Sesión', '¿Deseas cerrar tu sesión actual?');
+      if (!ok) return;
+      STATE.token = '';
+      STATE.usuario = null;
+      STATE.misBovedas = [];
+      STATE.adminAsesores = [];
+      STATE.adminBovedas = [];
+      localStorage.removeItem(STORAGE_TOKEN_KEY);
+      actualizarBarraSesion();
+      mostrarToast('Sesión cerrada.', 'info');
+      cambiarVista('horarios');
+    }
+
+    // -----------------------------------------------------------------------
+    // VISTA 1: HORARIOS PÚBLICOS
+    // -----------------------------------------------------------------------
+    function renderHorariosPublicos() {
+      document.getElementById('lbl-rango-semana').textContent = describirSemana(STATE.semanaVista);
+      const sedeFiltro = document.getElementById('filtro-sede').value;
+      const diaFiltro = document.getElementById('filtro-dia').value;
+      const textoFiltro = document.getElementById('filtro-texto-horario').value.trim().toLowerCase();
+
+      const diasMostrar = diaFiltro === 'Todos' ? DIAS_SEMANA : [diaFiltro];
+      const contenedor = document.getElementById('contenedor-grilla-horarios');
+
+      if (diasMostrar.length === 1) {
+        contenedor.className = 'grid grid-cols-1 max-w-2xl mx-auto gap-4';
+      } else {
+        contenedor.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4';
+      }
+
+      const horariosSemana = STATE.horarios.filter((h) => {
+        if (h.semana !== STATE.semanaVista) return false;
+        if (sedeFiltro !== 'Todas' && h.sede !== sedeFiltro) return false;
+        if (textoFiltro) {
+          const combo = (h.materia + ' ' + h.nombreAsesor + ' ' + h.salon).toLowerCase();
+          if (!combo.includes(textoFiltro)) return false;
+        }
+        return true;
+      });
+
+      contenedor.innerHTML = diasMostrar.map((dia) => {
+        const items = horariosSemana
+          .filter((h) => h.dia === dia)
+          .sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
+
+        const cardsHtml = items.length === 0
+          ? '<div class="text-center py-8 px-3 text-xs text-slate-400 border border-dashed border-slate-200 rounded-xl">Sin asesorías programadas</div>'
+          : items.map((h) => {
+              const esConflicto = h.estadoChoque === 'CONFLICTO';
+              const borde = esConflicto
+                ? 'border-red-400 bg-red-50/70'
+                : 'border-slate-200 bg-white hover:border-unexpo-600';
+              const badgeChoque = esConflicto
+                ? '<div class="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded bg-red-100 text-red-700 text-[10px] font-bold"><span>&#9888;</span> Choque de horario (En coordinación)</div>'
+                : '';
+
+              return (
+                '<div class="rounded-xl border p-3.5 shadow-sm transition ' + borde + '">' +
+                  '<div class="flex items-center justify-between gap-2 mb-1.5">' +
+                    '<span class="text-xs font-bold text-unexpo-900 bg-blue-100 px-2 py-0.5 rounded-md">' +
+                      escapeHtml(h.horaInicio) + ' - ' + escapeHtml(h.horaFin) +
+                    '</span>' +
+                    '<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full ' +
+                      (h.sede === 'Km 0' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800') + '">' +
+                      escapeHtml(h.sede) +
+                    '</span>' +
+                  '</div>' +
+                  '<h4 class="font-bold text-sm text-slate-900 leading-snug">' + escapeHtml(h.materia) + '</h4>' +
+                  '<p class="text-xs text-slate-500 mt-1">' +
+                    escapeHtml(h.piso) + ' · <strong>' + escapeHtml(h.salon) + '</strong>' +
+                  '</p>' +
+                  '<button type="button" data-action="ver-perfil" data-id="' + escapeHtml(h.asesorId) + '" class="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-unexpo-600 hover:underline">' +
+                    '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>' +
+                    escapeHtml(h.nombreAsesor) +
+                  '</button>' +
+                  badgeChoque +
+                '</div>'
+              );
+            }).join('');
+
+        return (
+          '<div class="bg-slate-100/70 rounded-2xl p-3 border border-slate-200 flex flex-col gap-3">' +
+            '<div class="flex items-center justify-between px-1">' +
+              '<h3 class="font-bold text-sm text-unexpo-900 uppercase tracking-wide">' + dia + '</h3>' +
+              '<span class="text-xs font-semibold text-slate-500">' + items.length + '</span>' +
+            '</div>' +
+            '<div class="space-y-2.5">' + cardsHtml + '</div>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    // -----------------------------------------------------------------------
+    // VISTA 2: DIRECTORIO Y MODAL PERFIL TÉCNICO
+    // -----------------------------------------------------------------------
+    function renderDirectorioAsesores() {
+      const q = document.getElementById('filtro-asesores').value.trim().toLowerCase();
+      const lista = STATE.asesores.filter((a) => {
+        if (!q) return true;
+        return (a.nombre + ' ' + a.descripcion).toLowerCase().includes(q);
+      });
+
+      const grid = document.getElementById('grid-asesores');
+      if (lista.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 text-sm">No se encontraron asesores.</div>';
+        return;
+      }
+
+      grid.innerHTML = lista.map((a) => {
+        const iniciales = (a.nombre || 'A').trim().slice(0, 2).toUpperCase();
+        const fotoSafe = sanitizeUrl(a.fotoUrl);
+        const avatar = fotoSafe
+          ? '<img src="' + escapeHtml(fotoSafe) + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" class="w-14 h-14 rounded-2xl object-cover border border-slate-200" />' +
+            '<div style="display:none" class="w-14 h-14 rounded-2xl bg-unexpo-900 text-white items-center justify-center font-bold text-lg">' + escapeHtml(iniciales) + '</div>'
+          : '<div class="w-14 h-14 rounded-2xl bg-unexpo-900 text-white flex items-center justify-center font-bold text-lg">' + escapeHtml(iniciales) + '</div>';
+
+        const bovedasAsesor = STATE.bovedas.filter((b) => b.asesorId === a.asesorId);
+
+        return (
+          '<div data-action="ver-perfil" data-id="' + escapeHtml(a.asesorId) + '" class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-unexpo-600 transition cursor-pointer flex flex-col justify-between gap-3">' +
+            '<div class="flex items-start gap-3.5">' +
+              avatar +
+              '<div class="min-w-0 flex-1">' +
+                '<h3 class="font-bold text-slate-900 truncate">' + escapeHtml(a.nombre) + '</h3>' +
+                '<span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-unexpo-900">' + escapeHtml(a.rol) + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<p class="text-xs text-slate-600 line-clamp-3">' +
+              escapeHtml(a.descripcion || 'Sin descripción técnica registrada.') +
+            '</p>' +
+            '<div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">' +
+              '<span class="text-slate-500">' + bovedasAsesor.length + ' bóveda(s)</span>' +
+              '<span class="font-semibold text-unexpo-600">Ver Perfil Completo &rarr;</span>' +
+            '</div>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    function abrirPerfilAsesor(asesorId) {
+      const a = STATE.asesores.find((x) => x.asesorId === asesorId || (x.correo && x.correo === asesorId));
+      if (!a) {
+        mostrarToast('No se encontró la información del asesor.', 'warning');
+        return;
+      }
+
+      const wrap = document.getElementById('mp-avatar-wrap');
+      const iniciales = (a.nombre || 'A').trim().slice(0, 2).toUpperCase();
+      const fotoSafe = sanitizeUrl(a.fotoUrl);
+      if (fotoSafe) {
+        wrap.innerHTML = '';
+        const imgEl = document.createElement('img');
+        imgEl.src = fotoSafe;
+        imgEl.alt = a.nombre || 'Asesor';
+        imgEl.className = 'w-full h-full object-cover';
+        imgEl.onerror = () => { wrap.textContent = iniciales; };
+        wrap.appendChild(imgEl);
+      } else {
+        wrap.textContent = iniciales;
+      }
+
+      document.getElementById('mp-nombre').textContent = a.nombre;
+      const mpCorreo = document.getElementById('mp-correo');
+      mpCorreo.textContent = '';
+      mpCorreo.classList.add('hidden');
+
+      document.getElementById('mp-descripcion').textContent = a.descripcion || 'No especificada.';
+      document.getElementById('mp-contacto').textContent = a.contacto || 'No especificado.';
+      document.getElementById('mp-info').textContent = a.infoAdicional || 'Sin información adicional.';
+
+      const bovedasAsesor = STATE.bovedas.filter((b) => b.asesorId === a.asesorId);
+      const bovWrap = document.getElementById('mp-bovedas-wrap');
+      const bovList = document.getElementById('mp-bovedas-list');
+      if (bovedasAsesor.length > 0) {
+        bovWrap.classList.remove('hidden');
+        bovList.innerHTML = bovedasAsesor.map((b) =>
+          '<button type="button" data-action="ir-boveda" data-id="' + escapeHtml(b.bovedaId) + '" class="px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold hover:bg-amber-100">' +
+            escapeHtml(b.materia) + (b.accesoPublico ? ' (Pública)' : ' (Protegida)') +
+          '</button>'
+        ).join('');
+      } else {
+        bovWrap.classList.add('hidden');
+      }
+
+      abrirModal('modal-perfil-asesor');
+    }
+
+    // -----------------------------------------------------------------------
+    // VISTA 3: EXPLORADOR PÚBLICO DE BÓVEDA VIRTUAL
+    // -----------------------------------------------------------------------
+    function renderExploradorBovedas() {
+      const q = document.getElementById('filtro-bovedas-publicas').value.trim().toLowerCase();
+      const lista = STATE.bovedas.filter((b) => {
+        if (!q) return true;
+        return (b.materia + ' ' + b.nombreAsesor).toLowerCase().includes(q);
+      });
+
+      const grid = document.getElementById('grid-bovedas-publicas');
+      if (lista.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 text-sm bg-white rounded-2xl border border-slate-200">No hay bóvedas disponibles con ese filtro.</div>';
+        return;
+      }
+
+      grid.innerHTML = lista.map((b) => {
+        const badgeAcceso = b.accesoPublico
+          ? '<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">Pública</span>'
+          : '<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800">&#128274; Protegida</span>';
+
+        return (
+          '<div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:border-unexpo-600 transition flex flex-col justify-between gap-4">' +
+            '<div>' +
+              '<div class="flex items-center justify-between gap-2 mb-2">' +
+                '<span class="text-[11px] font-mono text-slate-400">' + escapeHtml(b.bovedaId) + '</span>' +
+                badgeAcceso +
+              '</div>' +
+              '<h3 class="text-lg font-bold text-slate-900">' + escapeHtml(b.materia) + '</h3>' +
+              '<p class="text-xs text-slate-500 mt-1">Asesor: <strong>' + escapeHtml(b.nombreAsesor) + '</strong></p>' +
+            '</div>' +
+            '<div class="flex items-center justify-between pt-3 border-t border-slate-100">' +
+              '<span class="text-xs text-slate-500">' + b.totalRecursos + ' recurso(s)</span>' +
+              '<button type="button" data-action="abrir-boveda" data-id="' + escapeHtml(b.bovedaId) + '" class="px-3.5 py-1.5 rounded-lg bg-unexpo-900 hover:bg-unexpo-800 text-white text-xs font-semibold transition">' +
+                (b.accesoPublico ? 'Explorar' : 'Ingresar clave') +
+              '</button>' +
+            '</div>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    function irABovedaEspecifica(bovedaId) {
+      cambiarVista('bovedas');
+      abrirBovedaPublica(bovedaId);
+    }
+
+    async function abrirBovedaPublica(bovedaId, clave = '') {
+      const b = STATE.bovedas.find((x) => x.bovedaId === bovedaId);
+      if (!b) return;
+
+      if (!b.accesoPublico && !clave) {
+        document.getElementById('mcb-boveda-id').value = bovedaId;
+        document.getElementById('mcb-clave').value = '';
+        document.getElementById('mcb-subtitulo').textContent = 'Materia: ' + b.materia + ' (' + b.nombreAsesor + ')';
+        abrirModal('modal-clave-boveda');
+        return;
+      }
+
+      try {
+        const res = await gasCall('obtenerRecursosBovedaPublica', bovedaId, clave);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        cerrarModal('modal-clave-boveda');
+        mostrarDetalleBovedaPublica(res.boveda, res.recursos);
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
+    async function desbloquearBovedaPublica(e) {
+      e.preventDefault();
+      const bId = document.getElementById('mcb-boveda-id').value;
+      const clave = document.getElementById('mcb-clave').value;
+      setBtnLoading('btn-desbloquear-boveda', true);
+      try {
+        await abrirBovedaPublica(bId, clave);
+      } finally {
+        setBtnLoading('btn-desbloquear-boveda', false, 'Desbloquear Bóveda');
+      }
+    }
+
+    function mostrarDetalleBovedaPublica(boveda, recursos) {
+      const box = document.getElementById('detalle-boveda-publica');
+      document.getElementById('pub-bov-titulo').textContent = 'Bóveda: ' + boveda.materia;
+      document.getElementById('pub-bov-asesor').textContent = 'Responsable: ' + boveda.nombreAsesor;
+
+      const cont = document.getElementById('pub-bov-recursos');
+      if (!recursos || recursos.length === 0) {
+        cont.innerHTML = '<div class="text-center py-8 text-sm text-slate-400">Esta bóveda aún no contiene archivos o enlaces publicados.</div>';
+      } else {
+        cont.innerHTML = recursos.map((r) => {
+          const esArchivo = r.tipoRecurso === 'ARCHIVO';
+          const badge = esArchivo
+            ? '<span class="px-2 py-0.5 rounded bg-blue-100 text-unexpo-900 text-[11px] font-bold">' + escapeHtml(r.tipoArchivoOEnlace || 'ARCHIVO') + ' · ' + formatearTamano(r.tamanoBytes) + '</span>'
+            : '<span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[11px] font-bold">ENLACE · ' + escapeHtml(r.tipoArchivoOEnlace || 'Web') + '</span>';
+
+          const safeUrl = sanitizeUrl(r.urlAcceso);
+          const driveId = esArchivo ? String(r.driveFileId || '').trim() : '';
+          const downloadBtn = driveId
+            ? '<a href="https://drive.google.com/uc?export=download&id=' + encodeURIComponent(driveId) + '" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold transition">Descargar</a>'
+            : '';
+          const openBtn = safeUrl
+            ? '<a href="' + escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-unexpo-900 hover:bg-unexpo-800 text-white text-xs font-semibold transition">' +
+                (esArchivo ? 'Ver en Drive' : 'Visitar Enlace') + ' &nearr;' +
+              '</a>'
+            : '';
+
+          return (
+            '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">' +
+              '<div class="space-y-1">' +
+                '<div class="flex flex-wrap items-center gap-2">' +
+                  badge +
+                  '<h4 class="font-bold text-slate-900 text-sm">' + escapeHtml(r.titulo) + '</h4>' +
+                '</div>' +
+                '<p class="text-xs text-slate-600">' + escapeHtml(r.descripcion || 'Sin descripción.') + '</p>' +
+              '</div>' +
+              '<div class="flex items-center gap-2 shrink-0">' +
+                downloadBtn +
+                openBtn +
+              '</div>' +
+            '</div>'
+          );
+        }).join('');
+      }
+
+      box.classList.remove('hidden');
+      box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cerrarDetalleBovedaPublica() {
+      document.getElementById('detalle-boveda-publica').classList.add('hidden');
+    }
+
+    // -----------------------------------------------------------------------
+    // VISTA 4: PANEL DE ASESOR
+    // -----------------------------------------------------------------------
+    function cambiarTabAsesor(tab) {
+      STATE.tabAsesor = tab;
+      ['horarios', 'perfil', 'bovedas'].forEach((t) => {
+        document.getElementById('subvista-asesor-' + t).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById('tab-asesor-' + t);
+        if (t === tab) {
+          btn.classList.add('bg-unexpo-900', 'text-white');
+          btn.classList.remove('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200');
+        } else {
+          btn.classList.remove('bg-unexpo-900', 'text-white');
+          btn.classList.add('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200');
+        }
+      });
+
+      if (tab === 'horarios') renderMisHorarios();
+      if (tab === 'perfil') cargarFormularioMiPerfil();
+      if (tab === 'bovedas') cargarMisBovedas();
+    }
+
+    function inicializarFormularioHorario() {
+      const inputSemana = document.getElementById('hor-semana');
+      if (STATE.semanaActual && !inputSemana.value) {
+        inputSemana.value = STATE.semanaActual;
+      }
+      actualizarEtiquetaSemanaForm();
+      aplicarReglaPiso3();
+    }
+
+    function actualizarEtiquetaSemanaForm() {
+      const val = document.getElementById('hor-semana').value;
+      document.getElementById('hor-semana-legible').textContent = val ? describirSemana(val) : '';
+    }
+
+    function aplicarReglaPiso3() {
+      const piso = document.getElementById('hor-piso').value;
+      const salonInput = document.getElementById('hor-salon');
+      const badge = document.getElementById('badge-piso3');
+      if (piso === 'Piso 3') {
+        salonInput.value = 'Salón de Sistemas';
+        salonInput.readOnly = true;
+        salonInput.disabled = true;
+        salonInput.classList.add('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+        badge.classList.remove('hidden');
+      } else {
+        salonInput.readOnly = false;
+        salonInput.disabled = false;
+        salonInput.classList.remove('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+        badge.classList.add('hidden');
+        if (salonInput.value === 'Salón de Sistemas') {
+          salonInput.value = '';
+        }
+      }
+    }
+
+    async function enviarFormularioHorario(e) {
+      e.preventDefault();
+      const piso = document.getElementById('hor-piso').value;
+      const salon = piso === 'Piso 3'
+        ? 'Salón de Sistemas'
+        : document.getElementById('hor-salon').value.trim();
+
+      const payload = {
+        semana: document.getElementById('hor-semana').value,
+        sede: document.getElementById('hor-sede').value,
+        piso: piso,
+        salon: salon,
+        dia: document.getElementById('hor-dia').value,
+        horaInicio: document.getElementById('hor-inicio').value,
+        horaFin: document.getElementById('hor-fin').value,
+        materia: document.getElementById('hor-materia').value.trim()
+      };
+
+      setBtnLoading('btn-guardar-horario', true);
+      try {
+        const res = await gasCall('guardarHorario', STATE.token, payload, false);
+        if (res.requiereConfirmacion) {
+          STATE.horarioPendienteChoque = payload;
+          mostrarModalConflictos(res.conflictos || []);
+          return;
+        }
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        document.getElementById('hor-materia').value = '';
+        await cargarDatosIniciales();
+        renderMisHorarios();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-guardar-horario', false, 'Guardar Horario');
+      }
+    }
+
+    function mostrarModalConflictos(conflictos) {
+      const lista = document.getElementById('lista-conflictos-modal');
+      lista.innerHTML = conflictos.map((c) =>
+        '<div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs space-y-0.5">' +
+          '<p class="font-bold text-slate-900">Asesor: ' + escapeHtml(c.nombreAsesor) + '</p>' +
+          '<p class="text-slate-700">Materia: <strong>' + escapeHtml(c.materia) + '</strong></p>' +
+          '<p class="text-amber-800 font-semibold">Horario en conflicto: ' + escapeHtml(c.horaInicio) + ' - ' + escapeHtml(c.horaFin) + '</p>' +
+        '</div>'
+      ).join('');
+      abrirModal('modal-choque');
+    }
+
+    async function confirmarEnvioConChoque() {
+      if (!STATE.horarioPendienteChoque) return;
+      setBtnLoading('btn-forzar-choque', true);
+      try {
+        const res = await gasCall('guardarHorario', STATE.token, STATE.horarioPendienteChoque, true);
+        cerrarModal('modal-choque');
+        STATE.horarioPendienteChoque = null;
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'warning');
+        document.getElementById('hor-materia').value = '';
+        await cargarDatosIniciales();
+        renderMisHorarios();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-forzar-choque', false, 'Enviar de todas formas');
+      }
+    }
+
+    function renderMisHorarios() {
+      if (!STATE.usuario) return;
+      const mios = STATE.horarios
+        .filter((h) => h.asesorId === STATE.usuario.asesorId || (h.correoAsesor && h.correoAsesor === STATE.usuario.correo))
+        .sort((a, b) => (b.semana + b.dia + a.horaInicio).localeCompare(a.semana + a.dia + b.horaInicio));
+
+      document.getElementById('contador-mis-horarios').textContent = mios.length + ' registro(s)';
+      const cont = document.getElementById('lista-mis-horarios');
+
+      if (mios.length === 0) {
+        cont.innerHTML = '<div class="text-center py-10 text-sm text-slate-400">Aún no has publicado bloques de asesoría.</div>';
+        return;
+      }
+
+      cont.innerHTML = mios.map((h) => {
+        const conflicto = h.estadoChoque === 'CONFLICTO';
+        return (
+          '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border ' + (conflicto ? 'border-red-300 bg-red-50/50' : 'border-slate-200 bg-slate-50/50') + '">' +
+            '<div class="space-y-1">' +
+              '<div class="flex flex-wrap items-center gap-2">' +
+                '<span class="text-xs font-bold text-unexpo-900 bg-blue-100 px-2 py-0.5 rounded">' + escapeHtml(h.semana) + ' · ' + escapeHtml(h.dia) + '</span>' +
+                '<span class="text-xs font-semibold text-slate-700">' + escapeHtml(h.horaInicio) + ' - ' + escapeHtml(h.horaFin) + '</span>' +
+                (conflicto ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 text-red-700">CONFLICTO</span>' : '') +
+              '</div>' +
+              '<p class="font-bold text-sm text-slate-900">' + escapeHtml(h.materia) + '</p>' +
+              '<p class="text-xs text-slate-500">' + escapeHtml(h.sede) + ' · ' + escapeHtml(h.piso) + ' · ' + escapeHtml(h.salon) + '</p>' +
+            '</div>' +
+            '<button type="button" data-action="eliminar-horario" data-id="' + escapeHtml(h.id) + '" class="shrink-0 px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold border border-red-200 transition">' +
+              'Eliminar' +
+            '</button>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    async function eliminarMiHorario(horarioId) {
+      const ok = await confirmarAccion('Eliminar Horario', '¿Estás seguro de eliminar este bloque de asesoría?');
+      if (!ok) return;
+      try {
+        const res = await gasCall('eliminarHorario', STATE.token, horarioId);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosIniciales();
+        renderMisHorarios();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // PANEL ASESOR: MI PERFIL TÉCNICO
+    // -----------------------------------------------------------------------
+    function cargarFormularioMiPerfil() {
+      if (!STATE.usuario) return;
+      STATE.fotoPerfilBase64 = null;
+      document.getElementById('perf-foto-file').value = '';
+      document.getElementById('perf-nombre').value = STATE.usuario.nombre || '';
+      document.getElementById('perf-contacto').value = STATE.usuario.contacto || '';
+      document.getElementById('perf-descripcion').value = STATE.usuario.descripcion || '';
+      document.getElementById('perf-info').value = STATE.usuario.infoAdicional || '';
+      document.getElementById('perf-foto-url').value = STATE.usuario.fotoUrl || '';
+
+      const img = document.getElementById('perf-preview-img');
+      const init = document.getElementById('perf-preview-initials');
+      init.textContent = (STATE.usuario.nombre || 'A').trim().slice(0, 2).toUpperCase();
+
+      const safeFoto = sanitizeUrl(STATE.usuario.fotoUrl);
+      if (safeFoto) {
+        img.src = safeFoto;
+        img.classList.remove('hidden');
+        init.classList.add('hidden');
+      } else {
+        img.classList.add('hidden');
+        init.classList.remove('hidden');
+      }
+    }
+
+    function previsualizarFotoPerfil(input) {
+      const file = input.files && input.files[0];
+      if (!file) {
+        STATE.fotoPerfilBase64 = null;
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        mostrarToast('La foto no debe superar 5 MB.', 'warning');
+        input.value = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target.result;
+        const base64 = dataUrl.split(',')[1];
+        STATE.fotoPerfilBase64 = {
+          base64: base64,
+          mimeType: file.type || 'image/jpeg',
+          nombre: file.name
+        };
+        const img = document.getElementById('perf-preview-img');
+        img.src = dataUrl;
+        img.classList.remove('hidden');
+        document.getElementById('perf-preview-initials').classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function guardarMiPerfil(e) {
+      e.preventDefault();
+      const payload = {
+        nombre: document.getElementById('perf-nombre').value.trim(),
+        contacto: document.getElementById('perf-contacto').value.trim(),
+        descripcion: document.getElementById('perf-descripcion').value.trim(),
+        infoAdicional: document.getElementById('perf-info').value.trim(),
+        fotoUrl: document.getElementById('perf-foto-url').value.trim()
+      };
+      if (STATE.fotoPerfilBase64) {
+        payload.fotoBase64 = STATE.fotoPerfilBase64.base64;
+        payload.fotoMimeType = STATE.fotoPerfilBase64.mimeType;
+        payload.fotoNombre = STATE.fotoPerfilBase64.nombre;
+      }
+
+      setBtnLoading('btn-guardar-perfil', true);
+      try {
+        const res = await gasCall('actualizarMiPerfil', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        STATE.usuario = res.usuario;
+        STATE.fotoPerfilBase64 = null;
+        actualizarBarraSesion();
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosIniciales();
+        cargarFormularioMiPerfil();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-guardar-perfil', false, 'Guardar Perfil Técnico');
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // PANEL ASESOR: MIS BÓVEDAS VIRTUALES (CONEXIÓN A GOOGLE DRIVE)
+    // -----------------------------------------------------------------------
+    async function cargarMisBovedas() {
+      const cont = document.getElementById('contenedor-mis-bovedas');
+      cont.innerHTML = '<div class="bg-white rounded-2xl p-10 flex justify-center"><div class="spinner-dark"></div></div>';
+      try {
+        const res = await gasCall('obtenerMisBovedas', STATE.token);
+        if (!res.ok) {
+          cont.innerHTML = '<div class="bg-white rounded-2xl p-6 text-red-600 text-sm">' + escapeHtml(res.mensaje) + '</div>';
+          return;
+        }
+        STATE.misBovedas = res.bovedas || [];
+        renderMisBovedas();
+      } catch (err) {
+        cont.innerHTML = '<div class="bg-white rounded-2xl p-6 text-red-600 text-sm">' + escapeHtml(err.message) + '</div>';
+      }
+    }
+
+    function renderMisBovedas() {
+      const cont = document.getElementById('contenedor-mis-bovedas');
+      if (STATE.misBovedas.length === 0) {
+        cont.innerHTML =
+          '<div class="bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-2">' +
+            '<h3 class="font-bold text-slate-800">No tienes bóvedas virtuales asignadas todavía</h3>' +
+            '<p class="text-xs text-slate-500">El administrador debe crear y asignarte manualmente las materias/bóvedas desde el Panel de Administración.</p>' +
+          '</div>';
+        return;
+      }
+
+      cont.innerHTML = STATE.misBovedas.map((b) => {
+        const pct = Math.min(100, Math.round((b.bytesUsados / b.limiteBytes) * 1000) / 10);
+        const disponible = Math.max(0, b.limiteBytes - b.bytesUsados);
+        const barColor = pct > 90 ? 'bg-red-500' : pct > 70 ? 'bg-amber-500' : 'bg-emerald-500';
+        const bId = escapeHtml(b.bovedaId);
+
+        const recursosHtml = b.recursos.length === 0
+          ? '<p class="text-xs text-slate-400 py-4 text-center">No hay recursos subidos en esta bóveda.</p>'
+          : b.recursos.map((r) => {
+              const esArch = r.tipoRecurso === 'ARCHIVO';
+              const safeUrl = sanitizeUrl(r.urlAcceso);
+              return (
+                '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/70">' +
+                  '<div class="min-w-0 flex-1">' +
+                    '<div class="flex flex-wrap items-center gap-2">' +
+                      '<span class="text-[10px] font-bold px-2 py-0.5 rounded ' + (esArch ? 'bg-blue-100 text-unexpo-900' : 'bg-purple-100 text-purple-800') + '">' +
+                        escapeHtml(r.tipoRecurso) + (esArch ? ' · ' + formatearTamano(r.tamanoBytes) : ' · ' + escapeHtml(r.tipoArchivoOEnlace)) +
+                      '</span>' +
+                      '<span class="font-semibold text-sm text-slate-900 truncate">' + escapeHtml(r.titulo) + '</span>' +
+                    '</div>' +
+                    '<p class="text-xs text-slate-500 mt-0.5">' + escapeHtml(r.descripcion || '') + '</p>' +
+                  '</div>' +
+                  '<div class="flex items-center gap-2 shrink-0">' +
+                    (safeUrl
+                      ? '<a href="' + escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100">Abrir</a>'
+                      : '') +
+                    (esArch
+                      ? '<button type="button" data-action="reemplazar-recurso" data-extra="' + bId + '" data-id="' + escapeHtml(r.recursoId) + '" class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-800 hover:bg-amber-100">Reemplazar</button>'
+                      : '') +
+                    '<button type="button" data-action="eliminar-recurso" data-id="' + escapeHtml(r.recursoId) + '" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
+                  '</div>' +
+                '</div>'
+              );
+            }).join('');
+
+        return (
+          '<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">' +
+            '<!-- Cabecera y Cuota -->' +
+            '<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">' +
+              '<div>' +
+                '<div class="flex items-center gap-2">' +
+                  '<span class="text-xs font-mono text-slate-400">' + bId + '</span>' +
+                  '<span class="px-2 py-0.5 rounded-full text-[11px] font-bold ' + (b.accesoPublico ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800') + '">' +
+                    (b.accesoPublico ? 'Pública' : 'Protegida por contraseña') +
+                  '</span>' +
+                '</div>' +
+                '<h3 class="text-xl font-bold text-unexpo-900 mt-0.5">' + escapeHtml(b.materia) + '</h3>' +
+              '</div>' +
+
+              '<div class="w-full lg:w-80 bg-slate-50 p-3 rounded-xl border border-slate-200">' +
+                '<div class="flex justify-between text-xs font-semibold mb-1">' +
+                  '<span class="text-slate-700">Almacenamiento: ' + formatearTamano(b.bytesUsados) + ' / ' + formatearTamano(b.limiteBytes) + '</span>' +
+                  '<span class="text-slate-500">' + pct + '%</span>' +
+                '</div>' +
+                '<div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">' +
+                  '<div class="h-full ' + barColor + ' transition-all" style="width:' + pct + '%"></div>' +
+                '</div>' +
+                '<p class="text-[11px] text-slate-500 mt-1">Disponible: <strong>' + formatearTamano(disponible) + '</strong> (los enlaces externos no consumen cuota)</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<!-- Configuración de Privacidad -->' +
+            '<div class="bg-blue-50/50 border border-blue-100 rounded-xl p-4">' +
+              '<h4 class="text-xs font-bold uppercase text-unexpo-900 mb-2">Privacidad de la Bóveda</h4>' +
+              '<div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">' +
+                '<div class="flex-1">' +
+                  '<label class="block text-xs font-semibold text-slate-600 mb-1">Tipo de Acceso</label>' +
+                  '<select id="priv-tipo-' + bId + '" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs bg-white">' +
+                    '<option value="true" ' + (b.accesoPublico ? 'selected' : '') + '>Pública (cualquier estudiante puede ver)</option>' +
+                    '<option value="false" ' + (!b.accesoPublico ? 'selected' : '') + '>Protegida con contraseña</option>' +
+                  '</select>' +
+                '</div>' +
+                '<div class="flex-1">' +
+                  '<label class="block text-xs font-semibold text-slate-600 mb-1">Contraseña ' + (b.tieneClave ? '(dejar vacío para mantener actual)' : '(requerida si es protegida)') + '</label>' +
+                  '<input id="priv-clave-' + bId + '" type="text" placeholder="Nueva contraseña de acceso..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs bg-white" />' +
+                '</div>' +
+                '<button type="button" data-action="guardar-privacidad" data-id="' + bId + '" class="px-4 py-2 rounded-lg bg-unexpo-900 hover:bg-unexpo-800 text-white text-xs font-semibold transition">Guardar Acceso</button>' +
+              '</div>' +
+            '</div>' +
+
+            '<!-- Formularios: Subir Archivo o Agregar Enlace -->' +
+            '<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">' +
+              '<form onsubmit="enviarArchivoBoveda(event, \'' + bId + '\')" class="border border-slate-200 rounded-xl p-4 space-y-3">' +
+                '<h4 class="text-sm font-bold text-slate-900">Subir Archivo (PDF, Guía, Imagen, Doc...)</h4>' +
+                '<input id="arch-titulo-' + bId + '" type="text" required placeholder="Título del material (Ej: Guía Unidad 1)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
+                '<input id="arch-desc-' + bId + '" type="text" placeholder="Descripción breve (opcional)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
+                '<input id="arch-file-' + bId + '" type="file" required class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-unexpo-900" />' +
+                '<p class="text-[11px] text-slate-400">Transferencia web directa recomendada hasta 25 MB por archivo (cuota total: 500 MB).</p>' +
+                '<button id="btn-subir-' + bId + '" type="submit" class="w-full bg-unexpo-900 hover:bg-unexpo-800 text-white font-semibold py-2 rounded-lg text-xs transition flex items-center justify-center gap-2">Subir Archivo a Drive</button>' +
+              '</form>' +
+
+              '<form onsubmit="enviarEnlaceBoveda(event, \'' + bId + '\')" class="border border-slate-200 rounded-xl p-4 space-y-3">' +
+                '<h4 class="text-sm font-bold text-slate-900">Agregar Enlace Externo (No consume 500 MB)</h4>' +
+                '<div class="grid grid-cols-2 gap-2">' +
+                  '<input id="enl-titulo-' + bId + '" type="text" required placeholder="Título del enlace" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
+                  '<input id="enl-tipo-' + bId + '" type="text" placeholder="Ej: YouTube, Drive, Mega" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
+                '</div>' +
+                '<input id="enl-url-' + bId + '" type="url" required placeholder="https://..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
+                '<input id="enl-desc-' + bId + '" type="text" placeholder="Descripción breve (opcional)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
+                '<button id="btn-enlace-' + bId + '" type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-unexpo-900 font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-2">Agregar Enlace Externo</button>' +
+              '</form>' +
+            '</div>' +
+
+            '<div class="space-y-2">' +
+              '<h4 class="text-xs font-bold uppercase text-slate-500">Recursos Publicados (' + b.recursos.length + ')</h4>' +
+              recursosHtml +
+            '</div>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    async function guardarPrivacidadBoveda(bovedaId) {
+      const publico = document.getElementById('priv-tipo-' + bovedaId).value === 'true';
+      const clave = document.getElementById('priv-clave-' + bovedaId).value.trim();
+      try {
+        const res = await gasCall('configurarAccesoBoveda', STATE.token, bovedaId, publico, clave);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
+    function leerArchivoComoBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result).split(',')[1]);
+        reader.onerror = () => reject(new Error('No se pudo leer el archivo seleccionado.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function enviarArchivoBoveda(e, bovedaId) {
+      e.preventDefault();
+      const fileInput = document.getElementById('arch-file-' + bovedaId);
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        mostrarToast('Selecciona un archivo primero.', 'warning');
+        return;
+      }
+
+      if (file.size > MAX_GAS_UPLOAD_BYTES) {
+        mostrarToast(
+          'El archivo (' + formatearTamano(file.size) + ') supera el límite de transferencia web de Apps Script (~25 MB por subida). Súbelo a tu Google Drive/nube y usa "Agregar Enlace Externo".',
+          'warning'
+        );
+        return;
+      }
+
+      const btnId = 'btn-subir-' + bovedaId;
+      setBtnLoading(btnId, true);
+      try {
+        const base64Data = await leerArchivoComoBase64(file);
+        const payload = {
+          bovedaId: bovedaId,
+          titulo: document.getElementById('arch-titulo-' + bovedaId).value.trim(),
+          descripcion: document.getElementById('arch-desc-' + bovedaId).value.trim(),
+          fileName: file.name,
+          mimeType: file.type || 'application/octet-stream',
+          base64Data: base64Data
+        };
+
+        const res = await gasCall('subirArchivoBoveda', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, res.cuotaExcedida ? 'warning' : 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading(btnId, false, 'Subir Archivo a Drive');
+      }
+    }
+
+    async function enviarEnlaceBoveda(e, bovedaId) {
+      e.preventDefault();
+      const btnId = 'btn-enlace-' + bovedaId;
+      setBtnLoading(btnId, true);
+      try {
+        const payload = {
+          bovedaId: bovedaId,
+          titulo: document.getElementById('enl-titulo-' + bovedaId).value.trim(),
+          tipoEnlace: document.getElementById('enl-tipo-' + bovedaId).value.trim() || 'Enlace Web',
+          urlAcceso: document.getElementById('enl-url-' + bovedaId).value.trim(),
+          descripcion: document.getElementById('enl-desc-' + bovedaId).value.trim()
+        };
+        const res = await gasCall('agregarEnlaceBoveda', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading(btnId, false, 'Agregar Enlace Externo');
+      }
+    }
+
+    async function eliminarRecurso(recursoId) {
+      const ok = await confirmarAccion('Eliminar Recurso', '¿Seguro deseas eliminar este recurso? Si es un archivo en Drive se moverá a la papelera y liberará su espacio en la bóveda.');
+      if (!ok) return;
+      try {
+        const res = await gasCall('eliminarRecursoBoveda', STATE.token, recursoId);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        cerrarDetalleBovedaPublica();
+        mostrarToast(res.mensaje, 'success');
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
+    function abrirModalReemplazarRecurso(bovedaId, recursoId) {
+      const bov = STATE.misBovedas.find((b) => b.bovedaId === bovedaId);
+      const rec = bov && bov.recursos ? bov.recursos.find((r) => r.recursoId === recursoId) : null;
+      if (!bov || !rec) {
+        mostrarToast('No se encontró el recurso seleccionado.', 'error');
+        return;
+      }
+      document.getElementById('mrr-boveda-id').value = bovedaId;
+      document.getElementById('mrr-recurso-id').value = recursoId;
+      document.getElementById('mrr-subtitulo').textContent = 'Bóveda: ' + bov.materia + ' · Actual: ' + rec.titulo;
+      document.getElementById('mrr-titulo').value = rec.titulo || '';
+      document.getElementById('mrr-descripcion').value = rec.descripcion || '';
+      document.getElementById('mrr-file').value = '';
+      abrirModal('modal-reemplazar-recurso');
+    }
+
+    async function enviarReemplazoArchivoBoveda(e) {
+      e.preventDefault();
+      const bId = document.getElementById('mrr-boveda-id').value;
+      const rId = document.getElementById('mrr-recurso-id').value;
+      const fileInput = document.getElementById('mrr-file');
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        mostrarToast('Selecciona el nuevo archivo.', 'warning');
+        return;
+      }
+      if (file.size > MAX_GAS_UPLOAD_BYTES) {
+        mostrarToast(
+          'El archivo (' + formatearTamano(file.size) + ') supera el límite de transferencia web de Apps Script (~25 MB).',
+          'warning'
+        );
+        return;
+      }
+
+      setBtnLoading('btn-mrr-guardar', true);
+      try {
+        const base64Data = await leerArchivoComoBase64(file);
+        const payload = {
+          bovedaId: bId,
+          recursoId: rId,
+          titulo: document.getElementById('mrr-titulo').value.trim(),
+          descripcion: document.getElementById('mrr-descripcion').value.trim(),
+          fileName: file.name,
+          mimeType: file.type || 'application/octet-stream',
+          base64Data: base64Data
+        };
+        const res = await gasCall('reemplazarArchivoBoveda', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, res.cuotaExcedida ? 'warning' : 'error');
+          return;
+        }
+        cerrarModal('modal-reemplazar-recurso');
+        cerrarDetalleBovedaPublica();
+        mostrarToast(res.mensaje, 'success');
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-mrr-guardar', false, 'Reemplazar Archivo');
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // VISTA 5: PANEL DE ADMINISTRACIÓN
+    // -----------------------------------------------------------------------
+    async function cargarDatosAdmin() {
+      try {
+        const res = await gasCall('adminListarDatos', STATE.token);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        STATE.adminAsesores = res.asesores || [];
+        STATE.adminBovedas = res.bovedas || [];
+
+        const quotaEl = document.getElementById('admin-mail-quota');
+        if (quotaEl && typeof res.cuotaCorreoRestante === 'number') {
+          quotaEl.textContent = 'Cuota MailApp hoy: ' + res.cuotaCorreoRestante + ' correos';
+          quotaEl.classList.remove('hidden');
+        }
+
+        renderAdminAsesores();
+        renderAdminBovedas();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
+    async function descargarSnapshotPublico() {
+      setBtnLoading('btn-export-snapshot', true);
+      try {
+        const res = await gasCall('getPublicSnapshot');
+        if (!res || !res.ok) {
+          mostrarToast((res && res.mensaje) || 'No se pudo generar el snapshot público.', 'error');
+          return;
+        }
+        const snapshot = {
+          generadoEn: res.generadoEn || new Date().toISOString(),
+          semanaActual: res.semanaActual || STATE.semanaActual,
+          asesores: res.asesores || [],
+          horarios: res.horarios || [],
+          bovedas: res.bovedas || []
+        };
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'public-data.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        mostrarToast('Archivo public-data.json descargado. Súbelo a la raíz del repo para actualizar el arranque estático.', 'success');
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-export-snapshot', false, 'Exportar public-data.json');
+      }
+    }
+
+    function renderAdminAsesores() {
+      const cont = document.getElementById('admin-lista-asesores');
+      if (STATE.adminAsesores.length === 0) {
+        cont.innerHTML = '<p class="text-xs text-slate-400">No hay asesores registrados.</p>';
+        return;
+      }
+      cont.innerHTML = STATE.adminAsesores.map((a) =>
+        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50/70">' +
+          '<div class="min-w-0">' +
+            '<div class="flex items-center gap-2">' +
+              '<span class="font-bold text-sm text-slate-900 truncate">' + escapeHtml(a.nombre) + '</span>' +
+              '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded ' + (a.rol === 'ADMIN' ? 'bg-amber-200 text-unexpo-900' : 'bg-blue-100 text-unexpo-900') + '">' + escapeHtml(a.rol) + '</span>' +
+            '</div>' +
+            '<p class="text-xs text-slate-500 truncate">' + escapeHtml(a.correo) + '</p>' +
+          '</div>' +
+          '<div class="flex items-center gap-2 shrink-0">' +
+            '<button type="button" data-action="admin-editar-asesor" data-id="' + escapeHtml(a.correo) + '" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100">Editar</button>' +
+            '<button type="button" data-action="admin-eliminar-asesor" data-id="' + escapeHtml(a.correo) + '" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
+          '</div>' +
+        '</div>'
+      ).join('');
+    }
+
+    function renderAdminBovedas() {
+      const cont = document.getElementById('admin-lista-bovedas');
+      if (STATE.adminBovedas.length === 0) {
+        cont.innerHTML = '<p class="text-xs text-slate-400">No hay bóvedas creadas aún.</p>';
+        return;
+      }
+      cont.innerHTML = STATE.adminBovedas.map((b) =>
+        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50/70">' +
+          '<div class="min-w-0">' +
+            '<div class="flex items-center gap-2">' +
+              '<span class="font-bold text-sm text-slate-900 truncate">' + escapeHtml(b.materia) + '</span>' +
+              '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded ' + (b.accesoPublico ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800') + '">' +
+                (b.accesoPublico ? 'Pública' : 'Protegida') +
+              '</span>' +
+            '</div>' +
+            '<p class="text-xs text-slate-500 truncate">Asesor: ' + escapeHtml(b.nombreAsesor) + ' (' + escapeHtml(b.correoAsesor) + ')</p>' +
+            '<p class="text-[11px] text-slate-400">Uso: ' + formatearTamano(b.bytesUsados) + ' / ' + formatearTamano(b.limiteBytes) + '</p>' +
+          '</div>' +
+          '<div class="flex items-center gap-2 shrink-0">' +
+            '<button type="button" data-action="admin-editar-boveda" data-id="' + escapeHtml(b.bovedaId) + '" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100">Editar</button>' +
+            '<button type="button" data-action="admin-eliminar-boveda" data-id="' + escapeHtml(b.bovedaId) + '" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
+          '</div>' +
+        '</div>'
+      ).join('');
+    }
+
+    function abrirModalAdminAsesor(correoEditar = '') {
+      const correoInput = document.getElementById('maa-correo');
+      const passInput = document.getElementById('maa-password');
+      if (correoEditar) {
+        const a = STATE.adminAsesores.find((x) => x.correo === correoEditar);
+        if (!a) return;
+        document.getElementById('maa-titulo').textContent = 'Editar Asesor';
+        document.getElementById('maa-modo').value = 'EDITAR';
+        correoInput.value = a.correo;
+        correoInput.readOnly = true;
+        correoInput.classList.add('bg-slate-100');
+        document.getElementById('maa-rol').value = a.rol;
+        document.getElementById('maa-nombre').value = a.nombre;
+        document.getElementById('maa-contacto').value = a.contacto || '';
+        document.getElementById('maa-descripcion').value = a.descripcion || '';
+        document.getElementById('maa-pass-label').textContent = 'Nueva contraseña (opcional; dejar vacío para mantener)';
+        passInput.value = '';
+        passInput.required = false;
+      } else {
+        document.getElementById('maa-titulo').textContent = 'Registrar Nuevo Asesor';
+        document.getElementById('maa-modo').value = 'CREAR';
+        correoInput.value = '';
+        correoInput.readOnly = false;
+        correoInput.classList.remove('bg-slate-100');
+        document.getElementById('maa-rol').value = 'ASESOR';
+        document.getElementById('maa-nombre').value = '';
+        document.getElementById('maa-contacto').value = '';
+        document.getElementById('maa-descripcion').value = '';
+        document.getElementById('maa-pass-label').textContent = 'Contraseña inicial (mín. 6 caracteres)';
+        passInput.value = '';
+        passInput.required = true;
+      }
+      abrirModal('modal-admin-asesor');
+    }
+
+    async function guardarAdminAsesor(e) {
+      e.preventDefault();
+      const payload = {
+        modo: document.getElementById('maa-modo').value,
+        correo: document.getElementById('maa-correo').value.trim(),
+        rol: document.getElementById('maa-rol').value,
+        nombre: document.getElementById('maa-nombre').value.trim(),
+        password: document.getElementById('maa-password').value,
+        contacto: document.getElementById('maa-contacto').value.trim(),
+        descripcion: document.getElementById('maa-descripcion').value.trim()
+      };
+      setBtnLoading('btn-maa-guardar', true);
+      try {
+        const res = await gasCall('adminGuardarAsesor', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        cerrarModal('modal-admin-asesor');
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosAdmin();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-maa-guardar', false, 'Guardar Asesor');
+      }
+    }
+
+    async function eliminarAsesorAdmin(correo) {
+      const ok = await confirmarAccion('Eliminar Asesor', '¿Seguro deseas eliminar al asesor ' + correo + '?');
+      if (!ok) return;
+      try {
+        const res = await gasCall('adminEliminarAsesor', STATE.token, correo);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosAdmin();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
+    function toggleCampoClaveAdminBoveda() {
+      const publico = document.getElementById('mab-publico').value === 'true';
+      document.getElementById('mab-clave-wrap').classList.toggle('hidden', publico);
+    }
+
+    function abrirModalAdminBoveda(bovedaId = '') {
+      const selectAsesor = document.getElementById('mab-asesor');
+      selectAsesor.innerHTML = STATE.adminAsesores.map((a) =>
+        '<option value="' + escapeHtml(a.correo) + '">' + escapeHtml(a.nombre) + ' (' + escapeHtml(a.correo) + ')</option>'
+      ).join('');
+
+      if (bovedaId) {
+        const b = STATE.adminBovedas.find((x) => x.bovedaId === bovedaId);
+        if (!b) return;
+        document.getElementById('mab-titulo').textContent = 'Editar Bóveda / Materia';
+        document.getElementById('mab-id').value = b.bovedaId;
+        document.getElementById('mab-materia').value = b.materia;
+        selectAsesor.value = b.correoAsesor;
+        document.getElementById('mab-publico').value = b.accesoPublico ? 'true' : 'false';
+        document.getElementById('mab-limite').value = b.limiteBytes;
+        document.getElementById('mab-clave').value = '';
+      } else {
+        document.getElementById('mab-titulo').textContent = 'Crear y Asignar Bóveda';
+        document.getElementById('mab-id').value = '';
+        document.getElementById('mab-materia').value = '';
+        document.getElementById('mab-publico').value = 'true';
+        document.getElementById('mab-limite').value = 524288000;
+        document.getElementById('mab-clave').value = '';
+      }
+      toggleCampoClaveAdminBoveda();
+      abrirModal('modal-admin-boveda');
+    }
+
+    async function guardarAdminBoveda(e) {
+      e.preventDefault();
+      const payload = {
+        bovedaId: document.getElementById('mab-id').value,
+        materia: document.getElementById('mab-materia').value.trim(),
+        correoAsesor: document.getElementById('mab-asesor').value,
+        accesoPublico: document.getElementById('mab-publico').value === 'true',
+        limiteBytes: Number(document.getElementById('mab-limite').value || 524288000),
+        claveBoveda: document.getElementById('mab-clave').value.trim()
+      };
+      setBtnLoading('btn-mab-guardar', true);
+      try {
+        const res = await gasCall('adminGuardarBoveda', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        cerrarModal('modal-admin-boveda');
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosAdmin();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-mab-guardar', false, 'Guardar Bóveda');
+      }
+    }
+
+    async function eliminarBovedaAdmin(bovedaId) {
+      const ok = await confirmarAccion('Eliminar Bóveda', '¿Seguro deseas eliminar esta bóveda y todos sus recursos asociados?');
+      if (!ok) return;
+      try {
+        const res = await gasCall('adminEliminarBoveda', STATE.token, bovedaId);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosAdmin();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>
+
