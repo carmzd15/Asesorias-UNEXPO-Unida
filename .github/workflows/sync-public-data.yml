@@ -1,0 +1,58 @@
+name: Sincronizar Snapshot Público UNEXPO
+
+on:
+  repository_dispatch:
+    types: [sync-public-data]
+  workflow_dispatch:
+  schedule:
+    # Respaldo cada 6 horas por si falla algún webhook puntual
+    - cron: '0 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  sync-snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: Descargar snapshot público desde Google Apps Script
+        env:
+          APPS_SCRIPT_URL: ${{ vars.APPS_SCRIPT_API_URL }}
+        run: |
+          if [ -z "$APPS_SCRIPT_URL" ]; then
+            echo "Falta configurar la variable de repositorio APPS_SCRIPT_API_URL en GitHub."
+            exit 1
+          fi
+          curl -sSL -f "${APPS_SCRIPT_URL}?action=getPublicSnapshot" -o raw-snapshot.json
+          node -e '
+            const fs = require("fs");
+            const data = JSON.parse(fs.readFileSync("raw-snapshot.json", "utf8"));
+            if (!data || data.ok !== true) {
+              console.error("Respuesta inválida de Apps Script:", data);
+              process.exit(1);
+            }
+            const clean = {
+              generadoEn: data.generadoEn || new Date().toISOString(),
+              semanaActual: data.semanaActual || "",
+              asesores: Array.isArray(data.asesores) ? data.asesores : [],
+              horarios: Array.isArray(data.horarios) ? data.horarios : [],
+              bovedas: Array.isArray(data.bovedas) ? data.bovedas : []
+            };
+            fs.writeFileSync("public-data.json", JSON.stringify(clean, null, 2) + "\n");
+          '
+          rm -f raw-snapshot.json
+
+      - name: Publicar cambios en public-data.json si hubo actualizaciones
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public-data.json
+          if git diff --staged --quiet; then
+            echo "Sin cambios en public-data.json"
+          else
+            git commit -m "chore: actualizar snapshot público desde Google Sheets"
+            git push
+          fi
