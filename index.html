@@ -2782,7 +2782,6 @@
       const fileWrap = document.getElementById('mrb-arch-file-wrap');
       if (fileWrap) fileWrap.classList.remove('hidden');
 
-    async function enviarRecursoModalBoveda(e) {
 
       document.getElementById('mrb-wrap-archivo').classList.toggle('hidden', tipo !== 'ARCHIVO');
       document.getElementById('mrb-wrap-enlace').classList.toggle('hidden', tipo !== 'ENLACE');
@@ -2798,6 +2797,8 @@
       document.getElementById('btn-mrb-guardar').textContent = 'Publicar en Bóveda';
       abrirModal('modal-recurso-boveda');
     }
+
+    async function enviarRecursoModalBoveda(e) {
 
       e.preventDefault();
       const rIdEdit = document.getElementById('mrb-recurso-id').value.trim();
