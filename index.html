@@ -452,6 +452,7 @@
           </div>
           <div id="admin-lista-bovedas" class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1"></div>
         </div>
+      </div>
 
       <!-- GESTIÓN GLOBAL DE HORARIOS (ADMIN) -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
@@ -467,9 +468,8 @@
         </div>
         <div id="admin-lista-horarios" class="space-y-2.5 max-h-[480px] overflow-y-auto pr-1"></div>
       </div>
-
-      </div>
     </section>
+
   </main>
 
   <footer class="bg-white border-t border-slate-200 py-4 mt-10">
@@ -763,6 +763,8 @@
         </div>
       </form>
     </div>
+  </div>
+
 
   <!-- MODAL ADMIN: EDITAR HORARIO -->
   <div id="modal-admin-horario" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4 overflow-y-auto">
@@ -848,9 +850,6 @@
       </form>
     </div>
   </div>
-
-  </div>
-
   <!-- MODAL ASESOR: REEMPLAZAR ARCHIVO DE BÓVEDA -->
   <div id="modal-reemplazar-recurso" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
@@ -1031,10 +1030,10 @@
         if (modalConfirm && !modalConfirm.classList.contains('hidden') && cancelConfirm) {
           cancelConfirm.click();
           return;
+        }
         ['modal-login', 'modal-perfil-asesor', 'modal-choque', 'modal-clave-boveda', 'modal-admin-asesor', 'modal-admin-boveda', 'modal-admin-horario', 'modal-reemplazar-recurso', 'modal-estructura-boveda', 'modal-recurso-boveda'].forEach((id) => {
-
-        ['modal-login', 'modal-perfil-asesor', 'modal-choque', 'modal-clave-boveda', 'modal-admin-asesor', 'modal-admin-boveda', 'modal-reemplazar-recurso', 'modal-estructura-boveda', 'modal-recurso-boveda'].forEach((id) => {
           const el = document.getElementById(id);
+
           if (el && !el.classList.contains('hidden')) cerrarModal(id);
         });
       });
@@ -1065,7 +1064,9 @@
         } else if (act === 'mover-recurso-arriba') {
           moverOrdenRecurso(id, 'ARRIBA');
         } else if (act === 'mover-recurso-abajo') {
+          moverOrdenRecurso(id, 'ABAJO');
         } else if (act === 'abrir-nueva-unidad') {
+
           abrirModalEstructuraBoveda(id, 'UNIDAD', '');
         } else if (act === 'abrir-nuevo-tema') {
           abrirModalEstructuraBoveda(extra, 'TEMA', id);
@@ -1091,9 +1092,8 @@
           eliminarHorarioAdmin(id);
         }
       });
-
-      });
     }
+
 
 
     function actualizarEstadoSyncBadge(texto, estilo = 'neutral') {
@@ -2561,8 +2561,10 @@
               : '') +
             (idx < total - 1
               ? '<button type="button" data-action="mover-recurso-abajo" data-id="' + rId + '" title="Bajar" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700">&darr;</button>'
+              : '') +
             (safeUrl
               ? '<a href="' + escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100">Abrir</a>'
+
               : '') +
             '<button type="button" data-action="editar-recurso" data-extra="' + bId + '" data-id="' + rId + '" class="px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-xs font-semibold text-unexpo-900 hover:bg-blue-100">Editar</button>' +
             (esArch
@@ -2613,6 +2615,7 @@
                         '<span class="text-[10px] font-bold uppercase text-unexpo-600">Tema ' + (tIdx + 1) + '</span>' +
                         '<h5 class="font-bold text-sm text-slate-900">' + escapeHtml(t.titulo) + '</h5>' +
                         (t.descripcion ? '<p class="text-xs text-slate-600 mt-0.5 whitespace-pre-line">' + escapeHtml(t.descripcion) + '</p>' : '') +
+                      '</div>' +
                       '<div class="flex flex-wrap items-center gap-1.5 shrink-0">' +
                         (tIdx > 0 ? '<button type="button" data-action="mover-recurso-arriba" data-id="' + tId + '" class="px-2 py-1 rounded bg-white border border-slate-300 text-xs font-bold">&uarr;</button>' : '') +
                         (tIdx < uNode.temas.length - 1 ? '<button type="button" data-action="mover-recurso-abajo" data-id="' + tId + '" class="px-2 py-1 rounded bg-white border border-slate-300 text-xs font-bold">&darr;</button>' : '') +
@@ -2622,9 +2625,8 @@
                         '<button type="button" data-action="abrir-modal-recurso" data-extra="' + bId + '" data-sub="' + uId + '" data-id="' + tId + '" data-tipo="TEXTO" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold">+ Párrafo/Nota</button>' +
                         '<button type="button" data-action="eliminar-recurso" data-id="' + tId + '" class="px-2 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
                       '</div>' +
-
-                      '</div>' +
                     '</div>' +
+
                     '<div class="space-y-2">' + itemsHtml + '</div>' +
                   '</div>'
                 );
@@ -2637,6 +2639,7 @@
                   '<span class="inline-block px-2 py-0.5 rounded bg-unexpo-900 text-white text-[10px] font-bold uppercase mb-1">Unidad ' + (uIdx + 1) + '</span>' +
                   '<h4 class="text-base font-extrabold text-slate-900">' + escapeHtml(u.titulo) + '</h4>' +
                   (u.descripcion ? '<p class="text-xs text-slate-600 mt-0.5 whitespace-pre-line">' + escapeHtml(u.descripcion) + '</p>' : '') +
+                '</div>' +
                 '<div class="flex flex-wrap items-center gap-1.5 shrink-0">' +
                   (uIdx > 0 ? '<button type="button" data-action="mover-recurso-arriba" data-id="' + uId + '" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-xs font-bold">&uarr;</button>' : '') +
                   (uIdx < arbol.unidades.length - 1 ? '<button type="button" data-action="mover-recurso-abajo" data-id="' + uId + '" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-xs font-bold">&darr;</button>' : '') +
@@ -2644,9 +2647,8 @@
                   '<button type="button" data-action="abrir-nuevo-tema" data-extra="' + bId + '" data-id="' + uId + '" class="px-3 py-1 rounded-lg bg-blue-100 hover:bg-blue-200 text-unexpo-900 text-xs font-bold">+ Nuevo Tema</button>' +
                   '<button type="button" data-action="eliminar-recurso" data-id="' + uId + '" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar Unidad</button>' +
                 '</div>' +
-
-                '</div>' +
               '</div>' +
+
               '<div class="space-y-3">' + temasHtml + '</div>' +
             '</div>'
           );
@@ -2746,7 +2748,6 @@
       };
       setBtnLoading('btn-meb-guardar', true);
 
-      setBtnLoading('btn-meb-guardar', true);
       try {
         const res = await gasCall('guardarEstructuraBoveda', STATE.token, payload);
         if (!res.ok) {
@@ -2796,8 +2797,6 @@
       abrirModal('modal-recurso-boveda');
     }
 
-    }
-    async function enviarRecursoModalBoveda(e) {
       e.preventDefault();
       const rIdEdit = document.getElementById('mrb-recurso-id').value.trim();
       const bId = document.getElementById('mrb-boveda-id').value;
@@ -2888,8 +2887,6 @@
       } finally {
         setBtnLoading('btn-mrb-guardar', false, rIdEdit ? 'Guardar Cambios' : 'Publicar en Bóveda');
       }
-    }
-
     }
 
 
@@ -3163,8 +3160,10 @@
         if (!res.ok) {
           mostrarToast(res.mensaje, 'error');
           return;
+        }
         STATE.adminAsesores = res.asesores || [];
         STATE.adminBovedas = res.bovedas || [];
+
         STATE.adminHorarios = res.horarios || [];
 
         const quotaEl = document.getElementById('admin-mail-quota');
@@ -3254,15 +3253,15 @@
             '</div>' +
             '<p class="text-xs text-slate-500 truncate">Asesor: ' + escapeHtml(b.nombreAsesor) + ' (' + escapeHtml(b.correoAsesor) + ')</p>' +
             '<p class="text-[11px] text-slate-400">Uso: ' + formatearTamano(b.bytesUsados) + ' / ' + formatearTamano(b.limiteBytes) + '</p>' +
+          '</div>' +
           '<div class="flex items-center gap-2 shrink-0">' +
             '<button type="button" data-action="admin-abrir-boveda" data-id="' + escapeHtml(b.bovedaId) + '" class="px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-xs font-semibold text-unexpo-900 hover:bg-blue-100">Contenido</button>' +
             '<button type="button" data-action="admin-editar-boveda" data-id="' + escapeHtml(b.bovedaId) + '" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100">Editar</button>' +
             '<button type="button" data-action="admin-eliminar-boveda" data-id="' + escapeHtml(b.bovedaId) + '" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
           '</div>' +
-
-          '</div>' +
         '</div>'
       ).join('');
+    }
 
     function renderAdminHorarios() {
       const cont = document.getElementById('admin-lista-horarios');
@@ -3440,8 +3439,6 @@
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }
-
     }
 
     function abrirModalAdminAsesor(correoEditar = '') {
