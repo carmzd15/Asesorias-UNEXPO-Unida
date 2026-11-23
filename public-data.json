@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T22:58:44.654Z",
+  "generadoEn": "2026-11-23T23:00:00.296Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -113,6 +113,21 @@
       "nombreAsesor": "Mikhael Goitia",
       "estadoChoque": "OK",
       "timestamp": "2026-11-23T22:39:53.533Z"
+    },
+    {
+      "id": "HOR-CFEBF814",
+      "semana": "2026-W48",
+      "sede": "Yaguaral",
+      "piso": "Piso 3",
+      "salon": "Salón de Sistemas",
+      "dia": "Jueves",
+      "horaInicio": "09:00",
+      "horaFin": "10:00",
+      "materia": "Sistemas Eléctricos I",
+      "asesorId": "ASE-3C0D71A17962",
+      "nombreAsesor": "Andreina Marquez",
+      "estadoChoque": "OK",
+      "timestamp": "2026-11-23T22:59:45.708Z"
     }
   ],
   "bovedas": [
