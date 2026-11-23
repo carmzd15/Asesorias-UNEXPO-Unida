@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:45:59.220Z",
+  "generadoEn": "2026-11-23T12:46:30.576Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -210,6 +210,19 @@
       "bytesUsados": 0,
       "totalRecursos": 0,
       "actualizadoEn": "2026-11-23T12:45:44.172Z",
+      "recursos": []
+    },
+    {
+      "bovedaId": "BOV-F97F745D",
+      "materia": "Sistemas Digitales I",
+      "asesorId": "ASE-F7B7467B80BC",
+      "nombreAsesor": "Adrián Vieira",
+      "accesoPublico": true,
+      "tieneClave": false,
+      "limiteBytes": 524288000,
+      "bytesUsados": 0,
+      "totalRecursos": 0,
+      "actualizadoEn": "2026-11-23T12:46:17.266Z",
       "recursos": []
     }
   ]
