@@ -2782,6 +2782,8 @@
       const fileWrap = document.getElementById('mrb-arch-file-wrap');
       if (fileWrap) fileWrap.classList.remove('hidden');
 
+    async function enviarRecursoModalBoveda(e) {
+
       document.getElementById('mrb-wrap-archivo').classList.toggle('hidden', tipo !== 'ARCHIVO');
       document.getElementById('mrb-wrap-enlace').classList.toggle('hidden', tipo !== 'ENLACE');
       document.getElementById('mrb-wrap-texto').classList.toggle('hidden', tipo !== 'TEXTO');
