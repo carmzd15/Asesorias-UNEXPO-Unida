@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T13:05:59.410Z",
+  "generadoEn": "2026-11-23T13:15:27.487Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -83,7 +83,23 @@
       "infoAdicional": ""
     }
   ],
-  "horarios": [],
+  "horarios": [
+    {
+      "id": "HOR-12AD9D80",
+      "semana": "2026-W48",
+      "sede": "Yaguaral",
+      "piso": "Piso 3",
+      "salon": "Salón de Sistemas",
+      "dia": "Viernes",
+      "horaInicio": "12:00",
+      "horaFin": "14:00",
+      "materia": "Sistemas Eléctricos I",
+      "asesorId": "ASE-1DB4D4F311FA",
+      "nombreAsesor": "Jhaxel Hernandes",
+      "estadoChoque": "OK",
+      "timestamp": "2026-11-23T13:15:08.895Z"
+    }
+  ],
   "bovedas": [
     {
       "bovedaId": "BOV-5F37E46E",
