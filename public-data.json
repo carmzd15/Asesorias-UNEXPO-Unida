@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:45:23.648Z",
+  "generadoEn": "2026-11-23T12:45:59.220Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -197,6 +197,19 @@
       "bytesUsados": 0,
       "totalRecursos": 0,
       "actualizadoEn": "2026-11-23T12:45:08.823Z",
+      "recursos": []
+    },
+    {
+      "bovedaId": "BOV-3ADA7464",
+      "materia": "Sistemas de Señales",
+      "asesorId": "ASE-A7D43651CD6A",
+      "nombreAsesor": "Mikhael Goitia",
+      "accesoPublico": true,
+      "tieneClave": false,
+      "limiteBytes": 524288000,
+      "bytesUsados": 0,
+      "totalRecursos": 0,
+      "actualizadoEn": "2026-11-23T12:45:44.172Z",
       "recursos": []
     }
   ]
