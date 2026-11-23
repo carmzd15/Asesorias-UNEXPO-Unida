@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T10:54:37.817Z",
+  "generadoEn": "2026-11-23T12:23:11.880Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -23,7 +23,23 @@
       "infoAdicional": ""
     }
   ],
-  "horarios": [],
+  "horarios": [
+    {
+      "id": "HOR-F8252AFB",
+      "semana": "2026-W48",
+      "sede": "Yaguaral",
+      "piso": "Sótano",
+      "salon": "Area 51",
+      "dia": "Viernes",
+      "horaInicio": "16:00",
+      "horaFin": "19:00",
+      "materia": "Hidratación III",
+      "asesorId": "ASE-A796C0521F84",
+      "nombreAsesor": "Administrador",
+      "estadoChoque": "OK",
+      "timestamp": "2026-11-23T12:22:59.728Z"
+    }
+  ],
   "bovedas": [
     {
       "bovedaId": "BOV-5F37E46E",
