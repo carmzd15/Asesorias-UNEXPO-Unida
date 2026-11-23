@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:33:57.289Z",
+  "generadoEn": "2026-11-23T12:35:01.963Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -45,6 +45,16 @@
     {
       "asesorId": "ASE-A7D43651CD6A",
       "nombre": "Mikhael Goitia",
+      "rol": "ASESOR",
+      "esAdmin": false,
+      "fotoUrl": "",
+      "descripcion": "",
+      "contacto": "",
+      "infoAdicional": ""
+    },
+    {
+      "asesorId": "ASE-1DB4D4F311FA",
+      "nombre": "Jhaxel Hernandes",
       "rol": "ASESOR",
       "esAdmin": false,
       "fotoUrl": "",
