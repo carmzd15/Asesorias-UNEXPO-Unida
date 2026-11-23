@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T23:09:57.944Z",
+  "generadoEn": "2026-11-23T23:15:58.365Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -229,7 +229,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 9370524,
       "totalRecursos": 1,
-      "actualizadoEn": "2026-11-23T23:09:42.852Z",
+      "actualizadoEn": "2026-11-23T23:15:46.406Z",
       "recursos": [
         {
           "recursoId": "UNI-0A74B5E5",
@@ -277,6 +277,22 @@
           "unidadId": "UNI-0A74B5E5",
           "temaId": "TEM-06579166",
           "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-298B3C8C",
+          "bovedaId": "BOV-BA0D9CF7",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Circuitos Electricos - Paso a paso desde 0",
+          "descripcion": "Curso completo, videos altamente recomendados",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T23:15:46.406Z",
+          "unidadId": "UNI-0A74B5E5",
+          "temaId": "",
+          "orden": 2,
           "contenidoTexto": ""
         }
       ]
