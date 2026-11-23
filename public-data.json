@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T10:49:29.114Z",
+  "generadoEn": "2026-11-23T10:51:27.879Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -83,6 +83,21 @@
       "nombreAsesor": "Administrador",
       "estadoChoque": "OK",
       "timestamp": "2026-11-23T10:43:38.134Z"
+    },
+    {
+      "id": "HOR-95909089",
+      "semana": "2026-W48",
+      "sede": "Yaguaral",
+      "piso": "Piso 2",
+      "salon": "Aula 51",
+      "dia": "Miércoles",
+      "horaInicio": "16:00",
+      "horaFin": "19:00",
+      "materia": "TinocoTrucoCOnELALCOLTIMETRO",
+      "asesorId": "ASE-A796C0521F84",
+      "nombreAsesor": "Administrador",
+      "estadoChoque": "OK",
+      "timestamp": "2026-11-23T10:51:11.756Z"
     }
   ],
   "bovedas": [
