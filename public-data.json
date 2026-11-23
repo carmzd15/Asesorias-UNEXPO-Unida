@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:23:11.880Z",
+  "generadoEn": "2026-11-23T12:32:04.462Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -20,6 +20,16 @@
       "fotoUrl": "https://drive.google.com/thumbnail?id=1jJKPjRDGV_CTPCRTOOHqlxGobVBWn4Qx&sz=w600",
       "descripcion": "Estudiante de Ingeniería de Sistemas, 7mo Semestre, Coordinador de Asesorías y Asesor de Electrónica I",
       "contacto": "0412-6136462",
+      "infoAdicional": ""
+    },
+    {
+      "asesorId": "ASE-3C0D71A17962",
+      "nombre": "Andreina Marquez",
+      "rol": "ASESOR",
+      "esAdmin": false,
+      "fotoUrl": "",
+      "descripcion": "",
+      "contacto": "",
       "infoAdicional": ""
     }
   ],
