@@ -6,7 +6,6 @@
   <title>UNEXPO | Asesorías Académicas y Bóveda Virtual</title>
   <link rel="icon" type="image/png" href="./assets/logo-unexpo.png" />
 
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
@@ -76,7 +75,6 @@
             <p class="text-xs text-blue-200 hidden sm:block">Horarios Estudiantiles y Bóveda Virtual</p>
           </div>
         </div>
-
 
         <!-- Navegación -->
         <nav class="flex flex-wrap items-center gap-1 sm:gap-2 order-3 lg:order-2 w-full lg:w-auto justify-center border-t border-blue-800/60 pt-2 lg:border-t-0 lg:pt-0">
@@ -267,6 +265,9 @@
           <form id="form-nuevo-horario" onsubmit="enviarFormularioHorario(event)" class="space-y-3.5">
             <div>
               <label class="block text-xs font-semibold text-slate-600 mb-1">Semana</label>
+              <input id="hor-semana" type="week" onchange="actualizarEtiquetaSemanaForm()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+              <p id="hor-semana-legible" class="text-[11px] text-slate-400 mt-1"></p>
+            </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-xs font-semibold text-slate-600 mb-1">Sede</label>
@@ -323,10 +324,6 @@
               <input id="hor-materia" type="text" list="lista-materias-bovedas" required autocomplete="off" placeholder="Escribe para buscar o ingresar materia..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
               <datalist id="lista-materias-bovedas"></datalist>
               <p id="hor-materia-hint" class="text-[11px] text-slate-400 mt-1">Sugerencia automática según las bóvedas virtuales registradas.</p>
-            </div>
-
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Materia / Asignatura</label>
-              <input id="hor-materia" type="text" required placeholder="Ej: Cálculo II, Física I, Programación..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
             </div>
             <button id="btn-guardar-horario" type="submit" class="w-full bg-unexpo-900 hover:bg-unexpo-800 text-white font-semibold py-2.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
               Guardar Horario
@@ -1577,49 +1574,6 @@
       }).join('');
     }
 
-      const q = document.getElementById('filtro-asesores').value.trim().toLowerCase();
-      const lista = STATE.asesores.filter((a) => {
-        if (!q) return true;
-        return (a.nombre + ' ' + a.descripcion).toLowerCase().includes(q);
-      });
-
-      const grid = document.getElementById('grid-asesores');
-      if (lista.length === 0) {
-        grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 text-sm">No se encontraron asesores.</div>';
-        return;
-      }
-
-      grid.innerHTML = lista.map((a) => {
-        const iniciales = (a.nombre || 'A').trim().slice(0, 2).toUpperCase();
-        const fotoSafe = sanitizeUrl(a.fotoUrl);
-        const avatar = fotoSafe
-          ? '<img src="' + escapeHtml(fotoSafe) + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" class="w-14 h-14 rounded-2xl object-cover border border-slate-200" />' +
-            '<div style="display:none" class="w-14 h-14 rounded-2xl bg-unexpo-900 text-white items-center justify-center font-bold text-lg">' + escapeHtml(iniciales) + '</div>'
-          : '<div class="w-14 h-14 rounded-2xl bg-unexpo-900 text-white flex items-center justify-center font-bold text-lg">' + escapeHtml(iniciales) + '</div>';
-
-        const bovedasAsesor = STATE.bovedas.filter((b) => b.asesorId === a.asesorId);
-
-        return (
-          '<div data-action="ver-perfil" data-id="' + escapeHtml(a.asesorId) + '" class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-unexpo-600 transition cursor-pointer flex flex-col justify-between gap-3">' +
-            '<div class="flex items-start gap-3.5">' +
-              avatar +
-              '<div class="min-w-0 flex-1">' +
-                '<h3 class="font-bold text-slate-900 truncate">' + escapeHtml(a.nombre) + '</h3>' +
-                '<span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-unexpo-900">' + escapeHtml(a.rol) + '</span>' +
-              '</div>' +
-            '</div>' +
-            '<p class="text-xs text-slate-600 line-clamp-3">' +
-              escapeHtml(a.descripcion || 'Sin descripción técnica registrada.') +
-            '</p>' +
-            '<div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">' +
-              '<span class="text-slate-500">' + bovedasAsesor.length + ' bóveda(s)</span>' +
-              '<span class="font-semibold text-unexpo-600">Ver Perfil Completo &rarr;</span>' +
-            '</div>' +
-          '</div>'
-        );
-      }).join('');
-    }
-
     function abrirPerfilAsesor(asesorId) {
       const a = STATE.asesores.find((x) =>
         x.asesorId === asesorId ||
@@ -1658,53 +1612,6 @@
       const bovedasAsesor = STATE.bovedas.filter((b) =>
         (a.asesorId && b.asesorId === a.asesorId) || b.nombreAsesor === a.nombre
       );
-      const bovWrap = document.getElementById('mp-bovedas-wrap');
-      const bovList = document.getElementById('mp-bovedas-list');
-      if (bovedasAsesor.length > 0) {
-        bovWrap.classList.remove('hidden');
-        bovList.innerHTML = bovedasAsesor.map((b) =>
-          '<button type="button" data-action="ir-boveda" data-id="' + escapeHtml(b.bovedaId) + '" class="px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold hover:bg-amber-100">' +
-            escapeHtml(b.materia) + (b.accesoPublico ? ' (Pública)' : ' (Protegida)') +
-          '</button>'
-        ).join('');
-      } else {
-        bovWrap.classList.add('hidden');
-      }
-
-      abrirModal('modal-perfil-asesor');
-    }
-
-      const a = STATE.asesores.find((x) => x.asesorId === asesorId || (x.correo && x.correo === asesorId));
-      if (!a) {
-        mostrarToast('No se encontró la información del asesor.', 'warning');
-        return;
-      }
-
-      const wrap = document.getElementById('mp-avatar-wrap');
-      const iniciales = (a.nombre || 'A').trim().slice(0, 2).toUpperCase();
-      const fotoSafe = sanitizeUrl(a.fotoUrl);
-      if (fotoSafe) {
-        wrap.innerHTML = '';
-        const imgEl = document.createElement('img');
-        imgEl.src = fotoSafe;
-        imgEl.alt = a.nombre || 'Asesor';
-        imgEl.className = 'w-full h-full object-cover';
-        imgEl.onerror = () => { wrap.textContent = iniciales; };
-        wrap.appendChild(imgEl);
-      } else {
-        wrap.textContent = iniciales;
-      }
-
-      document.getElementById('mp-nombre').textContent = a.nombre;
-      const mpCorreo = document.getElementById('mp-correo');
-      mpCorreo.textContent = '';
-      mpCorreo.classList.add('hidden');
-
-      document.getElementById('mp-descripcion').textContent = a.descripcion || 'No especificada.';
-      document.getElementById('mp-contacto').textContent = a.contacto || 'No especificado.';
-      document.getElementById('mp-info').textContent = a.infoAdicional || 'Sin información adicional.';
-
-      const bovedasAsesor = STATE.bovedas.filter((b) => b.asesorId === a.asesorId);
       const bovWrap = document.getElementById('mp-bovedas-wrap');
       const bovList = document.getElementById('mp-bovedas-list');
       if (bovedasAsesor.length > 0) {
@@ -1779,114 +1686,34 @@
         abrirModal('modal-clave-boveda');
         return;
       }
-    function inicializarFormularioHorario() {
-      const inputSemana = document.getElementById('hor-semana');
-      if (STATE.semanaActual && !inputSemana.value) {
-        inputSemana.value = STATE.semanaActual;
+
+      if (b.accesoPublico && Array.isArray(b.recursos)) {
+        mostrarDetalleBovedaPublica(b, b.recursos);
       }
-      actualizarEtiquetaSemanaForm();
-      aplicarReglasUbicacionHorario();
-      actualizarDatalistMaterias();
-    }
 
-    function actualizarDatalistMaterias() {
-      const datalist = document.getElementById('lista-materias-bovedas');
-      const hint = document.getElementById('hor-materia-hint');
-      if (!datalist) return;
-
-      const materiasUnicas = Array.from(new Set(
-        (STATE.bovedas || [])
-          .map((b) => String(b.materia || '').trim())
-          .filter(Boolean)
-      )).sort((a, b) => a.localeCompare(b, 'es'));
-
-      datalist.innerHTML = materiasUnicas
-        .map((m) => '<option value="' + escapeHtml(m) + '"></option>')
-        .join('');
-
-      if (hint) {
-        hint.textContent = materiasUnicas.length > 0
-          ? materiasUnicas.length + ' materia(s) registrada(s) en Bóveda Virtual disponibles como sugerencia.'
-          : 'Aún no hay materias en Bóveda Virtual; puedes escribir el nombre manualmente.';
-      }
-    }
-
-    function actualizarEtiquetaSemanaForm() {
-      const val = document.getElementById('hor-semana').value;
-      document.getElementById('hor-semana-legible').textContent = val ? describirSemana(val) : '';
-    }
-
-    function aplicarReglasUbicacionHorario() {
-      const sede = document.getElementById('hor-sede').value;
-      const pisoSelect = document.getElementById('hor-piso');
-      const optNoAplica = document.getElementById('opt-piso-no-aplica');
-      const salonInput = document.getElementById('hor-salon');
-      const badge = document.getElementById('badge-piso3');
-
-      if (sede === 'Km 0') {
-        if (optNoAplica) optNoAplica.classList.remove('hidden');
-        pisoSelect.value = 'No aplica';
-        pisoSelect.disabled = true;
-        pisoSelect.classList.add('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
-
-        salonInput.readOnly = false;
-        salonInput.disabled = false;
-        salonInput.classList.remove('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
-        badge.classList.add('hidden');
-        if (salonInput.value === 'Salón de Sistemas') {
-          salonInput.value = '';
+      try {
+        const res = await gasCall('obtenerRecursosBovedaPublica', bovedaId, clave);
+        if (!res.ok) {
+          if (!b.accesoPublico || !Array.isArray(b.recursos)) {
+            mostrarToast(res.mensaje, 'error');
+          }
+          return;
         }
-        return;
-      }
-
-      // Sede Yaguaral: habilitar Sótano, Planta Baja y Piso 1..7
-      if (optNoAplica) optNoAplica.classList.add('hidden');
-      pisoSelect.disabled = false;
-      pisoSelect.classList.remove('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
-      if (!pisoSelect.value || pisoSelect.value === 'No aplica') {
-        pisoSelect.value = 'Planta Baja';
-      }
-
-      if (pisoSelect.value === 'Piso 3') {
-        salonInput.value = 'Salón de Sistemas';
-        salonInput.readOnly = true;
-        salonInput.disabled = true;
-        salonInput.classList.add('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
-        badge.classList.remove('hidden');
-      } else {
-        salonInput.readOnly = false;
-        salonInput.disabled = false;
-        salonInput.classList.remove('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
-        badge.classList.add('hidden');
-        if (salonInput.value === 'Salón de Sistemas') {
-          salonInput.value = '';
+        cerrarModal('modal-clave-boveda');
+        mostrarDetalleBovedaPublica(res.boveda, res.recursos);
+      } catch (err) {
+        if (!b.accesoPublico || !Array.isArray(b.recursos)) {
+          mostrarToast(err.message, 'error');
         }
       }
     }
 
-    function aplicarReglaPiso3() {
-      aplicarReglasUbicacionHorario();
-    }
-
-    async function enviarFormularioHorario(e) {
+    async function desbloquearBovedaPublica(e) {
       e.preventDefault();
-      const sede = document.getElementById('hor-sede').value;
-      const piso = sede === 'Km 0' ? 'No aplica' : document.getElementById('hor-piso').value;
-      const salon = (sede === 'Yaguaral' && piso === 'Piso 3')
-        ? 'Salón de Sistemas'
-        : document.getElementById('hor-salon').value.trim();
-
-      const payload = {
-        semana: document.getElementById('hor-semana').value,
-        sede: sede,
-        piso: piso,
-        salon: salon,
-        dia: document.getElementById('hor-dia').value,
-        horaInicio: document.getElementById('hor-inicio').value,
-        horaFin: document.getElementById('hor-fin').value,
-        materia: document.getElementById('hor-materia').value.trim()
-      };
-
+      const bId = document.getElementById('mcb-boveda-id').value;
+      const clave = document.getElementById('mcb-clave').value;
+      setBtnLoading('btn-desbloquear-boveda', true);
+      try {
         await abrirBovedaPublica(bId, clave);
       } finally {
         setBtnLoading('btn-desbloquear-boveda', false, 'Desbloquear Bóveda');
@@ -1973,7 +1800,30 @@
         inputSemana.value = STATE.semanaActual;
       }
       actualizarEtiquetaSemanaForm();
-      aplicarReglaPiso3();
+      aplicarReglasUbicacionHorario();
+      actualizarDatalistMaterias();
+    }
+
+    function actualizarDatalistMaterias() {
+      const datalist = document.getElementById('lista-materias-bovedas');
+      const hint = document.getElementById('hor-materia-hint');
+      if (!datalist) return;
+
+      const materiasUnicas = Array.from(new Set(
+        (STATE.bovedas || [])
+          .map((b) => String(b.materia || '').trim())
+          .filter(Boolean)
+      )).sort((a, b) => a.localeCompare(b, 'es'));
+
+      datalist.innerHTML = materiasUnicas
+        .map((m) => '<option value="' + escapeHtml(m) + '"></option>')
+        .join('');
+
+      if (hint) {
+        hint.textContent = materiasUnicas.length > 0
+          ? materiasUnicas.length + ' materia(s) registrada(s) en Bóveda Virtual disponibles como sugerencia.'
+          : 'Aún no hay materias en Bóveda Virtual; puedes escribir el nombre manualmente.';
+      }
     }
 
     function actualizarEtiquetaSemanaForm() {
@@ -1981,11 +1831,37 @@
       document.getElementById('hor-semana-legible').textContent = val ? describirSemana(val) : '';
     }
 
-    function aplicarReglaPiso3() {
-      const piso = document.getElementById('hor-piso').value;
+    function aplicarReglasUbicacionHorario() {
+      const sede = document.getElementById('hor-sede').value;
+      const pisoSelect = document.getElementById('hor-piso');
+      const optNoAplica = document.getElementById('opt-piso-no-aplica');
       const salonInput = document.getElementById('hor-salon');
       const badge = document.getElementById('badge-piso3');
-      if (piso === 'Piso 3') {
+
+      if (sede === 'Km 0') {
+        if (optNoAplica) optNoAplica.classList.remove('hidden');
+        pisoSelect.value = 'No aplica';
+        pisoSelect.disabled = true;
+        pisoSelect.classList.add('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+
+        salonInput.readOnly = false;
+        salonInput.disabled = false;
+        salonInput.classList.remove('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+        badge.classList.add('hidden');
+        if (salonInput.value === 'Salón de Sistemas') {
+          salonInput.value = '';
+        }
+        return;
+      }
+
+      if (optNoAplica) optNoAplica.classList.add('hidden');
+      pisoSelect.disabled = false;
+      pisoSelect.classList.remove('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+      if (!pisoSelect.value || pisoSelect.value === 'No aplica') {
+        pisoSelect.value = 'Planta Baja';
+      }
+
+      if (pisoSelect.value === 'Piso 3') {
         salonInput.value = 'Salón de Sistemas';
         salonInput.readOnly = true;
         salonInput.disabled = true;
@@ -2002,16 +1878,21 @@
       }
     }
 
+    function aplicarReglaPiso3() {
+      aplicarReglasUbicacionHorario();
+    }
+
     async function enviarFormularioHorario(e) {
       e.preventDefault();
-      const piso = document.getElementById('hor-piso').value;
-      const salon = piso === 'Piso 3'
+      const sede = document.getElementById('hor-sede').value;
+      const piso = sede === 'Km 0' ? 'No aplica' : document.getElementById('hor-piso').value;
+      const salon = (sede === 'Yaguaral' && piso === 'Piso 3')
         ? 'Salón de Sistemas'
         : document.getElementById('hor-salon').value.trim();
 
       const payload = {
         semana: document.getElementById('hor-semana').value,
-        sede: document.getElementById('hor-sede').value,
+        sede: sede,
         piso: piso,
         salon: salon,
         dia: document.getElementById('hor-dia').value,
@@ -2689,6 +2570,127 @@
         modo: document.getElementById('maa-modo').value,
         correo: document.getElementById('maa-correo').value.trim(),
         rol: document.getElementById('maa-rol').value,
+        nombre: document.getElementById('maa-nombre').value.trim(),
+        password: document.getElementById('maa-password').value,
+        contacto: document.getElementById('maa-contacto').value.trim(),
+        descripcion: document.getElementById('maa-descripcion').value.trim()
+      };
+      setBtnLoading('btn-maa-guardar', true);
+      try {
+        const res = await gasCall('adminGuardarAsesor', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        cerrarModal('modal-admin-asesor');
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosAdmin();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-maa-guardar', false, 'Guardar Asesor');
+      }
+    }
+
+    async function eliminarAsesorAdmin(correo) {
+      const ok = await confirmarAccion('Eliminar Asesor', '¿Seguro deseas eliminar al asesor ' + correo + '?');
+      if (!ok) return;
+      try {
+        const res = await gasCall('adminEliminarAsesor', STATE.token, correo);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosAdmin();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
+    function toggleCampoClaveAdminBoveda() {
+      const publico = document.getElementById('mab-publico').value === 'true';
+      document.getElementById('mab-clave-wrap').classList.toggle('hidden', publico);
+    }
+
+    function abrirModalAdminBoveda(bovedaId = '') {
+      const selectAsesor = document.getElementById('mab-asesor');
+      selectAsesor.innerHTML = STATE.adminAsesores.map((a) =>
+        '<option value="' + escapeHtml(a.correo) + '">' + escapeHtml(a.nombre) + ' (' + escapeHtml(a.correo) + ')</option>'
+      ).join('');
+
+      if (bovedaId) {
+        const b = STATE.adminBovedas.find((x) => x.bovedaId === bovedaId);
+        if (!b) return;
+        document.getElementById('mab-titulo').textContent = 'Editar Bóveda / Materia';
+        document.getElementById('mab-id').value = b.bovedaId;
+        document.getElementById('mab-materia').value = b.materia;
+        selectAsesor.value = b.correoAsesor;
+        document.getElementById('mab-publico').value = b.accesoPublico ? 'true' : 'false';
+        document.getElementById('mab-limite').value = b.limiteBytes;
+        document.getElementById('mab-clave').value = '';
+      } else {
+        document.getElementById('mab-titulo').textContent = 'Crear y Asignar Bóveda';
+        document.getElementById('mab-id').value = '';
+        document.getElementById('mab-materia').value = '';
+        document.getElementById('mab-publico').value = 'true';
+        document.getElementById('mab-limite').value = 524288000;
+        document.getElementById('mab-clave').value = '';
+      }
+      toggleCampoClaveAdminBoveda();
+      abrirModal('modal-admin-boveda');
+    }
+
+    async function guardarAdminBoveda(e) {
+      e.preventDefault();
+      const payload = {
+        bovedaId: document.getElementById('mab-id').value,
+        materia: document.getElementById('mab-materia').value.trim(),
+        correoAsesor: document.getElementById('mab-asesor').value,
+        accesoPublico: document.getElementById('mab-publico').value === 'true',
+        limiteBytes: Number(document.getElementById('mab-limite').value || 524288000),
+        claveBoveda: document.getElementById('mab-clave').value.trim()
+      };
+      setBtnLoading('btn-mab-guardar', true);
+      try {
+        const res = await gasCall('adminGuardarBoveda', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        cerrarModal('modal-admin-boveda');
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosAdmin();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-mab-guardar', false, 'Guardar Bóveda');
+      }
+    }
+
+    async function eliminarBovedaAdmin(bovedaId) {
+      const ok = await confirmarAccion('Eliminar Bóveda', '¿Seguro deseas eliminar esta bóveda y todos sus recursos asociados?');
+      if (!ok) return;
+      try {
+        const res = await gasCall('adminEliminarBoveda', STATE.token, bovedaId);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        mostrarToast(res.mensaje, 'success');
+        await cargarDatosAdmin();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>
+
         nombre: document.getElementById('maa-nombre').value.trim(),
         password: document.getElementById('maa-password').value,
         contacto: document.getElementById('maa-contacto').value.trim(),
