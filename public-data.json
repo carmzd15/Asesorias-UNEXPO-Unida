@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:40:18.844Z",
+  "generadoEn": "2026-11-23T12:42:04.618Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -158,6 +158,19 @@
       "bytesUsados": 0,
       "totalRecursos": 0,
       "actualizadoEn": "2026-11-23T12:40:05.746Z",
+      "recursos": []
+    },
+    {
+      "bovedaId": "BOV-E9DFE2B1",
+      "materia": "Sistemas Eléctricos II",
+      "asesorId": "ASE-F1986B8772B9",
+      "nombreAsesor": "Keybert Santander",
+      "accesoPublico": true,
+      "tieneClave": false,
+      "limiteBytes": 524288000,
+      "bytesUsados": 0,
+      "totalRecursos": 0,
+      "actualizadoEn": "2026-11-23T12:41:47.997Z",
       "recursos": []
     }
   ]
