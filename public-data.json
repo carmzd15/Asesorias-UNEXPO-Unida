@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T23:08:08.466Z",
+  "generadoEn": "2026-11-23T23:08:48.466Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -229,7 +229,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-23T23:02:11.542Z",
+      "actualizadoEn": "2026-11-23T23:08:38.198Z",
       "recursos": [
         {
           "recursoId": "UNI-0A74B5E5",
@@ -243,6 +243,22 @@
           "tamanoBytes": 0,
           "subidoEn": "2026-11-23T23:02:11.542Z",
           "unidadId": "",
+          "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-06579166",
+          "bovedaId": "BOV-BA0D9CF7",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Fundamentos de Circuitos Electricos",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T23:08:38.198Z",
+          "unidadId": "UNI-0A74B5E5",
           "temaId": "",
           "orden": 1,
           "contenidoTexto": ""
