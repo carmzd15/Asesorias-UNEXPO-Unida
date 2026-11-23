@@ -267,24 +267,27 @@
           <form id="form-nuevo-horario" onsubmit="enviarFormularioHorario(event)" class="space-y-3.5">
             <div>
               <label class="block text-xs font-semibold text-slate-600 mb-1">Semana</label>
-              <input id="hor-semana" type="week" onchange="actualizarEtiquetaSemanaForm()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
-              <p id="hor-semana-legible" class="text-[11px] text-slate-400 mt-1"></p>
-            </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-xs font-semibold text-slate-600 mb-1">Sede</label>
-                <select id="hor-sede" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+                <select id="hor-sede" onchange="aplicarReglasUbicacionHorario()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
                   <option value="Km 0">Km 0</option>
                   <option value="Yaguaral">Yaguaral</option>
                 </select>
               </div>
               <div>
                 <label class="block text-xs font-semibold text-slate-600 mb-1">Piso</label>
-                <select id="hor-piso" onchange="aplicarReglaPiso3()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+                <select id="hor-piso" onchange="aplicarReglasUbicacionHorario()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+                  <option id="opt-piso-no-aplica" value="No aplica">No aplica (Km 0)</option>
+                  <option value="Sótano">Sótano</option>
                   <option value="Planta Baja">Planta Baja</option>
                   <option value="Piso 1">Piso 1</option>
                   <option value="Piso 2">Piso 2</option>
                   <option value="Piso 3">Piso 3</option>
+                  <option value="Piso 4">Piso 4</option>
+                  <option value="Piso 5">Piso 5</option>
+                  <option value="Piso 6">Piso 6</option>
+                  <option value="Piso 7">Piso 7</option>
                 </select>
               </div>
             </div>
@@ -316,6 +319,12 @@
               </div>
             </div>
             <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Materia / Asignatura</label>
+              <input id="hor-materia" type="text" list="lista-materias-bovedas" required autocomplete="off" placeholder="Escribe para buscar o ingresar materia..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+              <datalist id="lista-materias-bovedas"></datalist>
+              <p id="hor-materia-hint" class="text-[11px] text-slate-400 mt-1">Sugerencia automática según las bóvedas virtuales registradas.</p>
+            </div>
+
               <label class="block text-xs font-semibold text-slate-600 mb-1">Materia / Asignatura</label>
               <input id="hor-materia" type="text" required placeholder="Ej: Cálculo II, Física I, Programación..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
             </div>
@@ -1770,59 +1779,114 @@
         abrirModal('modal-clave-boveda');
         return;
       }
-
-      // Si es bóveda pública y ya viene con sus enlaces/archivos de Drive en el snapshot estático, mostrar de inmediato
-      if (b.accesoPublico && Array.isArray(b.recursos)) {
-        mostrarDetalleBovedaPublica(b, b.recursos);
+    function inicializarFormularioHorario() {
+      const inputSemana = document.getElementById('hor-semana');
+      if (STATE.semanaActual && !inputSemana.value) {
+        inputSemana.value = STATE.semanaActual;
       }
+      actualizarEtiquetaSemanaForm();
+      aplicarReglasUbicacionHorario();
+      actualizarDatalistMaterias();
+    }
 
-      try {
-        const res = await gasCall('obtenerRecursosBovedaPublica', bovedaId, clave);
-        if (!res.ok) {
-          if (!b.accesoPublico || !Array.isArray(b.recursos)) {
-            mostrarToast(res.mensaje, 'error');
-          }
-          return;
-        }
-        cerrarModal('modal-clave-boveda');
-        mostrarDetalleBovedaPublica(res.boveda, res.recursos);
-      } catch (err) {
-        if (!b.accesoPublico || !Array.isArray(b.recursos)) {
-          mostrarToast(err.message, 'error');
-        }
+    function actualizarDatalistMaterias() {
+      const datalist = document.getElementById('lista-materias-bovedas');
+      const hint = document.getElementById('hor-materia-hint');
+      if (!datalist) return;
+
+      const materiasUnicas = Array.from(new Set(
+        (STATE.bovedas || [])
+          .map((b) => String(b.materia || '').trim())
+          .filter(Boolean)
+      )).sort((a, b) => a.localeCompare(b, 'es'));
+
+      datalist.innerHTML = materiasUnicas
+        .map((m) => '<option value="' + escapeHtml(m) + '"></option>')
+        .join('');
+
+      if (hint) {
+        hint.textContent = materiasUnicas.length > 0
+          ? materiasUnicas.length + ' materia(s) registrada(s) en Bóveda Virtual disponibles como sugerencia.'
+          : 'Aún no hay materias en Bóveda Virtual; puedes escribir el nombre manualmente.';
       }
     }
 
-      const b = STATE.bovedas.find((x) => x.bovedaId === bovedaId);
-      if (!b) return;
+    function actualizarEtiquetaSemanaForm() {
+      const val = document.getElementById('hor-semana').value;
+      document.getElementById('hor-semana-legible').textContent = val ? describirSemana(val) : '';
+    }
 
-      if (!b.accesoPublico && !clave) {
-        document.getElementById('mcb-boveda-id').value = bovedaId;
-        document.getElementById('mcb-clave').value = '';
-        document.getElementById('mcb-subtitulo').textContent = 'Materia: ' + b.materia + ' (' + b.nombreAsesor + ')';
-        abrirModal('modal-clave-boveda');
+    function aplicarReglasUbicacionHorario() {
+      const sede = document.getElementById('hor-sede').value;
+      const pisoSelect = document.getElementById('hor-piso');
+      const optNoAplica = document.getElementById('opt-piso-no-aplica');
+      const salonInput = document.getElementById('hor-salon');
+      const badge = document.getElementById('badge-piso3');
+
+      if (sede === 'Km 0') {
+        if (optNoAplica) optNoAplica.classList.remove('hidden');
+        pisoSelect.value = 'No aplica';
+        pisoSelect.disabled = true;
+        pisoSelect.classList.add('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+
+        salonInput.readOnly = false;
+        salonInput.disabled = false;
+        salonInput.classList.remove('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+        badge.classList.add('hidden');
+        if (salonInput.value === 'Salón de Sistemas') {
+          salonInput.value = '';
+        }
         return;
       }
 
-      try {
-        const res = await gasCall('obtenerRecursosBovedaPublica', bovedaId, clave);
-        if (!res.ok) {
-          mostrarToast(res.mensaje, 'error');
-          return;
+      // Sede Yaguaral: habilitar Sótano, Planta Baja y Piso 1..7
+      if (optNoAplica) optNoAplica.classList.add('hidden');
+      pisoSelect.disabled = false;
+      pisoSelect.classList.remove('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+      if (!pisoSelect.value || pisoSelect.value === 'No aplica') {
+        pisoSelect.value = 'Planta Baja';
+      }
+
+      if (pisoSelect.value === 'Piso 3') {
+        salonInput.value = 'Salón de Sistemas';
+        salonInput.readOnly = true;
+        salonInput.disabled = true;
+        salonInput.classList.add('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+        badge.classList.remove('hidden');
+      } else {
+        salonInput.readOnly = false;
+        salonInput.disabled = false;
+        salonInput.classList.remove('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+        badge.classList.add('hidden');
+        if (salonInput.value === 'Salón de Sistemas') {
+          salonInput.value = '';
         }
-        cerrarModal('modal-clave-boveda');
-        mostrarDetalleBovedaPublica(res.boveda, res.recursos);
-      } catch (err) {
-        mostrarToast(err.message, 'error');
       }
     }
 
-    async function desbloquearBovedaPublica(e) {
+    function aplicarReglaPiso3() {
+      aplicarReglasUbicacionHorario();
+    }
+
+    async function enviarFormularioHorario(e) {
       e.preventDefault();
-      const bId = document.getElementById('mcb-boveda-id').value;
-      const clave = document.getElementById('mcb-clave').value;
-      setBtnLoading('btn-desbloquear-boveda', true);
-      try {
+      const sede = document.getElementById('hor-sede').value;
+      const piso = sede === 'Km 0' ? 'No aplica' : document.getElementById('hor-piso').value;
+      const salon = (sede === 'Yaguaral' && piso === 'Piso 3')
+        ? 'Salón de Sistemas'
+        : document.getElementById('hor-salon').value.trim();
+
+      const payload = {
+        semana: document.getElementById('hor-semana').value,
+        sede: sede,
+        piso: piso,
+        salon: salon,
+        dia: document.getElementById('hor-dia').value,
+        horaInicio: document.getElementById('hor-inicio').value,
+        horaFin: document.getElementById('hor-fin').value,
+        materia: document.getElementById('hor-materia').value.trim()
+      };
+
         await abrirBovedaPublica(bId, clave);
       } finally {
         setBtnLoading('btn-desbloquear-boveda', false, 'Desbloquear Bóveda');
