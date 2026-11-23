@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T23:01:44.933Z",
+  "generadoEn": "2026-11-23T23:02:27.382Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -229,8 +229,25 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-23T12:44:45.108Z",
-      "recursos": []
+      "actualizadoEn": "2026-11-23T23:02:11.542Z",
+      "recursos": [
+        {
+          "recursoId": "UNI-0A74B5E5",
+          "bovedaId": "BOV-BA0D9CF7",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Unidad I",
+          "descripcion": "Ley de ohm, leyes kirchhoff, divisor de voltaje y corriente, transformación delta-estrella y estrella-delta, transformación de fuentes",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-23T23:02:11.542Z",
+          "unidadId": "",
+          "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        }
+      ]
     },
     {
       "bovedaId": "BOV-53F7B368",
