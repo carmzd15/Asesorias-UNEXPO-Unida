@@ -1169,25 +1169,6 @@
       }
     }
 
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 1800);
-      try {
-        const resp = await fetch(PUBLIC_DATA_URL, {
-          method: 'GET',
-          cache: 'no-cache',
-          signal: controller.signal
-        });
-        if (!resp.ok) return null;
-        const json = await resp.json();
-        if (!json || typeof json !== 'object') return null;
-        return json;
-      } catch (e) {
-        return null;
-      } finally {
-        clearTimeout(timer);
-      }
-    }
-
     function renderVistaPublicaActual() {
       if (STATE.vistaActual === 'horarios') renderHorariosPublicos();
       if (STATE.vistaActual === 'asesores') renderDirectorioAsesores();
@@ -1986,38 +1967,6 @@
         mostrarDetalleBovedaPublica(res.boveda, res.recursos);
       } catch (err) {
         mostrarToast(err.message, 'error');
-      }
-    }
-
-      const b = STATE.bovedas.find((x) => x.bovedaId === bovedaId);
-      if (!b) return;
-
-      if (!b.accesoPublico && !clave) {
-        document.getElementById('mcb-boveda-id').value = bovedaId;
-        document.getElementById('mcb-clave').value = '';
-        document.getElementById('mcb-subtitulo').textContent = 'Materia: ' + b.materia + ' (' + b.nombreAsesor + ')';
-        abrirModal('modal-clave-boveda');
-        return;
-      }
-
-      if (b.accesoPublico && Array.isArray(b.recursos)) {
-        mostrarDetalleBovedaPublica(b, b.recursos);
-      }
-
-      try {
-        const res = await gasCall('obtenerRecursosBovedaPublica', bovedaId, clave);
-        if (!res.ok) {
-          if (!b.accesoPublico || !Array.isArray(b.recursos)) {
-            mostrarToast(res.mensaje, 'error');
-          }
-          return;
-        }
-        cerrarModal('modal-clave-boveda');
-        mostrarDetalleBovedaPublica(res.boveda, res.recursos);
-      } catch (err) {
-        if (!b.accesoPublico || !Array.isArray(b.recursos)) {
-          mostrarToast(err.message, 'error');
-        }
       }
     }
 
