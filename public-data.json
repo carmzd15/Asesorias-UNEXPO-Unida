@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-23T12:32:04.462Z",
+  "generadoEn": "2026-11-23T12:32:51.693Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -25,6 +25,16 @@
     {
       "asesorId": "ASE-3C0D71A17962",
       "nombre": "Andreina Marquez",
+      "rol": "ASESOR",
+      "esAdmin": false,
+      "fotoUrl": "",
+      "descripcion": "",
+      "contacto": "",
+      "infoAdicional": ""
+    },
+    {
+      "asesorId": "ASE-F1986B8772B9",
+      "nombre": "Keybert Santander",
       "rol": "ASESOR",
       "esAdmin": false,
       "fotoUrl": "",
