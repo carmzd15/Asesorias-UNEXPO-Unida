@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UNEXPO | Asesorías Académicas y Bóveda Virtual</title>
+  <meta name="description" content="Sistema Web de Asesorías Académicas Estudiantiles y Bóveda Virtual UNEXPO" />
+
   <link rel="icon" type="image/png" href="./assets/logo-unexpo.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -137,17 +139,17 @@
             <p id="lbl-rango-semana" class="text-sm text-slate-500 mt-0.5"></p>
           </div>
 
-          <!-- Navegación de Semanas -->
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="moverSemana(-1)" class="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-medium text-slate-700 transition">
+            <button id="btn-sem-prev" onclick="moverSemana(-1)" class="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-medium text-slate-700 transition disabled:opacity-40 disabled:cursor-not-allowed">
               &larr; Anterior
             </button>
             <button onclick="irSemanaActual()" class="px-3 py-2 rounded-lg bg-unexpo-50 hover:bg-blue-100 text-unexpo-900 text-sm font-semibold border border-blue-200 transition">
               Semana Actual
             </button>
-            <button onclick="moverSemana(1)" class="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-medium text-slate-700 transition">
+            <button id="btn-sem-next" onclick="moverSemana(1)" class="px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-medium text-slate-700 transition disabled:opacity-40 disabled:cursor-not-allowed">
               Siguiente &rarr;
             </button>
+
             <button onclick="recargarDatos()" title="Actualizar horarios desde Google" class="p-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-600 transition">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -263,11 +265,21 @@
         <div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4 h-fit">
           <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">Publicar Nuevo Bloque de Asesoría</h3>
           <form id="form-nuevo-horario" onsubmit="enviarFormularioHorario(event)" class="space-y-3.5">
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Semana</label>
-              <input id="hor-semana" type="week" onchange="actualizarEtiquetaSemanaForm()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
-              <p id="hor-semana-legible" class="text-[11px] text-slate-400 mt-1"></p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Frecuencia</label>
+                <select id="hor-frecuencia" onchange="toggleFrecuenciaHorario()" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-unexpo-600 focus:outline-none">
+                  <option value="SEMANA">Semana específica</option>
+                  <option value="FIJO">Fijo (Todas las semanas)</option>
+                </select>
+              </div>
+              <div id="hor-semana-wrap">
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Semana</label>
+                <input id="hor-semana" type="week" onchange="actualizarEtiquetaSemanaForm()" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+              </div>
             </div>
+            <p id="hor-semana-legible" class="text-[11px] text-slate-400 -mt-2"></p>
+
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-xs font-semibold text-slate-600 mb-1">Sede</label>
@@ -346,7 +358,8 @@
         <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 mb-5">Editar Mi Perfil Técnico</h3>
         <form onsubmit="guardarMiPerfil(event)" class="space-y-4">
           <div class="flex flex-col sm:flex-row items-center gap-5 bg-slate-50 p-4 rounded-xl border border-slate-200">
-            <img id="perf-preview-img" src="" alt="Foto" class="w-20 h-20 rounded-full object-cover border-2 border-unexpo-900 bg-white hidden" />
+            <img id="perf-preview-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Foto" class="w-20 h-20 rounded-full object-cover border-2 border-unexpo-900 bg-white hidden" />
+
             <div id="perf-preview-initials" class="w-20 h-20 rounded-full bg-unexpo-900 text-white flex items-center justify-center font-bold text-2xl">
               A
             </div>
@@ -759,6 +772,7 @@
           <label class="block text-xs font-semibold text-slate-600 mb-1">Nuevo archivo (reemplazará al anterior en Drive)</label>
           <input id="mrr-file" type="file" required class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-unexpo-900" />
         </div>
+
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="cerrarModal('modal-reemplazar-recurso')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700">Cancelar</button>
           <button id="btn-mrr-guardar" type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-unexpo-900 text-sm font-bold">Reemplazar Archivo</button>
@@ -766,6 +780,100 @@
       </form>
     </div>
   </div>
+
+  <!-- MODAL ASESOR: CREAR UNIDAD O TEMA EN BÓVEDA -->
+  <div id="modal-estructura-boveda" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 id="meb-titulo" class="text-lg font-bold text-slate-900">Nueva Unidad</h3>
+        <button onclick="cerrarModal('modal-estructura-boveda')" class="text-slate-400 hover:text-slate-700 text-xl leading-none">&times;</button>
+      </div>
+      <form onsubmit="enviarEstructuraBoveda(event)" class="space-y-3">
+        <input id="meb-boveda-id" type="hidden" />
+        <input id="meb-tipo" type="hidden" />
+        <input id="meb-unidad-id" type="hidden" />
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre *</label>
+          <input id="meb-nombre" type="text" required placeholder="Ej: Unidad I - Semiconductores" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción (opcional)</label>
+          <textarea id="meb-descripcion" rows="3" placeholder="Resumen o indicaciones opcionales..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="cerrarModal('modal-estructura-boveda')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700">Cancelar</button>
+          <button id="btn-meb-guardar" type="submit" class="px-5 py-2 rounded-xl bg-unexpo-900 hover:bg-unexpo-800 text-white text-sm font-bold">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL ASESOR: AGREGAR ARCHIVO, ENLACE O TEXTO DENTRO DE UN TEMA -->
+  <div id="modal-recurso-boveda" class="hidden fixed inset-0 z-40 modal-backdrop flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 space-y-4 my-8">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 id="mrb-titulo-modal" class="text-lg font-bold text-slate-900">Agregar Recurso</h3>
+          <p id="mrb-subtitulo" class="text-xs text-slate-500"></p>
+        </div>
+        <button onclick="cerrarModal('modal-recurso-boveda')" class="text-slate-400 hover:text-slate-700 text-xl leading-none">&times;</button>
+      </div>
+      <form onsubmit="enviarRecursoModalBoveda(event)" class="space-y-3">
+        <input id="mrb-boveda-id" type="hidden" />
+        <input id="mrb-unidad-id" type="hidden" />
+        <input id="mrb-tema-id" type="hidden" />
+        <input id="mrb-tipo" type="hidden" />
+
+        <div>
+          <label id="mrb-label-titulo" class="block text-xs font-semibold text-slate-600 mb-1">Título *</label>
+          <input id="mrb-titulo" type="text" required placeholder="Ej: Guía de ejercicios resueltos" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-unexpo-600 focus:outline-none" />
+        </div>
+
+        <div id="mrb-wrap-archivo" class="hidden space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción (opcional)</label>
+            <input id="mrb-arch-desc" type="text" placeholder="Descripción breve..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Archivo (PDF, Imagen, Doc... hasta 25 MB)</label>
+            <input id="mrb-arch-file" type="file" class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-unexpo-900" />
+          </div>
+        </div>
+
+        <div id="mrb-wrap-enlace" class="hidden space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Plataforma / Tipo (Ej: YouTube, Drive, Mega)</label>
+            <input id="mrb-enl-tipo" type="text" placeholder="Enlace Web" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">URL del enlace *</label>
+            <input id="mrb-enl-url" type="url" placeholder="https://..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción (opcional)</label>
+            <input id="mrb-enl-desc" type="text" placeholder="Descripción breve..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </div>
+        </div>
+
+        <div id="mrb-wrap-texto" class="hidden space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Etiqueta / Subtítulo (Ej: Nota, Importante, Subtítulo)</label>
+            <input id="mrb-txt-subtitulo" type="text" placeholder="Nota" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Párrafo / Contenido de texto *</label>
+            <textarea id="mrb-txt-contenido" rows="5" placeholder="Escribe aquí las indicaciones, fórmulas o apuntes del tema..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"></textarea>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="cerrarModal('modal-recurso-boveda')" class="px-4 py-2 rounded-xl border border-slate-300 text-sm font-medium text-slate-700">Cancelar</button>
+          <button id="btn-mrb-guardar" type="submit" class="px-5 py-2 rounded-xl bg-unexpo-900 hover:bg-unexpo-800 text-white text-sm font-bold">Publicar en Bóveda</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 
   <!-- ===================================================================== -->
   <!-- LÓGICA DE CLIENTE (ARQUITECTURA HÍBRIDA: GITHUB + GOOGLE APPS SCRIPT) -->
@@ -809,7 +917,6 @@
     });
 
     function inicializarEventosGlobales() {
-      // Cerrar modales con Escape
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
         const cancelConfirm = document.getElementById('mc-cancelar');
@@ -818,19 +925,19 @@
           cancelConfirm.click();
           return;
         }
-        ['modal-login', 'modal-perfil-asesor', 'modal-choque', 'modal-clave-boveda', 'modal-admin-asesor', 'modal-admin-boveda', 'modal-reemplazar-recurso'].forEach((id) => {
+        ['modal-login', 'modal-perfil-asesor', 'modal-choque', 'modal-clave-boveda', 'modal-admin-asesor', 'modal-admin-boveda', 'modal-reemplazar-recurso', 'modal-estructura-boveda', 'modal-recurso-boveda'].forEach((id) => {
           const el = document.getElementById(id);
           if (el && !el.classList.contains('hidden')) cerrarModal(id);
         });
       });
 
-      // Delegación segura de eventos para elementos generados dinámicamente
       document.addEventListener('click', (e) => {
         const trigger = e.target.closest('[data-action]');
         if (!trigger) return;
         const act = trigger.dataset.action;
         const id = trigger.dataset.id || '';
         const extra = trigger.dataset.extra || '';
+        const sub = trigger.dataset.sub || '';
 
         if (act === 'ver-perfil') {
           abrirPerfilAsesor(id);
@@ -847,6 +954,16 @@
           abrirModalReemplazarRecurso(extra, id);
         } else if (act === 'eliminar-recurso') {
           eliminarRecurso(id);
+        } else if (act === 'mover-recurso-arriba') {
+          moverOrdenRecurso(id, 'ARRIBA');
+        } else if (act === 'mover-recurso-abajo') {
+          moverOrdenRecurso(id, 'ABAJO');
+        } else if (act === 'abrir-nueva-unidad') {
+          abrirModalEstructuraBoveda(id, 'UNIDAD', '');
+        } else if (act === 'abrir-nuevo-tema') {
+          abrirModalEstructuraBoveda(extra, 'TEMA', id);
+        } else if (act === 'abrir-modal-recurso') {
+          abrirModalRecursoBoveda(extra, sub, id, trigger.dataset.tipo || 'ARCHIVO');
         } else if (act === 'admin-editar-asesor') {
           abrirModalAdminAsesor(id);
         } else if (act === 'admin-eliminar-asesor') {
@@ -858,6 +975,7 @@
         }
       });
     }
+
 
     function actualizarEstadoSyncBadge(texto, estilo = 'neutral') {
       const el = document.getElementById('sync-status-badge');
@@ -955,7 +1073,6 @@
       const cacheLocal = leerCachePublicoLocal();
       let uiMostrada = false;
 
-      // 1. Si existe caché local, pintar inmediatamente (0 ms de bloqueo)
       if (cacheLocal) {
         aplicarDatosPublicosAlEstado(cacheLocal);
         if (loader) loader.classList.add('hidden');
@@ -966,7 +1083,6 @@
         uiMostrada = true;
       }
 
-      // 2. Descargar snapshot estático de GitHub Pages (no bloquea si ya había caché)
       const snapshotEstatico = await cargarSnapshotEstaticoGitHub();
       let tieneFuentePublica = Boolean(cacheLocal);
 
@@ -992,14 +1108,12 @@
         actualizarEstadoSyncBadge('Lectura rápida · Snapshot GitHub', 'neutral');
       }
 
-      // 3. Sincronización silenciosa en segundo plano con Google Apps Script cuando corresponde
-      const cacheExpirada = !cacheLocal || !cacheLocal.syncedAt || (Date.now() - cacheLocal.syncedAt > PUBLIC_SYNC_INTERVAL_MS);
       const snapshotVacio = STATE.asesores.length === 0 && STATE.horarios.length === 0 && STATE.bovedas.length === 0;
-
-      if (STATE.token || cacheExpirada || snapshotVacio) {
+      if (STATE.token || snapshotVacio) {
         sincronizarDesdeBackend({ silencioso: true });
       }
     }
+
 
     async function sincronizarDesdeBackend(opciones = {}) {
       if (STATE.sincronizando && !opciones.forzar) return false;
@@ -1272,13 +1386,40 @@
       return 'Semana ' + numSemana + etiquetaActual + ' · Lun ' + f1 + ' al Vie ' + f2;
     }
 
-    function moverSemana(deltaSemanas) {
-      const lunes = parseSemanaISO(STATE.semanaVista);
-      if (!lunes) return;
+    function desplazarSemanaISO(semanaStr, deltaSemanas) {
+      const lunes = parseSemanaISO(semanaStr);
+      if (!lunes) return semanaStr;
       lunes.setUTCDate(lunes.getUTCDate() + deltaSemanas * 7);
-      STATE.semanaVista = dateASemanaISO(lunes);
+      return dateASemanaISO(lunes);
+    }
+
+    function obtenerVentanaSemanas() {
+      const actual = STATE.semanaActual || dateASemanaISO(new Date());
+      return {
+        anterior: desplazarSemanaISO(actual, -1),
+        actual: actual,
+        siguiente: desplazarSemanaISO(actual, 1)
+      };
+    }
+
+    function actualizarBotonesNavegacionSemana() {
+      const ventana = obtenerVentanaSemanas();
+      const btnPrev = document.getElementById('btn-sem-prev');
+      const btnNext = document.getElementById('btn-sem-next');
+      if (btnPrev) btnPrev.disabled = (STATE.semanaVista <= ventana.anterior);
+      if (btnNext) btnNext.disabled = (STATE.semanaVista >= ventana.siguiente);
+    }
+
+    function moverSemana(deltaSemanas) {
+      const ventana = obtenerVentanaSemanas();
+      const candidata = desplazarSemanaISO(STATE.semanaVista, deltaSemanas);
+      if (candidata < ventana.anterior || candidata > ventana.siguiente) {
+        return;
+      }
+      STATE.semanaVista = candidata;
       renderHorariosPublicos();
     }
+
 
     function irSemanaActual() {
       STATE.semanaVista = STATE.semanaActual;
@@ -1453,6 +1594,7 @@
     // -----------------------------------------------------------------------
     function renderHorariosPublicos() {
       document.getElementById('lbl-rango-semana').textContent = describirSemana(STATE.semanaVista);
+      actualizarBotonesNavegacionSemana();
       const sedeFiltro = document.getElementById('filtro-sede').value;
       const diaFiltro = document.getElementById('filtro-dia').value;
       const textoFiltro = document.getElementById('filtro-texto-horario').value.trim().toLowerCase();
@@ -1467,7 +1609,8 @@
       }
 
       const horariosSemana = STATE.horarios.filter((h) => {
-        if (h.semana !== STATE.semanaVista) return false;
+        const sem = String(h.semana || '').toUpperCase();
+        if (sem !== STATE.semanaVista && sem !== 'FIJO') return false;
         if (sedeFiltro !== 'Todas' && h.sede !== sedeFiltro) return false;
         if (textoFiltro) {
           const combo = (h.materia + ' ' + h.nombreAsesor + ' ' + h.salon).toLowerCase();
@@ -1485,9 +1628,13 @@
           ? '<div class="text-center py-8 px-3 text-xs text-slate-400 border border-dashed border-slate-200 rounded-xl">Sin asesorías programadas</div>'
           : items.map((h) => {
               const esConflicto = h.estadoChoque === 'CONFLICTO';
+              const esFijo = String(h.semana || '').toUpperCase() === 'FIJO';
               const borde = esConflicto
                 ? 'border-red-400 bg-red-50/70'
                 : 'border-slate-200 bg-white hover:border-unexpo-600';
+              const badgeFijo = esFijo
+                ? '<span class="inline-block mt-1.5 mr-1 px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold">Fijo · Todas las semanas</span>'
+                : '';
               const badgeChoque = esConflicto
                 ? '<div class="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded bg-red-100 text-red-700 text-[10px] font-bold"><span>&#9888;</span> Choque de horario (En coordinación)</div>'
                 : '';
@@ -1507,6 +1654,7 @@
                   '<p class="text-xs text-slate-500 mt-1">' +
                     escapeHtml(h.piso) + ' · <strong>' + escapeHtml(h.salon) + '</strong>' +
                   '</p>' +
+                  '<div>' + badgeFijo + '</div>' +
                   '<button type="button" data-action="ver-perfil" data-id="' + escapeHtml(h.asesorId) + '" class="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-unexpo-600 hover:underline">' +
                     '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>' +
                     escapeHtml(h.nombreAsesor) +
@@ -1527,6 +1675,7 @@
         );
       }).join('');
     }
+
 
     // -----------------------------------------------------------------------
     // VISTA 2: DIRECTORIO Y MODAL PERFIL TÉCNICO
@@ -1722,6 +1871,96 @@
       }
     }
 
+    function construirArbolBoveda(recursos) {
+      const lista = (recursos || []).slice().sort((a, b) => {
+        const oa = Number(a.orden || 0);
+        const ob = Number(b.orden || 0);
+        if (oa !== ob) {
+          if (oa === 0) return 1;
+          if (ob === 0) return -1;
+          return oa - ob;
+        }
+        return String(a.subidoEn || '').localeCompare(String(b.subidoEn || ''));
+      });
+
+      const unidades = lista.filter((r) => String(r.tipoRecurso || '').toUpperCase() === 'UNIDAD');
+      const temas = lista.filter((r) => String(r.tipoRecurso || '').toUpperCase() === 'TEMA');
+      const items = lista.filter((r) => {
+        const t = String(r.tipoRecurso || '').toUpperCase();
+        return t !== 'UNIDAD' && t !== 'TEMA';
+      });
+
+      const unidadIds = new Set(unidades.map((u) => u.recursoId));
+      const temaIds = new Set(temas.map((t) => t.recursoId));
+
+      const unidadesConHijos = unidades.map((u) => {
+        const temasDeUnidad = temas
+          .filter((t) => t.unidadId === u.recursoId)
+          .map((t) => ({
+            tema: t,
+            items: items.filter((it) => it.temaId === t.recursoId)
+          }));
+        const itemsDirectosUnidad = items.filter((it) => it.unidadId === u.recursoId && !temaIds.has(it.temaId));
+        return {
+          unidad: u,
+          temas: temasDeUnidad,
+          itemsDirectos: itemsDirectosUnidad
+        };
+      });
+
+      const generales = items.filter((it) => !unidadIds.has(it.unidadId) && !temaIds.has(it.temaId));
+      return { unidades: unidadesConHijos, generales: generales };
+    }
+
+    function renderItemPublicoHtml(r) {
+      const tipo = String(r.tipoRecurso || '').toUpperCase();
+      if (tipo === 'TEXTO') {
+        return (
+          '<div class="p-4 rounded-xl border border-slate-200 bg-amber-50/40 space-y-1.5">' +
+            '<div class="flex items-center gap-2">' +
+              '<span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold uppercase">' + escapeHtml(r.tipoArchivoOEnlace || 'Nota') + '</span>' +
+              '<h5 class="font-bold text-slate-900 text-sm">' + escapeHtml(r.titulo) + '</h5>' +
+            '</div>' +
+            (r.contenidoTexto
+              ? '<p class="text-xs sm:text-sm text-slate-700 whitespace-pre-line leading-relaxed">' + escapeHtml(r.contenidoTexto) + '</p>'
+              : '') +
+          '</div>'
+        );
+      }
+
+      const esArchivo = tipo === 'ARCHIVO';
+      const badge = esArchivo
+        ? '<span class="px-2 py-0.5 rounded bg-blue-100 text-unexpo-900 text-[11px] font-bold">' + escapeHtml(r.tipoArchivoOEnlace || 'ARCHIVO') + ' · ' + formatearTamano(r.tamanoBytes) + '</span>'
+        : '<span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[11px] font-bold">ENLACE · ' + escapeHtml(r.tipoArchivoOEnlace || 'Web') + '</span>';
+
+      const safeUrl = sanitizeUrl(r.urlAcceso);
+      const driveId = esArchivo ? String(r.driveFileId || '').trim() : '';
+      const downloadBtn = driveId
+        ? '<a href="https://drive.google.com/uc?export=download&id=' + encodeURIComponent(driveId) + '" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold transition">Descargar</a>'
+        : '';
+      const openBtn = safeUrl
+        ? '<a href="' + escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-unexpo-900 hover:bg-unexpo-800 text-white text-xs font-semibold transition">' +
+            (esArchivo ? 'Ver en Drive' : 'Visitar Enlace') + ' &nearr;' +
+          '</a>'
+        : '';
+
+      return (
+        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition">' +
+          '<div class="space-y-1">' +
+            '<div class="flex flex-wrap items-center gap-2">' +
+              badge +
+              '<h5 class="font-bold text-slate-900 text-sm">' + escapeHtml(r.titulo) + '</h5>' +
+            '</div>' +
+            (r.descripcion ? '<p class="text-xs text-slate-600">' + escapeHtml(r.descripcion) + '</p>' : '') +
+          '</div>' +
+          '<div class="flex items-center gap-2 shrink-0">' +
+            downloadBtn +
+            openBtn +
+          '</div>' +
+        '</div>'
+      );
+    }
+
     function mostrarDetalleBovedaPublica(boveda, recursos) {
       const box = document.getElementById('detalle-boveda-publica');
       document.getElementById('pub-bov-titulo').textContent = 'Bóveda: ' + boveda.materia;
@@ -1729,46 +1968,59 @@
 
       const cont = document.getElementById('pub-bov-recursos');
       if (!recursos || recursos.length === 0) {
-        cont.innerHTML = '<div class="text-center py-8 text-sm text-slate-400">Esta bóveda aún no contiene archivos o enlaces publicados.</div>';
+        cont.innerHTML = '<div class="text-center py-8 text-sm text-slate-400">Esta bóveda aún no contiene unidades, archivos o enlaces publicados.</div>';
       } else {
-        cont.innerHTML = recursos.map((r) => {
-          const esArchivo = r.tipoRecurso === 'ARCHIVO';
-          const badge = esArchivo
-            ? '<span class="px-2 py-0.5 rounded bg-blue-100 text-unexpo-900 text-[11px] font-bold">' + escapeHtml(r.tipoArchivoOEnlace || 'ARCHIVO') + ' · ' + formatearTamano(r.tamanoBytes) + '</span>'
-            : '<span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[11px] font-bold">ENLACE · ' + escapeHtml(r.tipoArchivoOEnlace || 'Web') + '</span>';
+        const arbol = construirArbolBoveda(recursos);
+        let html = '';
 
-          const safeUrl = sanitizeUrl(r.urlAcceso);
-          const driveId = esArchivo ? String(r.driveFileId || '').trim() : '';
-          const downloadBtn = driveId
-            ? '<a href="https://drive.google.com/uc?export=download&id=' + encodeURIComponent(driveId) + '" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold transition">Descargar</a>'
-            : '';
-          const openBtn = safeUrl
-            ? '<a href="' + escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-unexpo-900 hover:bg-unexpo-800 text-white text-xs font-semibold transition">' +
-                (esArchivo ? 'Ver en Drive' : 'Visitar Enlace') + ' &nearr;' +
-              '</a>'
-            : '';
-
-          return (
-            '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">' +
-              '<div class="space-y-1">' +
-                '<div class="flex flex-wrap items-center gap-2">' +
-                  badge +
-                  '<h4 class="font-bold text-slate-900 text-sm">' + escapeHtml(r.titulo) + '</h4>' +
+        arbol.unidades.forEach((uNode, idx) => {
+          const u = uNode.unidad;
+          const temasHtml = uNode.temas.map((tNode) => {
+            const t = tNode.tema;
+            const itemsHtml = tNode.items.length === 0
+              ? '<p class="text-xs text-slate-400 italic py-2">Sin recursos publicados en este tema.</p>'
+              : tNode.items.map(renderItemPublicoHtml).join('');
+            return (
+              '<div class="rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-3">' +
+                '<div>' +
+                  '<span class="text-[10px] font-bold uppercase tracking-wider text-unexpo-600">Tema</span>' +
+                  '<h4 class="font-bold text-slate-900 text-base">' + escapeHtml(t.titulo) + '</h4>' +
+                  (t.descripcion ? '<p class="text-xs text-slate-600 mt-0.5 whitespace-pre-line">' + escapeHtml(t.descripcion) + '</p>' : '') +
                 '</div>' +
-                '<p class="text-xs text-slate-600">' + escapeHtml(r.descripcion || 'Sin descripción.') + '</p>' +
+                '<div class="space-y-2.5">' + itemsHtml + '</div>' +
+              '</div>'
+            );
+          }).join('');
+
+          const directosHtml = uNode.itemsDirectos.map(renderItemPublicoHtml).join('');
+          html += (
+            '<div class="rounded-2xl border-2 border-slate-200 bg-white p-5 space-y-4">' +
+              '<div class="border-b border-slate-100 pb-3">' +
+                '<span class="inline-block px-2 py-0.5 rounded bg-unexpo-900 text-white text-[10px] font-bold uppercase mb-1">Unidad ' + (idx + 1) + '</span>' +
+                '<h3 class="text-lg font-extrabold text-slate-900">' + escapeHtml(u.titulo) + '</h3>' +
+                (u.descripcion ? '<p class="text-xs sm:text-sm text-slate-600 mt-1 whitespace-pre-line">' + escapeHtml(u.descripcion) + '</p>' : '') +
               '</div>' +
-              '<div class="flex items-center gap-2 shrink-0">' +
-                downloadBtn +
-                openBtn +
-              '</div>' +
+              '<div class="space-y-3">' + temasHtml + directosHtml + '</div>' +
             '</div>'
           );
-        }).join('');
+        });
+
+        if (arbol.generales.length > 0) {
+          html += (
+            '<div class="space-y-2.5">' +
+              (arbol.unidades.length > 0 ? '<h4 class="text-xs font-bold uppercase text-slate-500 pt-2">Recursos Generales</h4>' : '') +
+              arbol.generales.map(renderItemPublicoHtml).join('') +
+            '</div>'
+          );
+        }
+
+        cont.innerHTML = html;
       }
 
       box.classList.remove('hidden');
       box.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
 
     function cerrarDetalleBovedaPublica() {
       document.getElementById('detalle-boveda-publica').classList.add('hidden');
@@ -1797,14 +2049,37 @@
     }
 
     function inicializarFormularioHorario() {
+      const ventana = obtenerVentanaSemanas();
       const inputSemana = document.getElementById('hor-semana');
-      if (STATE.semanaActual && !inputSemana.value) {
-        inputSemana.value = STATE.semanaActual;
+      if (inputSemana) {
+        inputSemana.min = ventana.anterior;
+        inputSemana.max = ventana.siguiente;
+        if (STATE.semanaActual && !inputSemana.value) {
+          inputSemana.value = STATE.semanaActual;
+        }
       }
+      toggleFrecuenciaHorario();
       actualizarEtiquetaSemanaForm();
       aplicarReglasUbicacionHorario();
       actualizarDatalistMaterias();
     }
+
+    function toggleFrecuenciaHorario() {
+      const freq = document.getElementById('hor-frecuencia').value;
+      const wrap = document.getElementById('hor-semana-wrap');
+      const inputSemana = document.getElementById('hor-semana');
+      if (freq === 'FIJO') {
+        wrap.classList.add('opacity-50');
+        inputSemana.disabled = true;
+        inputSemana.required = false;
+      } else {
+        wrap.classList.remove('opacity-50');
+        inputSemana.disabled = false;
+        inputSemana.required = true;
+      }
+      actualizarEtiquetaSemanaForm();
+    }
+
 
     function actualizarDatalistMaterias() {
       const datalist = document.getElementById('lista-materias-bovedas');
@@ -1829,9 +2104,15 @@
     }
 
     function actualizarEtiquetaSemanaForm() {
+      const freqEl = document.getElementById('hor-frecuencia');
+      if (freqEl && freqEl.value === 'FIJO') {
+        document.getElementById('hor-semana-legible').textContent = 'Se mostrará automáticamente en todas las semanas (ventana activa de 3 semanas).';
+        return;
+      }
       const val = document.getElementById('hor-semana').value;
       document.getElementById('hor-semana-legible').textContent = val ? describirSemana(val) : '';
     }
+
 
     function aplicarReglasUbicacionHorario() {
       const sede = document.getElementById('hor-sede').value;
@@ -1886,6 +2167,8 @@
 
     async function enviarFormularioHorario(e) {
       e.preventDefault();
+      const freq = document.getElementById('hor-frecuencia').value;
+      const semana = freq === 'FIJO' ? 'FIJO' : document.getElementById('hor-semana').value;
       const sede = document.getElementById('hor-sede').value;
       const piso = sede === 'Km 0' ? 'No aplica' : document.getElementById('hor-piso').value;
       const salon = (sede === 'Yaguaral' && piso === 'Piso 3')
@@ -1893,7 +2176,7 @@
         : document.getElementById('hor-salon').value.trim();
 
       const payload = {
-        semana: document.getElementById('hor-semana').value,
+        semana: semana,
         sede: sede,
         piso: piso,
         salon: salon,
@@ -1925,6 +2208,7 @@
         setBtnLoading('btn-guardar-horario', false, 'Guardar Horario');
       }
     }
+
 
     function mostrarModalConflictos(conflictos) {
       const lista = document.getElementById('lista-conflictos-modal');
@@ -1976,11 +2260,14 @@
 
       cont.innerHTML = mios.map((h) => {
         const conflicto = h.estadoChoque === 'CONFLICTO';
+        const esFijo = String(h.semana || '').toUpperCase() === 'FIJO';
         return (
           '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border ' + (conflicto ? 'border-red-300 bg-red-50/50' : 'border-slate-200 bg-slate-50/50') + '">' +
             '<div class="space-y-1">' +
               '<div class="flex flex-wrap items-center gap-2">' +
-                '<span class="text-xs font-bold text-unexpo-900 bg-blue-100 px-2 py-0.5 rounded">' + escapeHtml(h.semana) + ' · ' + escapeHtml(h.dia) + '</span>' +
+                '<span class="text-xs font-bold ' + (esFijo ? 'bg-indigo-100 text-indigo-800' : 'bg-blue-100 text-unexpo-900') + ' px-2 py-0.5 rounded">' +
+                  (esFijo ? 'Fijo (Todas las semanas)' : escapeHtml(h.semana)) + ' · ' + escapeHtml(h.dia) +
+                '</span>' +
                 '<span class="text-xs font-semibold text-slate-700">' + escapeHtml(h.horaInicio) + ' - ' + escapeHtml(h.horaFin) + '</span>' +
                 (conflicto ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 text-red-700">CONFLICTO</span>' : '') +
               '</div>' +
@@ -1994,6 +2281,7 @@
         );
       }).join('');
     }
+
 
     async function eliminarMiHorario(horarioId) {
       const ok = await confirmarAccion('Eliminar Horario', '¿Estás seguro de eliminar este bloque de asesoría?');
@@ -2122,6 +2410,51 @@
       }
     }
 
+    function renderItemAsesorHtml(bId, r, idx, total) {
+      const tipo = String(r.tipoRecurso || '').toUpperCase();
+      const esArch = tipo === 'ARCHIVO';
+      const esTexto = tipo === 'TEXTO';
+      const safeUrl = sanitizeUrl(r.urlAcceso);
+      const rId = escapeHtml(r.recursoId);
+
+      const badge = esTexto
+        ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900">TEXTO · ' + escapeHtml(r.tipoArchivoOEnlace || 'Nota') + '</span>'
+        : '<span class="text-[10px] font-bold px-2 py-0.5 rounded ' + (esArch ? 'bg-blue-100 text-unexpo-900' : 'bg-purple-100 text-purple-800') + '">' +
+            escapeHtml(r.tipoRecurso) + (esArch ? ' · ' + formatearTamano(r.tamanoBytes) : ' · ' + escapeHtml(r.tipoArchivoOEnlace)) +
+          '</span>';
+
+      const subtexto = esTexto
+        ? (r.contenidoTexto ? '<p class="text-xs text-slate-600 mt-1 whitespace-pre-line line-clamp-2">' + escapeHtml(r.contenidoTexto) + '</p>' : '')
+        : '<p class="text-xs text-slate-500 mt-0.5">' + escapeHtml(r.descripcion || '') + '</p>';
+
+      return (
+        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 bg-white">' +
+          '<div class="min-w-0 flex-1">' +
+            '<div class="flex flex-wrap items-center gap-2">' +
+              badge +
+              '<span class="font-semibold text-sm text-slate-900 truncate">' + escapeHtml(r.titulo) + '</span>' +
+            '</div>' +
+            subtexto +
+          '</div>' +
+          '<div class="flex flex-wrap items-center gap-1.5 shrink-0">' +
+            (idx > 0
+              ? '<button type="button" data-action="mover-recurso-arriba" data-id="' + rId + '" title="Subir" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700">&uarr;</button>'
+              : '') +
+            (idx < total - 1
+              ? '<button type="button" data-action="mover-recurso-abajo" data-id="' + rId + '" title="Bajar" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700">&darr;</button>'
+              : '') +
+            (safeUrl
+              ? '<a href="' + escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100">Abrir</a>'
+              : '') +
+            (esArch
+              ? '<button type="button" data-action="reemplazar-recurso" data-extra="' + bId + '" data-id="' + rId + '" class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-800 hover:bg-amber-100">Reemplazar</button>'
+              : '') +
+            '<button type="button" data-action="eliminar-recurso" data-id="' + rId + '" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
+          '</div>' +
+        '</div>'
+      );
+    }
+
     function renderMisBovedas() {
       const cont = document.getElementById('contenedor-mis-bovedas');
       if (STATE.misBovedas.length === 0) {
@@ -2138,39 +2471,72 @@
         const disponible = Math.max(0, b.limiteBytes - b.bytesUsados);
         const barColor = pct > 90 ? 'bg-red-500' : pct > 70 ? 'bg-amber-500' : 'bg-emerald-500';
         const bId = escapeHtml(b.bovedaId);
+        const arbol = construirArbolBoveda(b.recursos || []);
 
-        const recursosHtml = b.recursos.length === 0
-          ? '<p class="text-xs text-slate-400 py-4 text-center">No hay recursos subidos en esta bóveda.</p>'
-          : b.recursos.map((r) => {
-              const esArch = r.tipoRecurso === 'ARCHIVO';
-              const safeUrl = sanitizeUrl(r.urlAcceso);
-              return (
-                '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/70">' +
-                  '<div class="min-w-0 flex-1">' +
-                    '<div class="flex flex-wrap items-center gap-2">' +
-                      '<span class="text-[10px] font-bold px-2 py-0.5 rounded ' + (esArch ? 'bg-blue-100 text-unexpo-900' : 'bg-purple-100 text-purple-800') + '">' +
-                        escapeHtml(r.tipoRecurso) + (esArch ? ' · ' + formatearTamano(r.tamanoBytes) : ' · ' + escapeHtml(r.tipoArchivoOEnlace)) +
-                      '</span>' +
-                      '<span class="font-semibold text-sm text-slate-900 truncate">' + escapeHtml(r.titulo) + '</span>' +
+        const unidadesHtml = arbol.unidades.map((uNode, uIdx) => {
+          const u = uNode.unidad;
+          const uId = escapeHtml(u.recursoId);
+
+          const temasHtml = uNode.temas.length === 0
+            ? '<p class="text-xs text-slate-400 italic py-2">No hay temas en esta unidad. Crea un tema para organizar archivos, enlaces o notas.</p>'
+            : uNode.temas.map((tNode, tIdx) => {
+                const t = tNode.tema;
+                const tId = escapeHtml(t.recursoId);
+                const itemsHtml = tNode.items.length === 0
+                  ? '<p class="text-xs text-slate-400 italic py-2">Tema vacío. Agrega un archivo, enlace o párrafo/nota.</p>'
+                  : tNode.items.map((r, rIdx) => renderItemAsesorHtml(bId, r, rIdx, tNode.items.length)).join('');
+
+                return (
+                  '<div class="rounded-xl border border-slate-200 bg-slate-50/80 p-4 space-y-3">' +
+                    '<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">' +
+                      '<div>' +
+                        '<span class="text-[10px] font-bold uppercase text-unexpo-600">Tema ' + (tIdx + 1) + '</span>' +
+                        '<h5 class="font-bold text-sm text-slate-900">' + escapeHtml(t.titulo) + '</h5>' +
+                        (t.descripcion ? '<p class="text-xs text-slate-600 mt-0.5 whitespace-pre-line">' + escapeHtml(t.descripcion) + '</p>' : '') +
+                      '</div>' +
+                      '<div class="flex flex-wrap items-center gap-1.5 shrink-0">' +
+                        (tIdx > 0 ? '<button type="button" data-action="mover-recurso-arriba" data-id="' + tId + '" class="px-2 py-1 rounded bg-white border border-slate-300 text-xs font-bold">&uarr;</button>' : '') +
+                        (tIdx < uNode.temas.length - 1 ? '<button type="button" data-action="mover-recurso-abajo" data-id="' + tId + '" class="px-2 py-1 rounded bg-white border border-slate-300 text-xs font-bold">&darr;</button>' : '') +
+                        '<button type="button" data-action="abrir-modal-recurso" data-extra="' + bId + '" data-sub="' + uId + '" data-id="' + tId + '" data-tipo="ARCHIVO" class="px-2.5 py-1 rounded-lg bg-unexpo-900 hover:bg-unexpo-800 text-white text-xs font-semibold">+ Archivo</button>' +
+                        '<button type="button" data-action="abrir-modal-recurso" data-extra="' + bId + '" data-sub="' + uId + '" data-id="' + tId + '" data-tipo="ENLACE" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-unexpo-900 text-xs font-bold">+ Enlace</button>' +
+                        '<button type="button" data-action="abrir-modal-recurso" data-extra="' + bId + '" data-sub="' + uId + '" data-id="' + tId + '" data-tipo="TEXTO" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold">+ Párrafo/Nota</button>' +
+                        '<button type="button" data-action="eliminar-recurso" data-id="' + tId + '" class="px-2 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
+                      '</div>' +
                     '</div>' +
-                    '<p class="text-xs text-slate-500 mt-0.5">' + escapeHtml(r.descripcion || '') + '</p>' +
-                  '</div>' +
-                  '<div class="flex items-center gap-2 shrink-0">' +
-                    (safeUrl
-                      ? '<a href="' + escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100">Abrir</a>'
-                      : '') +
-                    (esArch
-                      ? '<button type="button" data-action="reemplazar-recurso" data-extra="' + bId + '" data-id="' + escapeHtml(r.recursoId) + '" class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-800 hover:bg-amber-100">Reemplazar</button>'
-                      : '') +
-                    '<button type="button" data-action="eliminar-recurso" data-id="' + escapeHtml(r.recursoId) + '" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar</button>' +
-                  '</div>' +
-                '</div>'
-              );
-            }).join('');
+                    '<div class="space-y-2">' + itemsHtml + '</div>' +
+                  '</div>'
+                );
+              }).join('');
+
+          return (
+            '<div class="rounded-2xl border-2 border-blue-100 bg-white p-4 sm:p-5 space-y-4">' +
+              '<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 border-b border-slate-100 pb-3">' +
+                '<div>' +
+                  '<span class="inline-block px-2 py-0.5 rounded bg-unexpo-900 text-white text-[10px] font-bold uppercase mb-1">Unidad ' + (uIdx + 1) + '</span>' +
+                  '<h4 class="text-base font-extrabold text-slate-900">' + escapeHtml(u.titulo) + '</h4>' +
+                  (u.descripcion ? '<p class="text-xs text-slate-600 mt-0.5 whitespace-pre-line">' + escapeHtml(u.descripcion) + '</p>' : '') +
+                '</div>' +
+                '<div class="flex flex-wrap items-center gap-1.5 shrink-0">' +
+                  (uIdx > 0 ? '<button type="button" data-action="mover-recurso-arriba" data-id="' + uId + '" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-xs font-bold">&uarr;</button>' : '') +
+                  (uIdx < arbol.unidades.length - 1 ? '<button type="button" data-action="mover-recurso-abajo" data-id="' + uId + '" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-xs font-bold">&darr;</button>' : '') +
+                  '<button type="button" data-action="abrir-nuevo-tema" data-extra="' + bId + '" data-id="' + uId + '" class="px-3 py-1 rounded-lg bg-blue-100 hover:bg-blue-200 text-unexpo-900 text-xs font-bold">+ Nuevo Tema</button>' +
+                  '<button type="button" data-action="eliminar-recurso" data-id="' + uId + '" class="px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700 hover:bg-red-100">Eliminar Unidad</button>' +
+                '</div>' +
+              '</div>' +
+              '<div class="space-y-3">' + temasHtml + '</div>' +
+            '</div>'
+          );
+        }).join('');
+
+        const generalesHtml = arbol.generales.length > 0
+          ? '<div class="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-2">' +
+              '<h4 class="text-xs font-bold uppercase text-slate-500">Recursos Generales (Sin unidad/tema asignado)</h4>' +
+              arbol.generales.map((r, rIdx) => renderItemAsesorHtml(bId, r, rIdx, arbol.generales.length)).join('') +
+            '</div>'
+          : '';
 
         return (
           '<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">' +
-            '<!-- Cabecera y Cuota -->' +
             '<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">' +
               '<div>' +
                 '<div class="flex items-center gap-2">' +
@@ -2190,11 +2556,10 @@
                 '<div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">' +
                   '<div class="h-full ' + barColor + ' transition-all" style="width:' + pct + '%"></div>' +
                 '</div>' +
-                '<p class="text-[11px] text-slate-500 mt-1">Disponible: <strong>' + formatearTamano(disponible) + '</strong> (los enlaces externos no consumen cuota)</p>' +
+                '<p class="text-[11px] text-slate-500 mt-1">Disponible: <strong>' + formatearTamano(disponible) + '</strong> (enlaces y textos no consumen cuota)</p>' +
               '</div>' +
             '</div>' +
 
-            '<!-- Configuración de Privacidad -->' +
             '<div class="bg-blue-50/50 border border-blue-100 rounded-xl p-4">' +
               '<h4 class="text-xs font-bold uppercase text-unexpo-900 mb-2">Privacidad de la Bóveda</h4>' +
               '<div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">' +
@@ -2213,37 +2578,183 @@
               '</div>' +
             '</div>' +
 
-            '<!-- Formularios: Subir Archivo o Agregar Enlace -->' +
-            '<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">' +
-              '<form onsubmit="enviarArchivoBoveda(event, \'' + bId + '\')" class="border border-slate-200 rounded-xl p-4 space-y-3">' +
-                '<h4 class="text-sm font-bold text-slate-900">Subir Archivo (PDF, Guía, Imagen, Doc...)</h4>' +
-                '<input id="arch-titulo-' + bId + '" type="text" required placeholder="Título del material (Ej: Guía Unidad 1)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
-                '<input id="arch-desc-' + bId + '" type="text" placeholder="Descripción breve (opcional)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
-                '<input id="arch-file-' + bId + '" type="file" required class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-unexpo-900" />' +
-                '<p class="text-[11px] text-slate-400">Transferencia web directa recomendada hasta 25 MB por archivo (cuota total: 500 MB).</p>' +
-                '<button id="btn-subir-' + bId + '" type="submit" class="w-full bg-unexpo-900 hover:bg-unexpo-800 text-white font-semibold py-2 rounded-lg text-xs transition flex items-center justify-center gap-2">Subir Archivo a Drive</button>' +
-              '</form>' +
-
-              '<form onsubmit="enviarEnlaceBoveda(event, \'' + bId + '\')" class="border border-slate-200 rounded-xl p-4 space-y-3">' +
-                '<h4 class="text-sm font-bold text-slate-900">Agregar Enlace Externo (No consume 500 MB)</h4>' +
-                '<div class="grid grid-cols-2 gap-2">' +
-                  '<input id="enl-titulo-' + bId + '" type="text" required placeholder="Título del enlace" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
-                  '<input id="enl-tipo-' + bId + '" type="text" placeholder="Ej: YouTube, Drive, Mega" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
-                '</div>' +
-                '<input id="enl-url-' + bId + '" type="url" required placeholder="https://..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
-                '<input id="enl-desc-' + bId + '" type="text" placeholder="Descripción breve (opcional)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs" />' +
-                '<button id="btn-enlace-' + bId + '" type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-unexpo-900 font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-2">Agregar Enlace Externo</button>' +
-              '</form>' +
+            '<div class="flex flex-wrap items-center justify-between gap-2 pt-1">' +
+              '<h4 class="text-sm font-bold text-slate-800">Estructura y Contenido (Unidades &rarr; Temas &rarr; Recursos)</h4>' +
+              '<div class="flex flex-wrap gap-2">' +
+                '<button type="button" data-action="abrir-nueva-unidad" data-id="' + bId + '" class="px-3.5 py-2 rounded-xl bg-unexpo-900 hover:bg-unexpo-800 text-white text-xs font-bold shadow-sm transition">+ Nueva Unidad</button>' +
+              '</div>' +
             '</div>' +
 
-            '<div class="space-y-2">' +
-              '<h4 class="text-xs font-bold uppercase text-slate-500">Recursos Publicados (' + b.recursos.length + ')</h4>' +
-              recursosHtml +
+            '<div class="space-y-4">' +
+              (unidadesHtml || '<div class="text-center py-6 rounded-xl border border-dashed border-slate-300 text-xs text-slate-500">Aún no has creado unidades. Haz clic en <strong>+ Nueva Unidad</strong> para organizar el temario de la materia.</div>') +
+              generalesHtml +
             '</div>' +
           '</div>'
         );
       }).join('');
     }
+
+    function abrirModalEstructuraBoveda(bovedaId, tipo, unidadId = '') {
+      document.getElementById('meb-boveda-id').value = bovedaId;
+      document.getElementById('meb-tipo').value = tipo;
+      document.getElementById('meb-unidad-id').value = unidadId;
+      document.getElementById('meb-nombre').value = '';
+      document.getElementById('meb-descripcion').value = '';
+      document.getElementById('meb-titulo').textContent = tipo === 'UNIDAD' ? 'Crear Nueva Unidad' : 'Crear Nuevo Tema';
+      document.getElementById('meb-nombre').placeholder = tipo === 'UNIDAD'
+        ? 'Ej: Unidad I - Diodos y Semiconductores'
+        : 'Ej: Tema 1.2 - Rectificadores de onda completa';
+      abrirModal('modal-estructura-boveda');
+    }
+
+    async function enviarEstructuraBoveda(e) {
+      e.preventDefault();
+      const payload = {
+        bovedaId: document.getElementById('meb-boveda-id').value,
+        tipo: document.getElementById('meb-tipo').value,
+        unidadId: document.getElementById('meb-unidad-id').value,
+        titulo: document.getElementById('meb-nombre').value.trim(),
+        descripcion: document.getElementById('meb-descripcion').value.trim()
+      };
+      setBtnLoading('btn-meb-guardar', true);
+      try {
+        const res = await gasCall('guardarEstructuraBoveda', STATE.token, payload);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        cerrarModal('modal-estructura-boveda');
+        mostrarToast(res.mensaje, 'success');
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-meb-guardar', false, 'Guardar');
+      }
+    }
+
+    function abrirModalRecursoBoveda(bovedaId, unidadId, temaId, tipo) {
+      document.getElementById('mrb-boveda-id').value = bovedaId;
+      document.getElementById('mrb-unidad-id').value = unidadId;
+      document.getElementById('mrb-tema-id').value = temaId;
+      document.getElementById('mrb-tipo').value = tipo;
+      document.getElementById('mrb-titulo').value = '';
+      document.getElementById('mrb-arch-desc').value = '';
+      document.getElementById('mrb-arch-file').value = '';
+      document.getElementById('mrb-enl-tipo').value = '';
+      document.getElementById('mrb-enl-url').value = '';
+      document.getElementById('mrb-enl-desc').value = '';
+      document.getElementById('mrb-txt-subtitulo').value = 'Nota';
+      document.getElementById('mrb-txt-contenido').value = '';
+
+      document.getElementById('mrb-wrap-archivo').classList.toggle('hidden', tipo !== 'ARCHIVO');
+      document.getElementById('mrb-wrap-enlace').classList.toggle('hidden', tipo !== 'ENLACE');
+      document.getElementById('mrb-wrap-texto').classList.toggle('hidden', tipo !== 'TEXTO');
+
+      const titulos = {
+        ARCHIVO: 'Subir Archivo al Tema',
+        ENLACE: 'Agregar Enlace Externo al Tema',
+        TEXTO: 'Agregar Párrafo / Nota / Subtítulo al Tema'
+      };
+      document.getElementById('mrb-titulo-modal').textContent = titulos[tipo] || 'Agregar Recurso';
+      document.getElementById('mrb-label-titulo').textContent = tipo === 'TEXTO' ? 'Título / Subtítulo *' : 'Título *';
+      abrirModal('modal-recurso-boveda');
+    }
+
+    async function enviarRecursoModalBoveda(e) {
+      e.preventDefault();
+      const bId = document.getElementById('mrb-boveda-id').value;
+      const uId = document.getElementById('mrb-unidad-id').value;
+      const tId = document.getElementById('mrb-tema-id').value;
+      const tipo = document.getElementById('mrb-tipo').value;
+      const titulo = document.getElementById('mrb-titulo').value.trim();
+
+      setBtnLoading('btn-mrb-guardar', true);
+      try {
+        let res;
+        if (tipo === 'ARCHIVO') {
+          const fileInput = document.getElementById('mrb-arch-file');
+          const file = fileInput.files && fileInput.files[0];
+          if (!file) {
+            mostrarToast('Selecciona un archivo primero.', 'warning');
+            return;
+          }
+          if (file.size > MAX_GAS_UPLOAD_BYTES) {
+            mostrarToast('El archivo supera ~25 MB. Súbelo a tu Drive y agrégalo como Enlace.', 'warning');
+            return;
+          }
+          const base64Data = await leerArchivoComoBase64(file);
+          res = await gasCall('subirArchivoBoveda', STATE.token, {
+            bovedaId: bId,
+            unidadId: uId,
+            temaId: tId,
+            titulo: titulo,
+            descripcion: document.getElementById('mrb-arch-desc').value.trim(),
+            fileName: file.name,
+            mimeType: file.type || 'application/octet-stream',
+            base64Data: base64Data
+          });
+        } else if (tipo === 'ENLACE') {
+          const urlAcceso = document.getElementById('mrb-enl-url').value.trim();
+          if (!urlAcceso) {
+            mostrarToast('Ingresa la URL del enlace.', 'warning');
+            return;
+          }
+          res = await gasCall('agregarEnlaceBoveda', STATE.token, {
+            bovedaId: bId,
+            unidadId: uId,
+            temaId: tId,
+            titulo: titulo,
+            tipoEnlace: document.getElementById('mrb-enl-tipo').value.trim() || 'Enlace Web',
+            urlAcceso: urlAcceso,
+            descripcion: document.getElementById('mrb-enl-desc').value.trim()
+          });
+        } else {
+          const contenido = document.getElementById('mrb-txt-contenido').value.trim();
+          if (!contenido) {
+            mostrarToast('Escribe el contenido del párrafo o nota.', 'warning');
+            return;
+          }
+          res = await gasCall('agregarTextoBoveda', STATE.token, {
+            bovedaId: bId,
+            unidadId: uId,
+            temaId: tId,
+            titulo: titulo,
+            subtitulo: document.getElementById('mrb-txt-subtitulo').value.trim() || 'Nota',
+            contenidoTexto: contenido
+          });
+        }
+
+        if (!res.ok) {
+          mostrarToast(res.mensaje, res.cuotaExcedida ? 'warning' : 'error');
+          return;
+        }
+        cerrarModal('modal-recurso-boveda');
+        mostrarToast(res.mensaje, 'success');
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      } finally {
+        setBtnLoading('btn-mrb-guardar', false, 'Publicar en Bóveda');
+      }
+    }
+
+    async function moverOrdenRecurso(recursoId, direccion) {
+      try {
+        const res = await gasCall('moverOrdenRecursoBoveda', STATE.token, recursoId, direccion);
+        if (!res.ok) {
+          mostrarToast(res.mensaje, 'error');
+          return;
+        }
+        await cargarMisBovedas();
+        await cargarDatosIniciales();
+      } catch (err) {
+        mostrarToast(err.message, 'error');
+      }
+    }
+
 
     async function guardarPrivacidadBoveda(bovedaId) {
       const publico = document.getElementById('priv-tipo-' + bovedaId).value === 'true';
