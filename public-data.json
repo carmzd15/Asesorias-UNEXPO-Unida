@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:39:59.784Z",
+  "generadoEn": "2026-11-24T01:49:22.235Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -139,9 +139,9 @@
       "accesoPublico": true,
       "tieneClave": true,
       "limiteBytes": 524288000,
-      "bytesUsados": 13974988,
-      "totalRecursos": 10,
-      "actualizadoEn": "2026-11-24T01:39:48.068Z",
+      "bytesUsados": 14195213,
+      "totalRecursos": 11,
+      "actualizadoEn": "2026-11-24T01:49:07.858Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -380,6 +380,22 @@
           "subidoEn": "2026-11-24T01:29:19.532Z",
           "unidadId": "UNI-39F97333",
           "temaId": "",
+          "orden": 3,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-BD34243C",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ARCHIVO",
+          "tipoArchivoOEnlace": "PDF",
+          "titulo": "Guía de Ejercicios Oficial",
+          "descripcion": "Múltiples ejercicios.",
+          "urlAcceso": "https://drive.google.com/file/d/1wBpj-VepiK2QW0xXYBE1aVeOn9PnlSQP/view?usp=drivesdk",
+          "driveFileId": "1wBpj-VepiK2QW0xXYBE1aVeOn9PnlSQP",
+          "tamanoBytes": 220225,
+          "subidoEn": "2026-11-24T01:49:07.858Z",
+          "unidadId": "UNI-D82AF7A9",
+          "temaId": "TEM-FD67EEC5",
           "orden": 3,
           "contenidoTexto": ""
         },
