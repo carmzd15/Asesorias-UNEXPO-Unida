@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:26:20.214Z",
+  "generadoEn": "2026-11-24T01:29:33.583Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -141,7 +141,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 7,
-      "actualizadoEn": "2026-11-24T01:25:57.957Z",
+      "actualizadoEn": "2026-11-24T01:29:19.532Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -284,6 +284,22 @@
           "subidoEn": "2026-11-24T01:24:37.571Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-DCE5295C",
+          "orden": 3,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-3D8C9203",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "EveryCircuit",
+          "descripcion": "Simulador de Android perfecto para simulaciones rápidas de circuitos electrónicos simples",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:29:19.532Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "",
           "orden": 3,
           "contenidoTexto": ""
         },
