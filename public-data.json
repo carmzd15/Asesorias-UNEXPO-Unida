@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:10:48.137Z",
+  "generadoEn": "2026-11-24T01:12:30.302Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -141,8 +141,25 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-24T01:10:34.442Z",
-      "recursos": []
+      "actualizadoEn": "2026-11-24T01:12:15.845Z",
+      "recursos": [
+        {
+          "recursoId": "UNI-39F97333",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Simuladores",
+          "descripcion": "Los simuladores más comunes usados en Electrónica I",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:12:15.845Z",
+          "unidadId": "",
+          "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        }
+      ]
     },
     {
       "bovedaId": "BOV-93C688E7",
