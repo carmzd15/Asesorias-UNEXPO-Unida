@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:16:48.329Z",
+  "generadoEn": "2026-11-24T01:17:32.391Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -140,8 +140,8 @@
       "tieneClave": true,
       "limiteBytes": 524288000,
       "bytesUsados": 0,
-      "totalRecursos": 1,
-      "actualizadoEn": "2026-11-24T01:16:34.647Z",
+      "totalRecursos": 2,
+      "actualizadoEn": "2026-11-24T01:17:18.698Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -189,6 +189,22 @@
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-D0740E6D",
           "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-61405FDC",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Youtube",
+          "titulo": "Tutorial de 5 minutos",
+          "descripcion": "",
+          "urlAcceso": "https://www.youtube.com/watch?v=rGQ8S7zQO1c",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:17:18.698Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "TEM-D0740E6D",
+          "orden": 2,
           "contenidoTexto": ""
         }
       ]
