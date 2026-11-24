@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:20:11.984Z",
+  "generadoEn": "2026-11-24T01:22:05.600Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -140,8 +140,8 @@
       "tieneClave": true,
       "limiteBytes": 524288000,
       "bytesUsados": 0,
-      "totalRecursos": 4,
-      "actualizadoEn": "2026-11-24T01:20:01.371Z",
+      "totalRecursos": 5,
+      "actualizadoEn": "2026-11-24T01:21:52.577Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -236,6 +236,22 @@
           "subidoEn": "2026-11-24T01:19:19.884Z",
           "unidadId": "UNI-39F97333",
           "temaId": "",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-7382C3B1",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Youtube",
+          "titulo": "Tutorial Básico para Interfaz",
+          "descripcion": "",
+          "urlAcceso": "https://www.youtube.com/watch?v=9LACWGnWXuk",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:21:52.577Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "TEM-DCE5295C",
           "orden": 2,
           "contenidoTexto": ""
         },
