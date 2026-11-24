@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:49:22.235Z",
+  "generadoEn": "2026-11-24T01:54:01.954Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -84,21 +84,6 @@
     }
   ],
   "horarios": [
-    {
-      "id": "HOR-A122E975",
-      "semana": "2026-W48",
-      "sede": "Yaguaral",
-      "piso": "Piso 3",
-      "salon": "Salón de Sistemas",
-      "dia": "Viernes",
-      "horaInicio": "13:50",
-      "horaFin": "16:00",
-      "materia": "Electrónica I",
-      "asesorId": "ASE-C17C8F6A330D",
-      "nombreAsesor": "Carlos Mendoza",
-      "estadoChoque": "OK",
-      "timestamp": "2026-11-23T17:48:54.180Z"
-    },
     {
       "id": "HOR-8A1721D1",
       "semana": "FIJO",
