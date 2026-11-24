@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:15:44.672Z",
+  "generadoEn": "2026-11-24T01:16:48.329Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -140,8 +140,8 @@
       "tieneClave": true,
       "limiteBytes": 524288000,
       "bytesUsados": 0,
-      "totalRecursos": 0,
-      "actualizadoEn": "2026-11-24T01:15:30.194Z",
+      "totalRecursos": 1,
+      "actualizadoEn": "2026-11-24T01:16:34.647Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -172,6 +172,22 @@
           "subidoEn": "2026-11-24T01:15:30.194Z",
           "unidadId": "UNI-39F97333",
           "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-E0F1A3ED",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Drive",
+          "titulo": "Descargar Simulador Multisim",
+          "descripcion": "",
+          "urlAcceso": "https://drive.google.com/drive/folders/1QUhz2ehIpmjTICRTcc73DQ7BksS1hWST?usp=drive_link",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:16:34.647Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "TEM-D0740E6D",
           "orden": 1,
           "contenidoTexto": ""
         }
