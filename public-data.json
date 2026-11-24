@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:32:29.415Z",
+  "generadoEn": "2026-11-24T01:34:37.983Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -141,7 +141,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 6745834,
       "totalRecursos": 8,
-      "actualizadoEn": "2026-11-24T01:32:16.495Z",
+      "actualizadoEn": "2026-11-24T01:34:25.615Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -268,6 +268,22 @@
           "subidoEn": "2026-11-24T01:21:52.577Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-DCE5295C",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "UNI-D82AF7A9",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "UNIDAD",
+          "tipoArchivoOEnlace": "UNIDAD",
+          "titulo": "Diodos",
+          "descripcion": "Semiconductores, Diodos Rectificadores, Diodos Zener, Puentes Rectificadores, Limitadores de Voltaje, Fuente DC.",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:34:25.615Z",
+          "unidadId": "",
+          "temaId": "",
           "orden": 2,
           "contenidoTexto": ""
         },
