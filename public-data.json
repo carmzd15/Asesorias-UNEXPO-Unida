@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:30:20.661Z",
+  "generadoEn": "2026-11-24T01:32:29.415Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -139,9 +139,9 @@
       "accesoPublico": true,
       "tieneClave": true,
       "limiteBytes": 524288000,
-      "bytesUsados": 0,
-      "totalRecursos": 7,
-      "actualizadoEn": "2026-11-24T01:30:06.914Z",
+      "bytesUsados": 6745834,
+      "totalRecursos": 8,
+      "actualizadoEn": "2026-11-24T01:32:16.495Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -204,6 +204,22 @@
           "subidoEn": "2026-11-24T01:20:01.371Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-DCE5295C",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-DD869F31",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ARCHIVO",
+          "tipoArchivoOEnlace": "APK",
+          "titulo": "APK de EveryCircuit",
+          "descripcion": "",
+          "urlAcceso": "https://drive.google.com/file/d/15dX2y7qZoXfQjPcddo_X_G2_porjhIvH/view?usp=drivesdk",
+          "driveFileId": "15dX2y7qZoXfQjPcddo_X_G2_porjhIvH",
+          "tamanoBytes": 6745834,
+          "subidoEn": "2026-11-24T01:32:16.495Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "TEM-3D8C9203",
           "orden": 1,
           "contenidoTexto": ""
         },
