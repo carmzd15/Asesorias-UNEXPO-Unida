@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:30:06.179Z",
+  "generadoEn": "2026-11-24T01:30:20.661Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -141,7 +141,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 7,
-      "actualizadoEn": "2026-11-24T01:29:53.149Z",
+      "actualizadoEn": "2026-11-24T01:30:06.914Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -293,7 +293,7 @@
           "tipoRecurso": "TEMA",
           "tipoArchivoOEnlace": "TEMA",
           "titulo": "EveryCircuit",
-          "descripcion": "Simulador de Android perfecto para simulaciones rápidas de circuitos electrónicos simples",
+          "descripcion": "Simulador de Android perfecto para simulaciones rápidas de circuitos electrónicos simples.",
           "urlAcceso": "",
           "driveFileId": "",
           "tamanoBytes": 0,
