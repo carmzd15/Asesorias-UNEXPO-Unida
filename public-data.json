@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:36:38.612Z",
+  "generadoEn": "2026-11-24T01:38:04.820Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -139,9 +139,9 @@
       "accesoPublico": true,
       "tieneClave": true,
       "limiteBytes": 524288000,
-      "bytesUsados": 6745834,
-      "totalRecursos": 8,
-      "actualizadoEn": "2026-11-24T01:36:24.095Z",
+      "bytesUsados": 13974988,
+      "totalRecursos": 9,
+      "actualizadoEn": "2026-11-24T01:37:48.781Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -236,6 +236,22 @@
           "subidoEn": "2026-11-24T01:36:24.095Z",
           "unidadId": "UNI-D82AF7A9",
           "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-AE3EE72F",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ARCHIVO",
+          "tipoArchivoOEnlace": "PDF",
+          "titulo": "Repaso de temario de la Unidad I",
+          "descripcion": "Formulas y conceptos resumidos en un solo PDF.",
+          "urlAcceso": "https://drive.google.com/file/d/1mFmibcexCpmwXEw8ZAvMkMn60vYGq6GD/view?usp=drivesdk",
+          "driveFileId": "1mFmibcexCpmwXEw8ZAvMkMn60vYGq6GD",
+          "tamanoBytes": 7229154,
+          "subidoEn": "2026-11-24T01:37:48.781Z",
+          "unidadId": "UNI-D82AF7A9",
+          "temaId": "TEM-FD67EEC5",
           "orden": 1,
           "contenidoTexto": ""
         },
