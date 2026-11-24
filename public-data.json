@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:29:33.583Z",
+  "generadoEn": "2026-11-24T01:30:06.179Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -141,7 +141,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 7,
-      "actualizadoEn": "2026-11-24T01:29:19.532Z",
+      "actualizadoEn": "2026-11-24T01:29:53.149Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -165,7 +165,7 @@
           "tipoRecurso": "TEMA",
           "tipoArchivoOEnlace": "TEMA",
           "titulo": "Multisim",
-          "descripcion": "El Simulador favorito para empezar con Circuitos Electrónicos",
+          "descripcion": "El Simulador favorito para empezar con Circuitos Electrónicos.",
           "urlAcceso": "",
           "driveFileId": "",
           "tamanoBytes": 0,
