@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T13:02:56.920Z",
+  "generadoEn": "2026-11-24T13:04:31.415Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -113,6 +113,21 @@
       "nombreAsesor": "Andreina Marquez",
       "estadoChoque": "OK",
       "timestamp": "2026-11-23T22:59:45.708Z"
+    },
+    {
+      "id": "HOR-D12FD915",
+      "semana": "2026-W48",
+      "sede": "Yaguaral",
+      "piso": "Piso 3",
+      "salon": "Salón de Sistemas",
+      "dia": "Jueves",
+      "horaInicio": "11:30",
+      "horaFin": "13:30",
+      "materia": "Sistemas Electrónicos I",
+      "asesorId": "ASE-C17C8F6A330D",
+      "nombreAsesor": "Carlos Mendoza",
+      "estadoChoque": "OK",
+      "timestamp": "2026-11-24T13:04:19.366Z"
     }
   ],
   "bovedas": [
