@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:19:34.748Z",
+  "generadoEn": "2026-11-24T01:20:11.984Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -140,8 +140,8 @@
       "tieneClave": true,
       "limiteBytes": 524288000,
       "bytesUsados": 0,
-      "totalRecursos": 3,
-      "actualizadoEn": "2026-11-24T01:19:19.884Z",
+      "totalRecursos": 4,
+      "actualizadoEn": "2026-11-24T01:20:01.371Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -188,6 +188,22 @@
           "subidoEn": "2026-11-24T01:16:34.647Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-D0740E6D",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-C843722B",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Drive",
+          "titulo": "Descargar Simulador Proteus",
+          "descripcion": "",
+          "urlAcceso": "https://drive.google.com/drive/folders/1mykXezNr4qzd1QPgmrm5wupSJ8aTJvPk?usp=sharing",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:20:01.371Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "TEM-DCE5295C",
           "orden": 1,
           "contenidoTexto": ""
         },
