@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T00:56:52.863Z",
+  "generadoEn": "2026-11-24T01:10:48.137Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -141,57 +141,8 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-23T17:50:34.366Z",
-      "recursos": [
-        {
-          "recursoId": "UNI-B6B7EB80",
-          "bovedaId": "BOV-5F37E46E",
-          "tipoRecurso": "UNIDAD",
-          "tipoArchivoOEnlace": "UNIDAD",
-          "titulo": "Unidad I - Diodos",
-          "descripcion": "Material referente a la Primera Unidad - Semiconductores\nDiodos Rectificadores y Diodo Zener",
-          "urlAcceso": "",
-          "driveFileId": "",
-          "tamanoBytes": 0,
-          "subidoEn": "2026-11-23T09:20:35.928Z",
-          "unidadId": "",
-          "temaId": "",
-          "orden": 1,
-          "contenidoTexto": ""
-        },
-        {
-          "recursoId": "TEM-B282931A",
-          "bovedaId": "BOV-5F37E46E",
-          "tipoRecurso": "TEMA",
-          "tipoArchivoOEnlace": "TEMA",
-          "titulo": "Diodos Rectificadores",
-          "descripcion": "",
-          "urlAcceso": "",
-          "driveFileId": "",
-          "tamanoBytes": 0,
-          "subidoEn": "2026-11-23T09:22:44.071Z",
-          "unidadId": "UNI-B6B7EB80",
-          "temaId": "",
-          "orden": 1,
-          "contenidoTexto": ""
-        },
-        {
-          "recursoId": "UNI-8B36B864",
-          "bovedaId": "BOV-5F37E46E",
-          "tipoRecurso": "UNIDAD",
-          "tipoArchivoOEnlace": "UNIDAD",
-          "titulo": "Unidad II",
-          "descripcion": "Transistores",
-          "urlAcceso": "",
-          "driveFileId": "",
-          "tamanoBytes": 0,
-          "subidoEn": "2026-11-23T09:49:43.846Z",
-          "unidadId": "",
-          "temaId": "",
-          "orden": 2,
-          "contenidoTexto": ""
-        }
-      ]
+      "actualizadoEn": "2026-11-24T01:10:34.442Z",
+      "recursos": []
     },
     {
       "bovedaId": "BOV-93C688E7",
