@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:38:04.820Z",
+  "generadoEn": "2026-11-24T01:39:59.784Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -140,8 +140,8 @@
       "tieneClave": true,
       "limiteBytes": 524288000,
       "bytesUsados": 13974988,
-      "totalRecursos": 9,
-      "actualizadoEn": "2026-11-24T01:37:48.781Z",
+      "totalRecursos": 10,
+      "actualizadoEn": "2026-11-24T01:39:48.068Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -316,6 +316,22 @@
           "subidoEn": "2026-11-24T01:34:25.615Z",
           "unidadId": "",
           "temaId": "",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-811E02EA",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Youtube",
+          "titulo": "Lista de Reproducción - Introducción a Diodos",
+          "descripcion": "Repaso de Sistemas Eléctricos I, Conceptos y Ejercicios Básicos de Diodos.",
+          "urlAcceso": "https://youtube.com/playlist?list=PLd4p1638ymOA1I1rHok9bys3KgL8RHd1l&si=5yYbt-9lQ11YMUB4",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:39:48.068Z",
+          "unidadId": "UNI-D82AF7A9",
+          "temaId": "TEM-FD67EEC5",
           "orden": 2,
           "contenidoTexto": ""
         },
