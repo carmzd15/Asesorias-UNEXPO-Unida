@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:22:05.600Z",
+  "generadoEn": "2026-11-24T01:24:58.093Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -140,8 +140,8 @@
       "tieneClave": true,
       "limiteBytes": 524288000,
       "bytesUsados": 0,
-      "totalRecursos": 5,
-      "actualizadoEn": "2026-11-24T01:21:52.577Z",
+      "totalRecursos": 6,
+      "actualizadoEn": "2026-11-24T01:24:37.571Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -268,6 +268,22 @@
           "subidoEn": "2026-11-24T01:18:21.764Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-D0740E6D",
+          "orden": 3,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-C97F3388",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Youtube",
+          "titulo": "Tutorial Básico con Osciloscopio",
+          "descripcion": "",
+          "urlAcceso": "https://www.youtube.com/watch?v=nvNjLO3CATg",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:24:37.571Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "TEM-DCE5295C",
           "orden": 3,
           "contenidoTexto": ""
         }
