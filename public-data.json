@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-24T01:18:33.175Z",
+  "generadoEn": "2026-11-24T01:19:34.748Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -141,7 +141,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 3,
-      "actualizadoEn": "2026-11-24T01:18:21.764Z",
+      "actualizadoEn": "2026-11-24T01:19:19.884Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -204,6 +204,22 @@
           "subidoEn": "2026-11-24T01:17:18.698Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-D0740E6D",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-DCE5295C",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Proteus",
+          "descripcion": "Simulador un poco más técnico y avanzado, generalmente el segundo simulador que se topa cualquier estudiante de Electrónica I.",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:19:19.884Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "",
           "orden": 2,
           "contenidoTexto": ""
         },
