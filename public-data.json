@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T17:41:17.370Z",
+  "generadoEn": "2026-11-26T17:42:21.346Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -558,9 +558,9 @@
       "accesoPublico": true,
       "tieneClave": false,
       "limiteBytes": 524288000,
-      "bytesUsados": 24551525,
-      "totalRecursos": 19,
-      "actualizadoEn": "2026-11-26T17:41:03.622Z",
+      "bytesUsados": 24608716,
+      "totalRecursos": 20,
+      "actualizadoEn": "2026-11-26T17:42:09.330Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -735,6 +735,22 @@
           "subidoEn": "2026-11-26T17:37:27.253Z",
           "unidadId": "UNI-5B4BED00",
           "temaId": "TEM-1C04CAC8",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-981D5134",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "ARCHIVO",
+          "tipoArchivoOEnlace": "JPG",
+          "titulo": "Propiedades de la Sumatoria",
+          "descripcion": "",
+          "urlAcceso": "https://drive.google.com/file/d/155X4fILlFYevnNl73zyMXByhMzls_T57/view?usp=drivesdk",
+          "driveFileId": "155X4fILlFYevnNl73zyMXByhMzls_T57",
+          "tamanoBytes": 57191,
+          "subidoEn": "2026-11-26T17:42:09.330Z",
+          "unidadId": "UNI-5A819CD0",
+          "temaId": "TEM-7057050B",
           "orden": 1,
           "contenidoTexto": ""
         },
