@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T17:53:41.717Z",
+  "generadoEn": "2026-11-26T17:57:20.278Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -559,8 +559,8 @@
       "tieneClave": false,
       "limiteBytes": 524288000,
       "bytesUsados": 26746551,
-      "totalRecursos": 21,
-      "actualizadoEn": "2026-11-26T17:53:29.802Z",
+      "totalRecursos": 22,
+      "actualizadoEn": "2026-11-26T17:57:05.002Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -751,6 +751,22 @@
           "subidoEn": "2026-11-26T17:42:09.330Z",
           "unidadId": "UNI-5A819CD0",
           "temaId": "TEM-7057050B",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-C0C4ABEB",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Youtube",
+          "titulo": "Canal Abandonado del Ing. Luis Leon",
+          "descripcion": "Creado en pandemia y abandonado al final de la misma.",
+          "urlAcceso": "https://www.youtube.com/@luisleon8797/videos",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-26T17:57:05.002Z",
+          "unidadId": "UNI-5A819CD0",
+          "temaId": "TEM-E5A44E1B",
           "orden": 1,
           "contenidoTexto": ""
         },
