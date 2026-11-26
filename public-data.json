@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T17:39:37.964Z",
+  "generadoEn": "2026-11-26T17:41:17.370Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -560,7 +560,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 24551525,
       "totalRecursos": 19,
-      "actualizadoEn": "2026-11-26T17:39:25.119Z",
+      "actualizadoEn": "2026-11-26T17:41:03.622Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -831,6 +831,22 @@
           "subidoEn": "2026-11-26T17:37:59.042Z",
           "unidadId": "UNI-5B4BED00",
           "temaId": "TEM-1C04CAC8",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-7057050B",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Formularios de Ayuda para Parciales",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-26T17:41:03.622Z",
+          "unidadId": "UNI-5A819CD0",
+          "temaId": "",
           "orden": 2,
           "contenidoTexto": ""
         },
