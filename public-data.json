@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T18:00:26.391Z",
+  "generadoEn": "2026-11-26T18:01:49.998Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -560,7 +560,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 27159003,
       "totalRecursos": 23,
-      "actualizadoEn": "2026-11-26T18:00:10.610Z",
+      "actualizadoEn": "2026-11-26T18:01:36.654Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -895,6 +895,22 @@
           "subidoEn": "2026-11-26T17:49:21.004Z",
           "unidadId": "UNI-5A819CD0",
           "temaId": "TEM-7057050B",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-AD977F1E",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Recopilación de Asesorías - Tema 1",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-26T18:01:36.654Z",
+          "unidadId": "UNI-6D21CD10",
+          "temaId": "",
           "orden": 2,
           "contenidoTexto": ""
         },
