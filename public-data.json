@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T16:16:22.385Z",
+  "generadoEn": "2026-11-26T16:19:52.475Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -560,7 +560,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 16234396,
       "totalRecursos": 1,
-      "actualizadoEn": "2026-11-26T16:16:10.361Z",
+      "actualizadoEn": "2026-11-26T16:19:38.620Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -574,22 +574,6 @@
           "tamanoBytes": 0,
           "subidoEn": "2026-11-23T22:57:29.050Z",
           "unidadId": "",
-          "temaId": "",
-          "orden": 1,
-          "contenidoTexto": ""
-        },
-        {
-          "recursoId": "TEM-A22EF661",
-          "bovedaId": "BOV-3ADA7464",
-          "tipoRecurso": "TEMA",
-          "tipoArchivoOEnlace": "TEMA",
-          "titulo": "Tema 1.1 - Periodicidad de las señales",
-          "descripcion": "",
-          "urlAcceso": "",
-          "driveFileId": "",
-          "tamanoBytes": 0,
-          "subidoEn": "2026-11-23T23:09:12.049Z",
-          "unidadId": "UNI-6D21CD10",
           "temaId": "",
           "orden": 1,
           "contenidoTexto": ""
