@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T17:49:34.206Z",
+  "generadoEn": "2026-11-26T17:53:41.717Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -560,7 +560,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 26746551,
       "totalRecursos": 21,
-      "actualizadoEn": "2026-11-26T17:49:21.004Z",
+      "actualizadoEn": "2026-11-26T17:53:29.802Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -959,6 +959,22 @@
           "subidoEn": "2026-11-26T17:38:56.904Z",
           "unidadId": "UNI-5B4BED00",
           "temaId": "TEM-1C04CAC8",
+          "orden": 3,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-E5A44E1B",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Adicionales",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-26T17:53:29.802Z",
+          "unidadId": "UNI-5A819CD0",
+          "temaId": "",
           "orden": 3,
           "contenidoTexto": ""
         },
