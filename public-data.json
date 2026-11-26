@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T17:28:30.212Z",
+  "generadoEn": "2026-11-26T17:29:30.640Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -560,7 +560,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 17858851,
       "totalRecursos": 6,
-      "actualizadoEn": "2026-11-26T17:28:14.701Z",
+      "actualizadoEn": "2026-11-26T17:29:15.902Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -639,6 +639,22 @@
           "subidoEn": "2026-11-26T17:26:29.832Z",
           "unidadId": "UNI-6D21CD10",
           "temaId": "TEM-9E5B568C",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-50C5D74D",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Tema 2 - Guías del Ing. L. León",
+          "descripcion": "",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-26T17:29:15.902Z",
+          "unidadId": "UNI-C0C2E6D8",
+          "temaId": "",
           "orden": 1,
           "contenidoTexto": ""
         },
