@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T13:08:00.036Z",
+  "generadoEn": "2026-11-26T16:14:47.609Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -560,7 +560,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 0,
       "totalRecursos": 0,
-      "actualizadoEn": "2026-11-23T23:09:12.049Z",
+      "actualizadoEn": "2026-11-26T16:14:34.042Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -590,6 +590,22 @@
           "tamanoBytes": 0,
           "subidoEn": "2026-11-23T23:09:12.049Z",
           "unidadId": "UNI-6D21CD10",
+          "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-C9CB1150",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Libros Principales",
+          "descripcion": "El 90% de los libros consultados por el Ing. Luis Leon en la materia",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-26T16:14:34.042Z",
+          "unidadId": "UNI-5A819CD0",
           "temaId": "",
           "orden": 1,
           "contenidoTexto": ""
