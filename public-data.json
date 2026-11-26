@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T16:19:52.475Z",
+  "generadoEn": "2026-11-26T16:26:48.227Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -559,8 +559,8 @@
       "tieneClave": false,
       "limiteBytes": 524288000,
       "bytesUsados": 16234396,
-      "totalRecursos": 1,
-      "actualizadoEn": "2026-11-26T16:19:38.620Z",
+      "totalRecursos": 2,
+      "actualizadoEn": "2026-11-26T16:23:56.090Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -623,6 +623,22 @@
           "subidoEn": "2026-11-23T22:58:32.086Z",
           "unidadId": "",
           "temaId": "",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-2DEFD479",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "ENLACE",
+          "tipoArchivoOEnlace": "Drive",
+          "titulo": "Resto de Libros Esenciales",
+          "descripcion": "",
+          "urlAcceso": "https://drive.google.com/drive/folders/1SI5VbjWiWS0kvJzsKq5ufgOg5TYUjG6k?usp=drive_link",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-26T16:23:56.090Z",
+          "unidadId": "UNI-5A819CD0",
+          "temaId": "TEM-C9CB1150",
           "orden": 2,
           "contenidoTexto": ""
         },
