@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T18:10:01.619Z",
+  "generadoEn": "2026-11-26T18:10:48.775Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -113,6 +113,21 @@
       "nombreAsesor": "Carlos Mendoza",
       "estadoChoque": "OK",
       "timestamp": "2026-11-24T13:04:19.366Z"
+    },
+    {
+      "id": "HOR-B8C6F95C",
+      "semana": "2026-W48",
+      "sede": "Yaguaral",
+      "piso": "Piso 3",
+      "salon": "Salón de Sistemas",
+      "dia": "Viernes",
+      "horaInicio": "11:00",
+      "horaFin": "13:00",
+      "materia": "Sistemas de Señales",
+      "asesorId": "ASE-A7D43651CD6A",
+      "nombreAsesor": "Mikhael Goitia",
+      "estadoChoque": "OK",
+      "timestamp": "2026-11-26T18:10:36.381Z"
     }
   ],
   "bovedas": [
