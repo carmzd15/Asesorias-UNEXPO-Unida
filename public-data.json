@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-26T17:37:39.229Z",
+  "generadoEn": "2026-11-26T17:38:11.371Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -558,9 +558,9 @@
       "accesoPublico": true,
       "tieneClave": false,
       "limiteBytes": 524288000,
-      "bytesUsados": 22790923,
-      "totalRecursos": 16,
-      "actualizadoEn": "2026-11-26T17:37:27.253Z",
+      "bytesUsados": 23512790,
+      "totalRecursos": 17,
+      "actualizadoEn": "2026-11-26T17:37:59.042Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -815,6 +815,22 @@
           "subidoEn": "2026-11-26T17:33:57.718Z",
           "unidadId": "UNI-E8B516CF",
           "temaId": "TEM-EB9DED24",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-64AFA994",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "ARCHIVO",
+          "tipoArchivoOEnlace": "PDF",
+          "titulo": "Clase 02",
+          "descripcion": "",
+          "urlAcceso": "https://drive.google.com/file/d/1YkDzHvBwXp0orEmI1Pnctw-TCpQKYIub/view?usp=drivesdk",
+          "driveFileId": "1YkDzHvBwXp0orEmI1Pnctw-TCpQKYIub",
+          "tamanoBytes": 721867,
+          "subidoEn": "2026-11-26T17:37:59.042Z",
+          "unidadId": "UNI-5B4BED00",
+          "temaId": "TEM-1C04CAC8",
           "orden": 2,
           "contenidoTexto": ""
         },
