@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-28T12:51:56.918Z",
+  "generadoEn": "2026-11-28T15:50:17.614Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -558,9 +558,9 @@
       "accesoPublico": true,
       "tieneClave": false,
       "limiteBytes": 524288000,
-      "bytesUsados": 34853324,
-      "totalRecursos": 24,
-      "actualizadoEn": "2026-11-26T20:33:04.187Z",
+      "bytesUsados": 44035753,
+      "totalRecursos": 25,
+      "actualizadoEn": "2026-11-28T15:49:59.110Z",
       "recursos": [
         {
           "recursoId": "UNI-6D21CD10",
@@ -927,6 +927,22 @@
           "subidoEn": "2026-11-26T18:01:36.654Z",
           "unidadId": "UNI-6D21CD10",
           "temaId": "",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "REC-CB2DAE1F",
+          "bovedaId": "BOV-3ADA7464",
+          "tipoRecurso": "ARCHIVO",
+          "tipoArchivoOEnlace": "PDF",
+          "titulo": "Clase de Asesoría - 02",
+          "descripcion": "",
+          "urlAcceso": "https://drive.google.com/file/d/1XvIfxzEFVmnXUjQbkZVYHRCDyEUur4z4/view?usp=drivesdk",
+          "driveFileId": "1XvIfxzEFVmnXUjQbkZVYHRCDyEUur4z4",
+          "tamanoBytes": 9182429,
+          "subidoEn": "2026-11-28T15:49:59.110Z",
+          "unidadId": "UNI-6D21CD10",
+          "temaId": "TEM-AD977F1E",
           "orden": 2,
           "contenidoTexto": ""
         },
