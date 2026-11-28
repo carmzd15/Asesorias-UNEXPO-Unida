@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-28T00:24:18.554Z",
+  "generadoEn": "2026-11-28T00:24:41.864Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -128,21 +128,6 @@
       "nombreAsesor": "Mikhael Goitia",
       "estadoChoque": "OK",
       "timestamp": "2026-11-26T18:10:36.381Z"
-    },
-    {
-      "id": "HOR-2EE69D6B",
-      "semana": "2026-W48",
-      "sede": "Yaguaral",
-      "piso": "Piso 4",
-      "salon": "Aula 51",
-      "dia": "Jueves",
-      "horaInicio": "20:22",
-      "horaFin": "22:23",
-      "materia": "Prueba",
-      "asesorId": "ASE-C17C8F6A330D",
-      "nombreAsesor": "Carlos Mendoza",
-      "estadoChoque": "OK",
-      "timestamp": "2026-11-28T00:24:01.830Z"
     }
   ],
   "bovedas": [
