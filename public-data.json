@@ -1,5 +1,5 @@
 {
-  "generadoEn": "2026-11-28T00:26:12.727Z",
+  "generadoEn": "2026-11-28T00:26:28.440Z",
   "semanaActual": "2026-W48",
   "asesores": [
     {
@@ -141,7 +141,7 @@
       "limiteBytes": 524288000,
       "bytesUsados": 14195213,
       "totalRecursos": 11,
-      "actualizadoEn": "2026-11-28T00:26:02.557Z",
+      "actualizadoEn": "2026-11-28T00:26:16.670Z",
       "recursos": [
         {
           "recursoId": "UNI-39F97333",
@@ -160,6 +160,22 @@
           "contenidoTexto": ""
         },
         {
+          "recursoId": "TEM-D0740E6D",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Multisim",
+          "descripcion": "El Simulador favorito para empezar con Circuitos Electrónicos.",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:15:30.194Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "",
+          "orden": 1,
+          "contenidoTexto": ""
+        },
+        {
           "recursoId": "REC-E0F1A3ED",
           "bovedaId": "BOV-5F37E46E",
           "tipoRecurso": "ENLACE",
@@ -172,22 +188,6 @@
           "subidoEn": "2026-11-24T01:16:34.647Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-D0740E6D",
-          "orden": 1,
-          "contenidoTexto": ""
-        },
-        {
-          "recursoId": "TEM-DCE5295C",
-          "bovedaId": "BOV-5F37E46E",
-          "tipoRecurso": "TEMA",
-          "tipoArchivoOEnlace": "TEMA",
-          "titulo": "Proteus",
-          "descripcion": "Simulador un poco más técnico y avanzado, generalmente el segundo simulador que se topa cualquier estudiante de Electrónica I.",
-          "urlAcceso": "",
-          "driveFileId": "",
-          "tamanoBytes": 0,
-          "subidoEn": "2026-11-24T01:19:19.884Z",
-          "unidadId": "UNI-39F97333",
-          "temaId": "",
           "orden": 1,
           "contenidoTexto": ""
         },
@@ -256,22 +256,6 @@
           "contenidoTexto": ""
         },
         {
-          "recursoId": "TEM-D0740E6D",
-          "bovedaId": "BOV-5F37E46E",
-          "tipoRecurso": "TEMA",
-          "tipoArchivoOEnlace": "TEMA",
-          "titulo": "Multisim",
-          "descripcion": "El Simulador favorito para empezar con Circuitos Electrónicos.",
-          "urlAcceso": "",
-          "driveFileId": "",
-          "tamanoBytes": 0,
-          "subidoEn": "2026-11-24T01:15:30.194Z",
-          "unidadId": "UNI-39F97333",
-          "temaId": "",
-          "orden": 2,
-          "contenidoTexto": ""
-        },
-        {
           "recursoId": "REC-61405FDC",
           "bovedaId": "BOV-5F37E46E",
           "tipoRecurso": "ENLACE",
@@ -300,6 +284,22 @@
           "subidoEn": "2026-11-24T01:21:52.577Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-DCE5295C",
+          "orden": 2,
+          "contenidoTexto": ""
+        },
+        {
+          "recursoId": "TEM-3D8C9203",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "EveryCircuit",
+          "descripcion": "Simulador de Android perfecto para simulaciones rápidas de circuitos electrónicos simples.",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:29:19.532Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "",
           "orden": 2,
           "contenidoTexto": ""
         },
@@ -352,6 +352,22 @@
           "contenidoTexto": ""
         },
         {
+          "recursoId": "TEM-DCE5295C",
+          "bovedaId": "BOV-5F37E46E",
+          "tipoRecurso": "TEMA",
+          "tipoArchivoOEnlace": "TEMA",
+          "titulo": "Proteus",
+          "descripcion": "Simulador un poco más técnico y avanzado, generalmente el segundo simulador que se topa cualquier estudiante de Electrónica I.",
+          "urlAcceso": "",
+          "driveFileId": "",
+          "tamanoBytes": 0,
+          "subidoEn": "2026-11-24T01:19:19.884Z",
+          "unidadId": "UNI-39F97333",
+          "temaId": "",
+          "orden": 3,
+          "contenidoTexto": ""
+        },
+        {
           "recursoId": "REC-C97F3388",
           "bovedaId": "BOV-5F37E46E",
           "tipoRecurso": "ENLACE",
@@ -364,22 +380,6 @@
           "subidoEn": "2026-11-24T01:24:37.571Z",
           "unidadId": "UNI-39F97333",
           "temaId": "TEM-DCE5295C",
-          "orden": 3,
-          "contenidoTexto": ""
-        },
-        {
-          "recursoId": "TEM-3D8C9203",
-          "bovedaId": "BOV-5F37E46E",
-          "tipoRecurso": "TEMA",
-          "tipoArchivoOEnlace": "TEMA",
-          "titulo": "EveryCircuit",
-          "descripcion": "Simulador de Android perfecto para simulaciones rápidas de circuitos electrónicos simples.",
-          "urlAcceso": "",
-          "driveFileId": "",
-          "tamanoBytes": 0,
-          "subidoEn": "2026-11-24T01:29:19.532Z",
-          "unidadId": "UNI-39F97333",
-          "temaId": "",
           "orden": 3,
           "contenidoTexto": ""
         },
